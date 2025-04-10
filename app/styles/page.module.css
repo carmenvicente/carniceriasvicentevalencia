@@ -1,0 +1,100 @@
+.container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .title {
+    font-size: 2rem;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .noProducts {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #777;
+  }
+  
+  .productList {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  
+  .productItem {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
+  
+  .productItem:hover {
+    transform: translateY(-5px);
+  }
+  
+  .productImage {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+  
+  .productInfo {
+    padding: 15px;
+  }
+  
+  .productName {
+    font-size: 1.5rem;
+    color: #333;
+    margin: 10px 0;
+  }
+  
+  .productPrice {
+    font-size: 1.2rem;
+    color: #555;
+  }
+  
+  .productAvailability {
+    font-size: 1rem;
+    color: #888;
+  }
+  
+
+  /* Estilos para el Skeleton Loader */
+.skeletonContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  .skeletonItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .skeleton {
+    width: 80%;
+    height: 150px;
+    background-color: #ddd;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    animation: pulse 1.5s infinite ease-in-out;
+  }
+  
+  @keyframes pulse {
+    0% {
+      background-color: #ddd;
+    }
+    50% {
+      background-color: #ccc;
+    }
+    100% {
+      background-color: #ddd;
+    }
+  }
+  
