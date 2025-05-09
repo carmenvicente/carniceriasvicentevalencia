@@ -22,7 +22,7 @@ export default function Navbar() {
   const [searchOpen, setSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [searchResults, setSearchResults] = useState<{
-    imagen: any; id: number; nombre: string
+    imagen: string; id: number; nombre: string
   }[]>([])
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -98,8 +98,8 @@ export default function Navbar() {
           ×
         </button>
 
-         {/* Contenedor input + botones */}
-         <div className="relative w-2/3 mx-auto">
+        {/* Contenedor input + botones */}
+        <div className="relative w-2/3 mx-auto">
           <input
             ref={inputRef}
             type="text"
@@ -129,15 +129,15 @@ export default function Navbar() {
             className="absolute right-2 top-1/2 -translate-y-1/2 bg-[#990000] hover:bg-red-700 text-white p-2 rounded-full"
             aria-label="Buscar"
           >
-            <img
+            <Image
               src="/imagenes/iconos/busqueda.png"
               alt="Buscar"
+              width={16}
+              height={16}
               className="h-4 w-4"
             />
           </Link>
         </div>
-
-
       </div>
 
 
@@ -191,9 +191,11 @@ export default function Navbar() {
         <div className="flex items-center justify-between w-full px-4 text-xs font-semibold">
           {/* Logo */}
           <Link href="/" className="navbar-link">
-            <img
+            <Image
               src="/imagenes/logos/logoblancocolor.png"
               alt="Logo"
+              width={190}
+              height={200}
               className="h-20"
             />
           </Link>
@@ -277,25 +279,31 @@ export default function Navbar() {
               className="navbar-link p-1"
               aria-label="Abrir búsqueda"
             >
-              <img
-                src="/imagenes/iconos/busqueda.png"
-                alt="Buscar"
-                className="navbar-icon h-6 w-6"
-              />
+              <Image
+              src="/imagenes/iconos/busqueda.png"
+              alt="Buscar"
+              width={16}
+              height={16}
+              className="navbar-icon h-6 w-6"
+            />
             </button>
             <Link href="/registrologin" className="navbar-link">
-              <img
-                src="/imagenes/iconos/usuario.png"
-                alt="Perfil"
-                className="navbar-icon h-6 w-6"
-              />
+              <Image
+              src="/imagenes/iconos/usuario.png"
+              alt="Usuario"
+              width={16}
+              height={16}
+              className="navbar-icon h-6 w-6"
+            />
             </Link>
             <Link href="/cart" className="navbar-link">
-              <img
-                src="/imagenes/iconos/carrito-de-compras.png"
-                alt="Cesta"
-                className="navbar-icon h-6 w-6"
-              />
+              <Image
+              src="/imagenes/iconos/carrito-de-compras.png"
+              alt="Cesta"
+              width={16}
+              height={16}
+              className="navbar-icon h-6 w-6"
+            />
             </Link>
           </div>
         </div>

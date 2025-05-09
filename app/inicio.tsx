@@ -177,31 +177,43 @@ export default function Inicio() {
         <div className="bg-black text-white rounded-2xl px-8 py-10 max-w-screen-xl w-full shadow-lg">
           <div className="grid gap-9 grid-cols-1 md:grid-cols-3 text-center">
             <div className="transition-transform duration-300 hover:scale-105">
-              <img
+              <Image
                 src="/imagenes/iconos/tarjeta-de-credito.png"
                 alt="Pago Seguro"
-                className="w-8 h-8 mx-auto mb-2"
+                width={32}
+                height={32}
+                className="mx-auto mb-2"
               />
               <h6 className="text-base font-semibold">Pago 100% Seguro</h6>
-              <p className="text-sm mt-2" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500}}>Compra segura con certificado SSL</p>
+              <p className="text-sm mt-2" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}>
+                Compra segura con certificado SSL
+              </p>
             </div>
             <div className="transition-transform duration-300 hover:scale-105">
-              <img
+              <Image
                 src="/imagenes/iconos/avion-de-papel.png"
                 alt="Pedidos Rápidos"
-                className="w-8 h-8 mx-auto mb-2"
+                width={32}
+                height={32}
+                className="mx-auto mb-2"
               />
               <h6 className="text-base font-semibold">Pedidos Rápidos</h6>
-              <p className="text-sm mt-2" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500}}>Preparación rápida de tu pedido</p>
+              <p className="text-sm mt-2" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}>
+                Preparación rápida de tu pedido
+              </p>
             </div>
             <div className="transition-transform duration-300 hover:scale-105">
-              <img
+              <Image
                 src="/imagenes/iconos/apreton-de-manos.png"
                 alt="Atención al Cliente"
-                className="w-8 h-8 mx-auto mb-2"
+                width={32}
+                height={32}
+                className="mx-auto mb-2"
               />
               <h6 className="text-base font-semibold">Atención al Cliente</h6>
-              <p className="text-sm mt-2" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500}}>Resolvemos tus dudas vía WhatsApp o llamada</p>
+              <p className="text-sm mt-2" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}>
+                Resolvemos tus dudas vía WhatsApp o llamada
+              </p>
             </div>
           </div>
         </div>
@@ -288,14 +300,14 @@ export default function Inicio() {
             <h1 className="text-3xl font-extrabold mb-4 text-gray-800 relative">
               De Toda la Vida
             </h1>
-            <p className="text-gray-700 mb-6 relative" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600}}>
-            En su día a día, Jesús lleva por bandera el negocio familiar que su padre, Vicente, comenzó a fraguar hace ya más de 70 años. Una carnicería especial y con sello propio.
+            <p className="text-gray-700 mb-6 relative" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
+              En su día a día, Jesús lleva por bandera el negocio familiar que su padre, Vicente, comenzó a fraguar hace ya más de 70 años. Una carnicería especial y con sello propio.
             </p>
             <Link
               href="https://www.latribunadecuenca.es/noticia/zbd62b45d-e0ac-fd0f-55e264a9a616780d/202109/de-toda-la-vida"
               target="_blank"
               className="inline-block px-6 py-3 bg-[#990000] text-white font-semibold rounded-lg shadow-lg hover:bg-[#aa0000] transition relative"
-              
+
             >
               Leer Noticia Completa
             </Link>

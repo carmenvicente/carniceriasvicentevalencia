@@ -146,7 +146,9 @@ export default function Cordero() {
                   <span>Ordenar:</span>
                   <select
                     value={sortOrder}
-                    onChange={e => setSortOrder(e.target.value as any)}
+                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                      setSortOrder(e.target.value as "Relevancia" | "Precio ↑" | "Precio ↓")
+                    }
                     className="bg-transparent border border-gray-500 py-0.5 px-1 rounded text-white text-xs focus:outline-none"
                   >
                     <option>Relevancia</option>

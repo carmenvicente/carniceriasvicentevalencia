@@ -1,5 +1,6 @@
 // app/detalle-productos/[id]/page.tsx
 import { notFound } from 'next/navigation'
+import Image from 'next/image';
 
 export const dynamic = 'force-dynamic'  // opcional, fuerza SSR
 
@@ -24,11 +25,14 @@ export default async function DetalleProducto({ params }: Props) {
   return (
     <div className="max-w-screen-md mx-auto py-8">
       <h1 className="text-2xl font-bold mb-4">{producto.nombre}</h1>
-      <img
+      <Image
         src={`/imagenes/productos/${producto.imagen}`}
         alt={producto.nombre}
+        width={800}  // ajusta según el tamaño real de tus imágenes
+        height={600} // ajusta según el tamaño real de tus imágenes
         className="w-full h-auto rounded mb-6"
       />
+
       <p className="mb-2"><strong>Precio:</strong> {producto.precio} €</p>
       <p className="mb-4">{producto.descripcion}</p>
     </div>

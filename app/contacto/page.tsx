@@ -8,14 +8,16 @@ export default function Contacto() {
       {/* Navbar */}
       <Navbar />
 
-       {/* Sección Hero: imagen con componente Image y texto superpuesto */}
-       <div className="relative w-full h-64 md:h-80">
-        <img
-          src="/imagenes/fondohero.jpg"
-          alt="Imagen Hero"
-          className="object-cover w-full h-100 opacity-95"
+      {/* Sección Hero: imagen con componente Image y texto superpuesto */}
+      <div className="relative w-full h-64 md:h-80">
+        <Image
+          src="/imagenes/productos/albondigas.jpg"
+          alt="Buscar"
+          width={300}
+          height={300}
+          className="navbar-icon h-6 w-6"
         />
-       
+
         {/* Texto superpuesto */}
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <h1 className="text-4xl md:text-5xl font-bold text-white">Contacto</h1>
@@ -31,10 +33,12 @@ export default function Contacto() {
 
       {/* Logo de la carnicería */}
       <Link href="/">
-        <img
-          src="/imagenes/logonegrocolor.png"
-          alt="Logo Carnicería"
-          className="w-170 mb-1 mt-10"
+        <Image
+          src="/imagenes/productos/albondigas.jpg"
+          alt="Buscar"
+          width={300}
+          height={300}
+          className="navbar-icon h-6 w-6"
         />
       </Link>
 
@@ -52,10 +56,12 @@ export default function Contacto() {
           ></iframe>
         </div>
 
-        <img
-          src="/imagenes/jamones.jpg"
-          alt="Dueño de la carnicería"
-          className="w-full md:w-1/2 h-120 object-cover rounded-lg shadow-md"
+       <Image
+          src="/imagenes/productos/albondigas.jpg"
+          alt="Buscar"
+          width={300}
+          height={300}
+          className="navbar-icon h-6 w-6"
         />
       </div>
 
@@ -110,7 +116,7 @@ export default function Contacto() {
           Contamos con un equipo profesional y comprometido con el servicio al cliente. Cada uno de nuestros miembros está altamente capacitado para ofrecerte la mejor experiencia de compra.
         </p>
       </div>
-      
+
     </div>
   );
 }
