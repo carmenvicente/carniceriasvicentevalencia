@@ -6,9 +6,9 @@ const sql = neon(process.env.DATABASE_URL as string)
 
 export async function GET(
   request: Request,
-  context: { params: { id: string } }
+  { params }: { params: { id: string } }  // deja que Next.js infiera el shape real
 ) {
-  const { id } = context.params
+  const { id } = params
 
   if (!id) {
     return NextResponse.json(
