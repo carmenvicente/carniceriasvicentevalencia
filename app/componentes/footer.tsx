@@ -4,7 +4,7 @@ import "../styles/navbar.css"; // O bien, crea un archivo footer.css si prefiere
 
 export default function Footer() {
   return (
-    <footer className="bg-black text-white py-8">
+    <footer className="bg-[#0a0a0a] text-white py-8">
       <div className="max-w-screen-xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-6">
         {/* Sección de Contacto */}
         <div>

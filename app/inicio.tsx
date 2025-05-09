@@ -32,8 +32,8 @@ export default function Inicio() {
           <h1 className="text-6xl font-bold">EN CADA CORTE</h1>
           <div className="mt-6">
             <Link
-              href="/productos"
-              className="bg-red-700 text-white px-6 py-3 rounded-xl text-lg font-semibold hover:bg-red-800 transition"
+              href="/productos-frescos/ternera"
+              className="bg-red-700 text-white px-6 py-3 rounded-xl text-lg font-semibold hover:bg-red-800 transition" color='#990000'
             >
               Ver productos
             </Link>
@@ -51,13 +51,13 @@ export default function Inicio() {
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
               Carnicería Vicente Valencia
             </h2>
-            <p className="text-gray-700 mb-4">
+            <p className="text-gray-700 mb-4 mt-9" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}>
               Carnicería Vicente Valencia es tu carnicería de confianza, ahora también disponible online.
             </p>
-            <p className="text-gray-700 mb-4">
+            <p className="text-gray-700 mb-4" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}>
               Seleccionamos cuidadosamente productos frescos y de primera calidad para que disfrutes del auténtico sabor de la carne tradicional. Haz tu pedido de forma rápida y sencilla, y ven a recogerlo cómodamente cuando esté listo. Calidad, cercanía y buen servicio, como siempre.
             </p>
-            <p className="text-gray-700 mb-4">
+            <p className="text-gray-700 mb-4" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}>
               Descubre nuestra variedad de cortes frescos, embutidos caseros y otros productos gourmet. ¡Bienvenido a nuestra carnicería online de sabor superior!
             </p>
           </div>
@@ -65,10 +65,10 @@ export default function Inicio() {
           {/* Columna Derecha: Imagen */}
           <div className="md:w-1/2 flex items-center justify-center">
             <Image
-              src="/imagenes/dueno.jpg" // Ajusta la ruta a tu imagen real
+              src="/imagenes/otros/dueno2.webp" // Ajusta la ruta a tu imagen real
               alt="Carnicería Vicente Valencia"
-              width={400}
-              height={350}
+              width={580}
+              height={450}
               className="rounded-md object-cover "
               style={{ objectPosition: "center top" }}
             />
@@ -76,7 +76,7 @@ export default function Inicio() {
         </div>
 
         {/* Sección de Productos Frescos */}
-        <div className="mt-20">
+        <div className="mt-30">
           <h5 className="text-xl font-semibold" style={{ color: '#990000' }}>
             Nuestros Productos Frescos
           </h5>
@@ -137,7 +137,7 @@ export default function Inicio() {
         </div>
 
         {/* Sección de Productos Elaborados */}
-        <div className="mt-25">
+        <div className="mt-30">
           <h5 className="text-xl font-semibold" style={{ color: '#990000' }}>
             Nuestros Productos Elaborados
           </h5>
@@ -173,35 +173,35 @@ export default function Inicio() {
       </div>
 
       {/* Bloque con apariencia de tarjeta (cuadro negro con información) */}
-      <div className="w-full flex justify-center px-4 mt-8">
+      <div className="w-full flex justify-center px-4 mt-30">
         <div className="bg-black text-white rounded-2xl px-8 py-10 max-w-screen-xl w-full shadow-lg">
           <div className="grid gap-9 grid-cols-1 md:grid-cols-3 text-center">
-            <div>
+            <div className="transition-transform duration-300 hover:scale-105">
               <img
                 src="/imagenes/iconos/tarjeta-de-credito.png"
                 alt="Pago Seguro"
-                className="w-8 h-8 mx-auto mb-2 transition-transform duration-300 hover:scale-130"
+                className="w-8 h-8 mx-auto mb-2"
               />
               <h6 className="text-base font-semibold">Pago 100% Seguro</h6>
-              <p className="text-sm">Compra segura con certificado SSL</p>
+              <p className="text-sm mt-2" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500}}>Compra segura con certificado SSL</p>
             </div>
-            <div>
+            <div className="transition-transform duration-300 hover:scale-105">
               <img
                 src="/imagenes/iconos/avion-de-papel.png"
                 alt="Pedidos Rápidos"
-                className="w-8 h-8 mx-auto mb-2 transition-transform duration-300 hover:scale-130"
+                className="w-8 h-8 mx-auto mb-2"
               />
               <h6 className="text-base font-semibold">Pedidos Rápidos</h6>
-              <p className="text-sm">Preparación rápida de tu pedido</p>
+              <p className="text-sm mt-2" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500}}>Preparación rápida de tu pedido</p>
             </div>
-            <div>
+            <div className="transition-transform duration-300 hover:scale-105">
               <img
                 src="/imagenes/iconos/apreton-de-manos.png"
                 alt="Atención al Cliente"
-                className="w-8 h-8 mx-auto mb-2 transition-transform duration-300 hover:scale-130"
+                className="w-8 h-8 mx-auto mb-2"
               />
               <h6 className="text-base font-semibold">Atención al Cliente</h6>
-              <p className="text-sm">Resolvemos tus dudas vía WhatsApp o llamada</p>
+              <p className="text-sm mt-2" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500}}>Resolvemos tus dudas vía WhatsApp o llamada</p>
             </div>
           </div>
         </div>
@@ -209,81 +209,102 @@ export default function Inicio() {
 
 
       {/* Sección de Nuestros Valores */}
-<div className="relative w-full mt-20">
-  {/* Fondo de la sección (imagen de fondo) */}
-  <div
-    className="w-full h-100 md:h-[500px] bg-cover bg-center"
-    style={{ backgroundImage: "url('/imagenes/otros/fondo44.jpg')" }}
-  ></div>
-  {/* Capa de overlay para oscurecer el fondo */}
-  <div className="absolute inset-0 bg-black opacity-20"></div>
-  {/* Contenedor de la sección, situado a la derecha */}
-  <div className="absolute inset-0 flex items-center justify-end">
-    <div className="w-full max-w-md pr-8">
-      {/* Título de la sección, posicionado en la parte superior */}
-      <h3 className="text-xl font-bold text-white mb-4">Nuestros Valores</h3>
-      {/* Grid de los 4 cuadros en 2 columnas y 2 filas */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Cuadro Valor 1 */}
-        <div className="bg-white/80 p-4 rounded-lg flex flex-col items-center">
-          <Image
-            src="/imagenes/iconos/valor1.png"
-            alt="Valor 1"
-            width={50}
-            height={50}
-            className="mb-2"
-          />
-          <h4 className="font-bold text-gray-800">Valor 1</h4>
-          <p className="text-sm text-gray-700">
-            Descripción breve del valor 1
-          </p>
+      <div className="relative w-full mt-30">
+        {/* Fondo de la sección */}
+        <div
+          className="w-full h-[200px] md:h-[400px] bg-cover bg-center"
+          style={{ backgroundImage: "url('/imagenes/otros/zarajosymorteruelo.jpg')" }}
+        />
+        {/* Overlay negro */}
+        <div className="absolute inset-0 bg-black opacity-55" />
+
+        {/* Contenedor centralizado */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+          <div className="grid grid-cols-3 gap-x-[6rem] gap-y-8 max-w-2xl w-full">
+            {[
+              { src: '/imagenes/iconos/cuchillo.png', label: 'Comida Casera' },
+              { src: '/imagenes/iconos/toro.png', label: 'Orígenes' },
+              { src: '/imagenes/iconos/calidad.png', label: 'Calidad' },
+            ].map((val, i) => (
+              <div key={i} className="flex flex-col items-center transition-transform duration-300 hover:scale-105">
+                <Image
+                  src={val.src}
+                  alt={val.label}
+                  width={120}
+                  height={60}
+                  className="mb-6"
+                />
+                <span className="text-white text-lg font-medium">{val.label}</span>
+              </div>
+            ))}
+          </div>
         </div>
-        {/* Cuadro Valor 2 */}
-        <div className="bg-white/80 p-4 rounded-lg flex flex-col items-center">
-          <Image
-            src="/imagenes/iconos/valor2.png"
-            alt="Valor 2"
-            width={50}
-            height={50}
-            className="mb-2"
-          />
-          <h4 className="font-bold text-gray-800">Valor 2</h4>
-          <p className="text-sm text-gray-700">
-            Descripción breve del valor 2
-          </p>
-        </div>
-        {/* Cuadro Valor 3 */}
-        <div className="bg-white/80 p-4 rounded-lg flex flex-col items-center">
-          <Image
-            src="/imagenes/iconos/valor3.png"
-            alt="Valor 3"
-            width={50}
-            height={50}
-            className="mb-2"
-          />
-          <h4 className="font-bold text-gray-800">Valor 3</h4>
-          <p className="text-sm text-gray-700">
-            Descripción breve del valor 3
-          </p>
-        </div>
-        {/* Cuadro Valor 4 */}
-        <div className="bg-white/80 p-4 rounded-lg flex flex-col items-center">
-          <Image
-            src="/imagenes/iconos/valor4.png"
-            alt="Valor 4"
-            width={50}
-            height={50}
-            className="mb-2"
-          />
-          <h4 className="font-bold text-gray-800">Valor 4</h4>
-          <p className="text-sm text-gray-700">
-            Descripción breve del valor 4
-          </p>
+
+        {/* Tarjeta roja en esquina inferior derecha */}
+        <div className="absolute bottom-[-2rem] right-4 bg-[#990000] rounded-lg shadow-lg overflow-hidden w-100">
+          <div className="flex">
+            <div className="flex-1 p-6 border-r border-red-500">
+              <h2 className="text-4xl font-bold text-white">+1000</h2>
+              <p className="text-sm text-red-200">clientes al mes</p>
+            </div>
+            <div className="flex-1 p-6">
+              <h2 className="text-4xl font-bold text-white">+100</h2>
+              <p className="text-sm text-red-200">productos</p>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-</div>
+
+
+
+
+
+      <div className="relative w-full mt-30 bg-white overflow-visible">
+        {/* Contenedor central que limita el ancho máximo */}
+        <div className="relative z-10 mx-auto max-w-screen-xl flex flex-col md:flex-row items-start">
+          {/* Columna izquierda: Imágenes superpuestas */}
+          <div className="w-full md:w-1/2 relative p-6 flex justify-center">
+            {/* Imagen base */}
+            <Image
+              src="/imagenes/otros/carniceriaanalogica.jpg"
+              alt="De Toda la Vida - La Tribuna de Cuenca"
+              width={800}
+              height={400}
+              className="w-80 md:w-96 lg:w-[500px] h-auto rounded-lg shadow-md object-cover ml-4 md:ml-8 lg:ml-12"
+            />
+            {/* Imagen superpuesta 1 */}
+            <Image
+              src="/imagenes/otros/noticia.png"
+              alt="Detalle 1"
+              width={200}
+              height={112}
+              className="absolute top-[-20px] left-[-33px] rounded-lg shadow-[0_8px_16px_rgba(0,0,0,0.4)] border-4 border-white object-cover"
+            />
+          </div>
+          {/* Línea roja divisoria */}
+          <div className="hidden md:block w-1 bg-[#990000] h-100" />
+          {/* Columna derecha: Noticia */}
+          <div className="w-full md:w-1/2 p-6">
+            <h1 className="text-3xl font-extrabold mb-4 text-gray-800 relative">
+              De Toda la Vida
+            </h1>
+            <p className="text-gray-700 mb-6 relative" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600}}>
+            En su día a día, Jesús lleva por bandera el negocio familiar que su padre, Vicente, comenzó a fraguar hace ya más de 70 años. Una carnicería especial y con sello propio.
+            </p>
+            <Link
+              href="https://www.latribunadecuenca.es/noticia/zbd62b45d-e0ac-fd0f-55e264a9a616780d/202109/de-toda-la-vida"
+              target="_blank"
+              className="inline-block px-6 py-3 bg-[#990000] text-white font-semibold rounded-lg shadow-lg hover:bg-[#aa0000] transition relative"
+              
+            >
+              Leer Noticia Completa
+            </Link>
+          </div>
+        </div>
+      </div>
+
+
+
 
 
       {/* Sección de Reseñas */}

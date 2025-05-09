@@ -1,0 +1,53 @@
+/* app/styles/productos.module.css */
+
+.pageContainer {
+  display: flex;
+  background-color: rgb(22,22,22);
+  min-height: 100vh;
+  align-items: flex-start;
+  color: #fff;
+}
+
+.sidebar {
+  width: 400px;
+  padding: 50px;
+}
+
+.divider {
+  width: 1px;
+  background-color: #454545;
+}
+
+.productContainer {
+  flex: 1;
+  padding: 1.5rem;
+  max-width: calc(100% - 500px);
+}
+
+.productCard {
+  background: rgba(0,0,0,0.8);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+  transition: transform 0.2s ease;
+}
+
+.productCardList {
+  background: rgba(0,0,0,0.8);
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+  padding: 1.5rem;
+  min-height: 260px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.productImage {
+  border-radius: 0.25rem;
+  object-fit: cover;
+}
+
+.productInfo {
+  align-items: flex-start;
+}

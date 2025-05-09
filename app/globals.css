@@ -1,10 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Fugaz+One&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Yatra+One&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Philosopher:wght@400;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Zain&display=swap');
 @import "tailwindcss";
 
 :root {
@@ -32,13 +27,11 @@ body {
   font-family: 'Lemon Milk', sans-serif;
 }
 
+
+
 /*
 font-family: 'Libre Baskerville', serif;
 font-family: 'Pinyon Script', cursive;
-font-family: 'Fugaz One', cursive;
-font-family: 'Yatra One', sans-serif;
-font-family: 'Playwrite België Vlaanderen', sans-serif;
- font-family: 'Zain', sans-serif;
 */
 
 
