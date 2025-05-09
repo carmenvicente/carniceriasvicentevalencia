@@ -1,14 +1,19 @@
 // app/api/productos/[id]/route.ts
-import { NextResponse } from 'next/server'
+import { NextResponse, NextRequest } from 'next/server'
 import { neon } from '@neondatabase/serverless'
 
 const sql = neon(process.env.DATABASE_URL as string)
 
-export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }  // deja que Next.js infiera el shape real
-) {
-  const { id } = params
+// Le decimos a TS que los params vienen envueltos en una promesa
+type Props = {
+  params: Promise<{
+    id: string
+  }>
+}
+
+export async function GET(request: NextRequest, props: Props) {
+  // Esperamos a que nos entreguen los params
+  const { id } = await props.params
 
   if (!id) {
     return NextResponse.json(
