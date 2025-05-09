@@ -1,6 +1,8 @@
 // app/busqueda/page.tsx
 'use client'
 
+export const dynamic = 'force-dynamic'  // ← añadir esto
+
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import Navbar from '@/app/componentes/navbar'
