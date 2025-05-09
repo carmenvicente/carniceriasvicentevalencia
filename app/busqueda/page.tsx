@@ -1,13 +1,18 @@
 // app/busqueda/page.tsx
-export const dynamic = 'force-dynamic'  // evita prerender y fuerza siempre fetch
+export const dynamic = 'force-dynamic'
 
 import BusquedaClient from './BusquedaClient'
 
-interface PageProps {
-  searchParams: { search?: string }
-}
+type SearchParamsShape = { search?: string }
 
-export default function BusquedaPage({ searchParams }: PageProps) {
-  const query = searchParams.search ?? ''
+export default async function BusquedaPage({
+  searchParams,
+}: {
+  // Next ya infiere que viene como Promise<SearchParamsShape>
+  searchParams: Promise<SearchParamsShape>
+}) {
+  // Desempaqueta la promise:
+  const { search: query = '' } = await searchParams
+
   return <BusquedaClient initialQuery={query} />
 }
