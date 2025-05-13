@@ -225,10 +225,10 @@ export default function Inicio() {
         {/* Fondo de la sección */}
         <div
           className="w-full h-[200px] md:h-[400px] bg-cover bg-center"
-          style={{ backgroundImage: "url('/imagenes/otros/zarajosymorteruelo.jpg')" }}
+          style={{ backgroundImage: "url('/imagenes/otros/valores.jpg')" }}
         />
         {/* Overlay negro */}
-        <div className="absolute inset-0 bg-black opacity-55" />
+        <div className="absolute inset-0 bg-black opacity-65" />
 
         {/* Contenedor centralizado */}
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
@@ -278,7 +278,7 @@ export default function Inicio() {
           <div className="w-full md:w-1/2 relative p-6 flex justify-center">
             {/* Imagen base */}
             <Image
-              src="/imagenes/otros/carniceriaanalogica.jpg"
+              src="/imagenes/otros/jesuschorizos.jpg"
               alt="De Toda la Vida - La Tribuna de Cuenca"
               width={800}
               height={400}
@@ -294,7 +294,7 @@ export default function Inicio() {
             />
           </div>
           {/* Línea roja divisoria */}
-          <div className="hidden md:block w-1 bg-[#990000] h-100" />
+          <div className="hidden md:block w-1 bg-[#990000] h-80" />
           {/* Columna derecha: Noticia */}
           <div className="w-full md:w-1/2 p-6">
             <h1 className="text-3xl font-extrabold mb-4 text-gray-800 relative">
