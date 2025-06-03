@@ -173,6 +173,7 @@ export default function Ternera() {
                         alt={p.nombre}
                         width={320}
                         height={200}
+                        style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}
                         className={`${styles.productImage} mx-auto rounded`}
                       />
                       <h2 className="mt-2 font-semibold text-white text-left text-sm">{p.nombre}</h2>
