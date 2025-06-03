@@ -13,7 +13,7 @@ export default function Inicio() {
       {/* Imagen de fondo a pantalla completa */}
       <div className="relative w-full h-screen">
         <Image
-          src="/imagenes/fondo33.jpg"
+          src="/imagenes/otros/fondo33.jpg"
           alt="Imagen de la carnicería"
           fill
           className="object-cover"
@@ -65,7 +65,7 @@ export default function Inicio() {
           {/* Columna Derecha: Imagen */}
           <div className="md:w-1/2 flex items-center justify-center">
             <Image
-              src="/imagenes/otros/dueno2.webp" // Ajusta la ruta a tu imagen real
+              src="/imagenes/otros/dueno2.webp" 
               alt="Carnicería Vicente Valencia"
               width={580}
               height={450}
