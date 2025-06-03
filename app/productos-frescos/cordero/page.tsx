@@ -60,9 +60,9 @@ export default function Cordero() {
         <div className="max-w-screen-xl mx-auto text-center px-4 mt-30">
           <h1 className="text-xl md:text-2xl font-bold text-white">Cordero</h1>
           <div className="mt-1 text-white text-sm ">
-            <Link href="/" className="hover:text-gray-300">Home</Link>
-            <span className="mx-1">/</span>
-            <span>Cordero</span>
+            <Link href="/" className="hover:text-gray-300" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600}}>Home</Link>
+            <span className="mx-1" >/</span>
+            <span style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600}}>Cordero</span>
           </div>
         </div>
       </div>

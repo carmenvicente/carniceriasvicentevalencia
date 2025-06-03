@@ -287,7 +287,7 @@ export default function Navbar() {
               className="navbar-icon h-6 w-6"
             />
             </button>
-            <Link href="/registrologin" className="navbar-link">
+            <Link href="/registrologin/login" className="navbar-link">
               <Image
               src="/imagenes/iconos/usuario.png"
               alt="Usuario"

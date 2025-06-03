@@ -58,11 +58,11 @@ export default function Embutidoscaseros() {
       {/* Cabecera */}
       <div className="w-full py-3 bg-[rgb(22,22,22)]">
         <div className="max-w-screen-xl mx-auto text-center px-4 mt-30">
-          <h1 className="text-xl md:text-2xl font-bold text-white">Embutidos caseros</h1>
+          <h1 className="text-xl md:text-2xl font-bold text-white">Embutidos Caseros</h1>
           <div className="mt-1 text-white text-sm ">
-            <Link href="/" className="hover:text-gray-300">Home</Link>
-            <span className="mx-1">/</span>
-            <span>Embutidos caseros</span>
+            <Link href="/" className="hover:text-gray-300" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600}}>Home</Link>
+            <span className="mx-1" >/</span>
+            <span style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600}}>Embutidos Caseros</span>
           </div>
         </div>
       </div>
