@@ -13,7 +13,7 @@ export default function Inicio() {
       {/* Imagen de fondo a pantalla completa */}
       <div className="relative w-full h-screen">
         <Image
-          src="/imagenes/otros/fondo33.jpg"
+          src="/imagenes/otros/fondo33.JPG"
           alt="Imagen de la carnicería"
           fill
           className="object-cover"
@@ -225,7 +225,7 @@ export default function Inicio() {
         {/* Fondo de la sección */}
         <div
           className="w-full h-[200px] md:h-[400px] bg-cover bg-center"
-          style={{ backgroundImage: "url('/imagenes/otros/valores.jpg')" }}
+          style={{ backgroundImage: "url('/imagenes/otros/valores.JPG')" }}
         />
         {/* Overlay negro */}
         <div className="absolute inset-0 bg-black opacity-65" />
@@ -278,7 +278,7 @@ export default function Inicio() {
           <div className="w-full md:w-1/2 relative p-6 flex justify-center">
             {/* Imagen base */}
             <Image
-              src="/imagenes/otros/jesuschorizos.jpg"
+              src="/imagenes/otros/jesuschorizos.JPG"
               alt="De Toda la Vida - La Tribuna de Cuenca"
               width={800}
               height={400}
