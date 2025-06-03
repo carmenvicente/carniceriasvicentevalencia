@@ -14,8 +14,9 @@ export default function Inicio() {
       <div className="relative w-full h-screen">
         <Image
           src="/imagenes/otros/fondo33.JPG"
-          alt="Imagen de la carnicería"
+          alt="Imagen de fondo Carnicería J Vicente Valencia"
           fill
+          style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}
           className="object-cover"
         />
 
@@ -66,11 +67,11 @@ export default function Inicio() {
           <div className="md:w-1/2 flex items-center justify-center">
             <Image
               src="/imagenes/otros/dueno2.webp" 
-              alt="Carnicería Vicente Valencia"
+              alt="Imagen Carnicería J Vicente Valencia"
               width={580}
               height={450}
               className="rounded-md object-cover "
-              style={{ objectPosition: "center top" }}
+              style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500, objectPosition: "center top" }}
             />
           </div>
         </div>
@@ -87,9 +88,10 @@ export default function Inicio() {
             >
               <Image
                 src="/imagenes/dibujos/terneradibujo.png"
-                alt="Ternera"
+                alt="Imagen dibujo de Ternera"
                 width={200}
                 height={200}
+                style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}
                 className="mb-2 transition-transform duration-300 hover:scale-105"
               />
               <span>TERNERA</span>
@@ -100,9 +102,10 @@ export default function Inicio() {
             >
               <Image
                 src="/imagenes/dibujos/cerdodibujo.png"
-                alt="Cerdo"
+                alt="Imagen dibujo de Cerdo"
                 width={300}
                 height={300}
+                style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}
                 className="mb-2 transition-transform duration-300 hover:scale-105"
               />
               <span>CERDO</span>
@@ -113,9 +116,10 @@ export default function Inicio() {
             >
               <Image
                 src="/imagenes/dibujos/corderodibujo.png"
-                alt="Cordero"
+                alt="Imagen dibujo de Cordero"
                 width={300}
                 height={300}
+                style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}
                 className="mb-2 transition-transform duration-300 hover:scale-105"
               />
               <span>CORDERO</span>
@@ -126,9 +130,10 @@ export default function Inicio() {
             >
               <Image
                 src="/imagenes/dibujos/avesyconejosdibujo.png"
-                alt="Aves y Conejos"
+                alt="Imagen dibujo de Aves y Conejos"
                 width={200}
                 height={200}
+                style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}
                 className="mb-2 transition-transform duration-300 hover:scale-105"
               />
               <span>AVES Y CONEJO</span>
@@ -148,9 +153,10 @@ export default function Inicio() {
             >
               <Image
                 src="/imagenes/dibujos/embutidoscaserosdibujo.png"
-                alt="Embutidos caseros"
+                alt="Imagen dibujo de Embutidos caseros"
                 width={300}
                 height={300}
+                style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}
                 className="mb-2 transition-transform duration-300 hover:scale-105"
               />
               <span>Embutidos caseros</span>
@@ -161,9 +167,10 @@ export default function Inicio() {
             >
               <Image
                 src="/imagenes/dibujos/elaboradosdibujo.png"
-                alt="Elaborados"
+                alt="Imagen dibujo de Elaborados"
                 width={350}
                 height={350}
+                style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}
                 className="mb-2 transition-transform duration-300 hover:scale-105"
               />
               <span>elaborados</span>
@@ -179,9 +186,10 @@ export default function Inicio() {
             <div className="transition-transform duration-300 hover:scale-105">
               <Image
                 src="/imagenes/iconos/tarjeta-de-credito.png"
-                alt="Pago Seguro"
+                alt="Imagen icono de Pago Seguro"
                 width={32}
                 height={32}
+                style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}
                 className="mx-auto mb-2"
               />
               <h6 className="text-base font-semibold">Pago 100% Seguro</h6>
@@ -192,9 +200,10 @@ export default function Inicio() {
             <div className="transition-transform duration-300 hover:scale-105">
               <Image
                 src="/imagenes/iconos/avion-de-papel.png"
-                alt="Pedidos Rápidos"
+                alt="Imagen icono de Pedidos Rápidos"
                 width={32}
                 height={32}
+                style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}
                 className="mx-auto mb-2"
               />
               <h6 className="text-base font-semibold">Pedidos Rápidos</h6>
@@ -205,9 +214,10 @@ export default function Inicio() {
             <div className="transition-transform duration-300 hover:scale-105">
               <Image
                 src="/imagenes/iconos/apreton-de-manos.png"
-                alt="Atención al Cliente"
+                alt="Imagen icono de Atención al Cliente"
                 width={32}
                 height={32}
+                style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}
                 className="mx-auto mb-2"
               />
               <h6 className="text-base font-semibold">Atención al Cliente</h6>
@@ -244,6 +254,7 @@ export default function Inicio() {
                   alt={val.label}
                   width={120}
                   height={60}
+                  style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}
                   className="mb-6"
                 />
                 <span className="text-white text-lg font-medium">{val.label}</span>
@@ -279,17 +290,19 @@ export default function Inicio() {
             {/* Imagen base */}
             <Image
               src="/imagenes/otros/jesuschorizos.JPG"
-              alt="De Toda la Vida - La Tribuna de Cuenca"
+              alt="Imagen chorizos Carnicería J Vicente Valencia"
               width={800}
               height={400}
+              style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}
               className="w-80 md:w-96 lg:w-[500px] h-auto rounded-lg shadow-md object-cover ml-4 md:ml-8 lg:ml-12"
             />
             {/* Imagen superpuesta 1 */}
             <Image
               src="/imagenes/otros/noticia.png"
-              alt="Detalle 1"
+              alt="Imagen noticia Carnicería J Vicente Valencia"
               width={200}
               height={112}
+              style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}
               className="absolute top-[-20px] left-[-33px] rounded-lg shadow-[0_8px_16px_rgba(0,0,0,0.4)] border-4 border-white object-cover"
             />
           </div>
