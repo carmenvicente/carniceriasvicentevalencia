@@ -39,15 +39,18 @@ export async function POST(request: Request) {
     }
 
     // 3) Generar un JWT (o lo que uses para sesiones)
-    const token = jwt.sign(
-      {
-        id: user.id,
-        email: user.email,
-        role: user.role,
-      },
-      JWT_SECRET,
-      { expiresIn: '7d' }
-    )
+   const token = jwt.sign(
+  {
+    id: user.id,
+    email: user.email,
+    nombre: user.nombre,
+    role: user.role,
+  },
+  JWT_SECRET,
+  { expiresIn: '7d' }
+);
+
+
 
     // 4) Devolver datos y token
     return NextResponse.json({

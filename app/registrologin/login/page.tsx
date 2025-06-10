@@ -35,10 +35,10 @@ export default function LoginPage() {
             });
 
             if (res.status === 200) {
-                const { token } = await res.json();
-                // localStorage.setItem('authToken', token);
-                router.push('/');
-            } else {
+  const { token } = await res.json();
+  localStorage.setItem('token', token); // 👈 ESTA LÍNEA ES CLAVE
+  router.push('/');
+} else {
                 const data = await res.json();
                 setErrorMsg(data.message || 'Credenciales inválidas.');
             }

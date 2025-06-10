@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import '../styles/navbar.css'
 import Image from 'next/image'
+import { PerfilMenu } from '@/app/componentes/PerfilMenu';
 
 export default function Navbar() {
   const router = useRouter()
@@ -287,15 +288,9 @@ export default function Navbar() {
               className="navbar-icon h-6 w-6"
             />
             </button>
-            <Link href="/registrologin/login" className="navbar-link">
-              <Image
-              src="/imagenes/iconos/usuario.png"
-              alt="Usuario"
-              width={16}
-              height={16}
-              className="navbar-icon h-6 w-6"
-            />
-            </Link>
+            <PerfilMenu />
+
+          
             <Link href="/cart" className="navbar-link">
               <Image
               src="/imagenes/iconos/carrito-de-compras.png"
