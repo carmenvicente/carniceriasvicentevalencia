@@ -3,10 +3,14 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Navbar from '@/app/componentes/navbar';
+import Footer from '@/app/componentes/footer';
+import { FaUser, FaMapMarkerAlt, FaCalendarAlt, FaReceipt, FaTags, FaFileAlt, FaInfoCircle, FaSmile } from 'react-icons/fa';
 
 type Usuario = {
   nombre: string;
   role: string;
+  tratamiento: string;
 };
 
 export default function MiCuenta() {
@@ -17,10 +21,13 @@ export default function MiCuenta() {
     try {
       const token = localStorage.getItem('token');
       if (token) {
-        const payload = JSON.parse(atob(token.split('.')[1]));
+        const base64 = token.split('.')[1];
+        const json = decodeURIComponent(escape(atob(base64)));
+        const payload = JSON.parse(json);
         setUsuario({
           nombre: payload.nombre,
           role: payload.role,
+          tratamiento: payload.tratamiento,
         });
       } else {
         router.push('/registrologin/login');
@@ -34,29 +41,61 @@ export default function MiCuenta() {
   if (!usuario) return null;
 
   return (
-    <main className="max-w-3xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-6">Hola, {usuario.nombre}</h1>
+    <main className="min-h-screen bg-white">
+      {/* Navbar y cabecera */}
+      <Navbar />
 
-      <section className="space-y-4">
-        <Link href="/mi-cuenta/informacion" className="block hover:underline text-gray-700">
-          Información del usuario
-        </Link>
+      {/* 40px de altura en negro arriba */}
+      <div className="h-22 w-full bg-black" />
 
+      {/* Cabecera blanca */}
+      <div className="w-full py-3 bg-white">
+        <div className="max-w-screen-xl mx-auto text-center px-4 mt-10">
+          <h1 className="text-xl md:text-2xl font-bold text-black">MI CUENTA</h1>
+          <div className="mt-1 text-black text-sm">
+            <Link
+              href="/"
+              className="hover:text-gray-700"
+              style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
+            >
+              Home
+            </Link>
+            <span className="mx-1">/</span>
+            <span style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
+              Mi Cuenta
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <p
+        className="text-center mt-20 text-lg text-black mb-8"
+        style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
+      >
+        Te damos la bienvenida, {usuario?.tratamiento ? `${usuario.tratamiento} ${usuario.nombre}` : usuario?.nombre || 'usuario'}
+      </p>
+
+
+
+
+      {/* Tarjetas de opciones */}
+      <div className="max-w-screen-xl mx-auto px-4 py-8 grid grid-cols-1 sm:grid-cols-2 sm:grid-cols-4 gap-6" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
+        <Tarjeta icono={<FaUser size={24} />} texto="Información" href="/micuenta/informacion" />
         {usuario.role === 'admin' ? (
-          <Link href="/admin/editar-productos" className="block hover:underline text-red-700 font-semibold">
-            Editar productos
+          <Link
+            href="/admin/editar-productos"
+            className="border rounded-md p-6 flex flex-col items-center justify-center bg-[#990000] text-white hover:bg-[#b30000] transition"
+            style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
+          >
+            <FaCalendarAlt size={24} />
+            <span className="mt-2 font-semibold text-center">Editar productos</span>
           </Link>
         ) : (
-          <Link href="/mi-cuenta/pedidos" className="block hover:underline text-gray-700">
-            Historial y detalles de mis pedidos
-          </Link>
+          <Tarjeta icono={<FaCalendarAlt size={24} />} texto="Mis pedidos" href="/micuenta/pedidos" />
         )}
 
-        <Link href="/mi-cuenta/cookies" className="block hover:underline text-gray-700">
-          Ajustes de cookies
-        </Link>
-
-        <button
+        <Tarjeta icono={<FaInfoCircle size={24} />} texto="Tus ajustes de cookies" href="/micuenta/ajustes-cookies" />
+        <div
           onClick={() => {
             const confirmado = window.confirm('¿Seguro que deseas cerrar sesión?');
             if (confirmado) {
@@ -65,11 +104,24 @@ export default function MiCuenta() {
               router.push('/');
             }
           }}
-          className="block text-left text-gray-700 hover:underline"
+          className="cursor-pointer border rounded-md p-6 flex flex-col items-center justify-center hover:bg-gray-100 transition"
         >
-          Desconectar
-        </button>
-      </section>
+          <FaSmile size={24} />
+          <span className="mt-2 font-semibold text-center">Desconectar</span>
+        </div>
+      </div>
+      <div className="mt-30">
+        <Footer />
+      </div>
     </main>
+  );
+}
+
+function Tarjeta({ icono, texto, href }: { icono: React.ReactNode; texto: string; href: string }) {
+  return (
+    <Link href={href} className="border rounded-md p-6 flex flex-col items-center justify-center hover:bg-gray-100 transition text-center">
+      {icono}
+      <span className="mt-2 font-semibold">{texto}</span>
+    </Link>
   );
 }

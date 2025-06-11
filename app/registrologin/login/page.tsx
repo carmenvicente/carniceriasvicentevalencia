@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Navbar from '@/app/componentes/navbar';
 import Footer from '@/app/componentes/footer';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+
 
 export default function LoginPage() {
     const router = useRouter();
@@ -35,10 +37,10 @@ export default function LoginPage() {
             });
 
             if (res.status === 200) {
-  const { token } = await res.json();
-  localStorage.setItem('token', token); // 👈 ESTA LÍNEA ES CLAVE
-  router.push('/');
-} else {
+                const { token } = await res.json();
+                localStorage.setItem('token', token); // 👈 ESTA LÍNEA ES CLAVE
+                router.push('/micuenta');
+            } else {
                 const data = await res.json();
                 setErrorMsg(data.message || 'Credenciales inválidas.');
             }
@@ -123,25 +125,11 @@ export default function LoginPage() {
                             <button
                                 type="button"
                                 onClick={() => setShowPassword((prev) => !prev)}
-                                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-gray-800"
-                                aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+                                className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-600"
                             >
-                                {showPassword ? (
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                            d="M13.875 18.825A10.05 10.05 0 0112 19c-5.523 0-10-4.477-10-10a9.96 9.96 0 012.176-6.125M17.387 17.387A9.96 9.96 0 0122 12c0 5.523-4.477 10-10 10-.72 0-1.421-.07-2.1-.21m7.487-5.403a4 4 0 10-5.657-5.657m1.768 7.07A4 4 0 0112 16a4 4 0 01-3.182-6.5M3 3l18 18" />
-                                    </svg>
-                                ) : (
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-.274.952-.72 1.847-1.314 2.648M15.536 15.536A9.97 9.97 0 0112 17c-4.478 0-8.268-2.943-9.542-7a9.97 9.97 0 012.707-3.776" />
-                                    </svg>
-                                )}
+                                {showPassword ? <FaEyeSlash /> : <FaEye />}
                             </button>
+
                         </div>
 
 
