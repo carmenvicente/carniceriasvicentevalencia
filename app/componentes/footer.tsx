@@ -1,70 +1,90 @@
-"use client";
-import Link from "next/link";
-import "../styles/navbar.css";
-import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaWhatsapp } from "react-icons/fa";
-import { HiOutlineClock } from "react-icons/hi";
+'use client';
+
+import Link from 'next/link';
+import Image from 'next/image';
+import { FaPhone, FaEnvelope, FaWhatsapp, FaMapMarkerAlt } from 'react-icons/fa';
+import { HiOutlineClock } from 'react-icons/hi';
 
 export default function Footer() {
   return (
     <footer className="bg-[#0a0a0a] text-white py-10">
-      <div className="max-w-screen-xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div className="max-w-screen-xl mx-auto px-4 md:flex md:gap-12">
         
-        {/* Información de contacto */}
-        <div>
-          <h4 className="text-lg font-bold mb-2">Contacto</h4>
-          <p className="text-sm">Carnicerías Vicente</p>
-          <p className="text-sm">C/ de Valencia Ponce 2, Valencia, España</p>
-          <p className="text-sm mt-1">Tel: +34 969 221 018</p>
-          <p className="text-sm">Email: info@carniceriasvicente.es</p>
-          <p className="text-sm mt-1">Horario: L-V 9:00–14:00 / 17:00–20:00</p>
-          <p className="text-sm">Sábados: 9:00–14:00</p>
+        {/* Logo + Nombre con más espacio a la derecha */}
+        <div className="md:mr-16 flex flex-col items-center text-center mb-8 md:mb-0">
+          <Image
+            src="/imagenes/logos/logoblancocolor.png"
+            alt="Logo Carnicería"
+            width={200}
+            height={200}
+            className="mb-2"
+          />
+          <p className="text-lg font-bold">Carnicerías Vicente Valencia</p>
+          <p className="text-sm text-gray-400" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>Calidad desde 1975</p>
         </div>
 
-        {/* Navegación rápida */}
-        <div>
-          <h4 className="text-lg font-bold mb-2">Navegación</h4>
-          <ul className="space-y-1">
-            <li><Link href="/" className="text-sm hover:underline">Inicio</Link></li>
-            <li><Link href="/productos" className="text-sm hover:underline">Productos</Link></li>
-            <li><Link href="/categorias" className="text-sm hover:underline">Categorías</Link></li>
-            <li><Link href="/contacto" className="text-sm hover:underline">Contacto</Link></li>
-            <li><Link href="/sobre-nosotros" className="text-sm hover:underline">Sobre Nosotros</Link></li>
-          </ul>
-        </div>
+        {/* Resto de columnas con menos separación entre sí */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 flex-1">
+          
+          {/* Navegación */}
+          <div>
+            <h4 className="text-lg font-bold mb-2">Navegación</h4>
+            <ul className="space-y-1 text-sm">
+              <li><Link href="/" className="hover:underline">Inicio</Link></li>
+              <li><Link href="/productos" className="hover:underline">Productos</Link></li>
+              <li><Link href="/categorias" className="hover:underline">Categorías</Link></li>
+              <li><Link href="/contacto" className="hover:underline">Contacto</Link></li>
+              <li><Link href="/sobre-nosotros" className="hover:underline">Sobre Nosotros</Link></li>
+            </ul>
+          </div>
 
-        {/* Atención al Cliente */}
-        <div>
-          <h4 className="text-lg font-bold mb-2">Atención al Cliente</h4>
-          <ul className="space-y-1">
-            <li><Link href="/faq" className="text-sm hover:underline">Preguntas frecuentes</Link></li>
-            <li><Link href="/envios" className="text-sm hover:underline">Envíos y Devoluciones</Link></li>
-            <li><Link href="/pago" className="text-sm hover:underline">Formas de Pago</Link></li>
-            <li><Link href="/garantia" className="text-sm hover:underline">Garantía de Productos</Link></li>
-          </ul>
-        </div>
+          {/* Contacto */}
+          <div>
+            <h4 className="text-lg font-bold mb-2">Contacto</h4>
+            <ul className="space-y-1 text-sm">
+              <li className="flex items-center gap-2"><FaMapMarkerAlt /> C/ de Valencia Ponce 2</li>
+              <li className="flex items-center gap-2"><FaPhone /> +34 969 221 018</li>
+              <li className="flex items-center gap-2"><FaEnvelope /> info@carniceriasvicente.es</li>
+              <li className="flex items-center gap-2"><HiOutlineClock /> L-V: 9:00–14:00 / 17:00–20:00</li>
+              <li className="pl-6">Sábados: 9:00–14:00</li>
+            </ul>
+          </div>
 
-        {/* Información legal y WhatsApp */}
-        <div>
-          <h4 className="text-lg font-bold mb-2">Legal</h4>
-          <ul className="space-y-1">
-            <li><Link href="/legal" className="text-sm hover:underline">Aviso Legal</Link></li>
-            <li><Link href="/privacy" className="text-sm hover:underline">Política de Privacidad</Link></li>
-            <li><Link href="/cookies" className="text-sm hover:underline">Política de Cookies</Link></li>
-          </ul>
+          {/* Redes Sociales */}
+          <div>
+            <h4 className="text-lg font-bold mb-2">Redes Sociales</h4>
+            <ul className="space-y-1 text-sm">
+              <li>
+                <a
+                  href="https://wa.me/34699221018"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 hover:text-green-500"
+                >
+                  <FaWhatsapp /> Unirse a nuestra comunidad
+                </a>
+              </li>
+            </ul>
+          </div>
 
-          <div className="mt-4">
-            <h4 className="text-lg font-bold mb-2">Contáctanos por WhatsApp</h4>
-            <a
-              href="https://wa.me/34699221018"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center space-x-2 hover:text-green-500"
-            >
-              <FaWhatsapp className="text-xl" />
-              <span className="text-sm">+34 699 221 018</span>
-            </a>
+          {/* Información Legal */}
+          <div>
+            <h4 className="text-lg font-bold mb-2">Información Legal</h4>
+            <ul className="space-y-1 text-sm">
+              <li><Link href="/aviso-legal" className="hover:underline">Aviso Legal</Link></li>
+              <li><Link href="/politica-de-privacidad" className="hover:underline">Política de Privacidad</Link></li>
+              <li><Link href="/terminos-y-condiciones" className="hover:underline">Términos y Condiciones</Link></li>
+            </ul>
           </div>
         </div>
+      </div>
+
+      {/* Métodos de pago */}
+      <div className="max-w-screen-xl mx-auto mt-8 px-4 flex flex-wrap justify-center gap-4">
+        <Image src="/visa.png" alt="Visa" width={50} height={30} />
+        <Image src="/mastercard.png" alt="Mastercard" width={50} height={30} />
+        <Image src="/amex.png" alt="American Express" width={50} height={30} />
+        <Image src="/paypal.png" alt="PayPal" width={50} height={30} />
       </div>
 
       {/* Línea inferior */}

@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { neon } from '@neondatabase/serverless';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import { enviarCorreoCambioDatos } from '@/lib/email';
 
 const sql = neon(`${process.env.DATABASE_URL}?options=--client_encoding=UTF8`);
 const JWT_SECRET = process.env.JWT_SECRET || 'CAMBIA_ESTA_CLAVE_POR_ALGO_MUY_SEGURO';
@@ -80,6 +81,9 @@ export async function PUT(request: Request) {
       WHERE id = ${id}
     `;
     const nuevoUsuario = actualizado[0];
+
+    // ✅ Enviar correo por cambio de datos
+    await enviarCorreoCambioDatos(nuevoUsuario.nombre, nuevoUsuario.email, nuevoUsuario.apellidos, nuevoUsuario.tratamiento);
 
     // 5) Crear nuevo token
     const nuevoToken = jwt.sign(

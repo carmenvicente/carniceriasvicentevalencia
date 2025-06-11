@@ -104,24 +104,23 @@ export default function InformacionUsuario() {
       <div className="h-22 w-full bg-black" />
 
       {/* Cabecera blanca */}
-      <div className="w-full py-3 bg-white">
-        <div className="max-w-screen-xl mx-auto text-center px-4 mt-10">
-          <h1 className="text-xl md:text-2xl font-bold text-black">Información de mi cuenta</h1>
-          <div className="mt-1 text-black text-sm">
-            <Link
-              href="/"
-              className="hover:text-gray-700"
-              style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
-            >
-              Home
-            </Link>
-            <span className="mx-1">/</span>
-            <span style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
-              Información de mi Cuenta
-            </span>
-          </div>
-        </div>
-      </div>
+<div className="w-full py-3 bg-white">
+  <div className="max-w-screen-xl mx-auto text-center px-4 mt-10">
+    <h1 className="text-xl md:text-2xl font-bold text-black">Información de mi cuenta</h1>
+    <div className="mt-1 text-black text-sm" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
+      <Link href="/" className="hover:text-gray-700">
+        Home
+      </Link>
+      <span className="mx-1">/</span>
+      <Link href="/micuenta" className="hover:text-gray-700">
+        Mi cuenta
+      </Link>
+      <span className="mx-1">/</span>
+      <span>Información de mi cuenta</span>
+    </div>
+  </div>
+</div>
+
 
       <main className="max-w-screen-md mx-auto px-4 py-10">
         <form onSubmit={handleSubmit} className="space-y-6">

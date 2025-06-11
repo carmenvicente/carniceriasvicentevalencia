@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { neon } from '@neondatabase/serverless';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import { enviarCorreoBienvenida } from '@/lib/email'; 
 
 const sql = neon(`${process.env.DATABASE_URL}?options=--client_encoding=UTF8`);
 const JWT_SECRET = process.env.JWT_SECRET || 'CAMBIA_ESTA_CLAVE_POR_ALGO_MUY_SEGURO';
@@ -47,6 +48,9 @@ export async function POST(request: Request) {
     `;
 
     const nuevoUsuario = inserted[0];
+
+    // ✅ Enviar correo de bienvenida
+    await enviarCorreoBienvenida(nuevoUsuario.nombre, nuevoUsuario.email, nuevoUsuario.apellidos, nuevoUsuario.tratamiento);
 
     // ✅ 6) Generar token con datos seguros
     const token = jwt.sign(
