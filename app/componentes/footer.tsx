@@ -2,95 +2,125 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { FaPhone, FaEnvelope, FaWhatsapp, FaMapMarkerAlt } from 'react-icons/fa';
-import { HiOutlineClock } from 'react-icons/hi';
+import { FaWhatsapp } from 'react-icons/fa';
 
 export default function Footer() {
+  const font = { fontFamily: "'Inter', sans-serif", fontWeight: 500 };
+ 
+
   return (
-    <footer className="bg-[#0a0a0a] text-white py-10">
-      <div className="max-w-screen-xl mx-auto px-4 md:flex md:gap-12">
-        
-        {/* Logo + Nombre con más espacio a la derecha */}
-        <div className="md:mr-16 flex flex-col items-center text-center mb-8 md:mb-0">
+    <footer className="bg-[#0a0a0a] text-white pt-10 pb-6">
+      <div className="max-w-screen-2xl mx-auto px-6 flex flex-col md:flex-row gap-12">
+
+        {/* Logo + Nombre */}
+        <div className="md:w-[200px] flex flex-col items-center text-center">
           <Image
             src="/imagenes/logos/logoblancocolor.png"
             alt="Logo Carnicería"
             width={200}
             height={200}
-            className="mb-2"
           />
-          <p className="text-lg font-bold">Carnicerías Vicente Valencia</p>
-          <p className="text-sm text-gray-400" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>Calidad desde 1975</p>
+          <p className="text-sm text-gray-500 font-semibold" style={font}>
+            Calidad desde 1975
+          </p>
         </div>
 
-        {/* Resto de columnas con menos separación entre sí */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 flex-1">
-          
+        {/* Secciones del footer */}
+        <div className="flex-1 flex flex-wrap">
+
           {/* Navegación */}
-          <div>
-            <h4 className="text-lg font-bold mb-2">Navegación</h4>
-            <ul className="space-y-1 text-sm">
-              <li><Link href="/" className="hover:underline">Inicio</Link></li>
-              <li><Link href="/productos" className="hover:underline">Productos</Link></li>
-              <li><Link href="/categorias" className="hover:underline">Categorías</Link></li>
-              <li><Link href="/contacto" className="hover:underline">Contacto</Link></li>
-              <li><Link href="/sobre-nosotros" className="hover:underline">Sobre Nosotros</Link></li>
+          <div className="w-[200px] mr-[10px]">
+            <h4 className="text-lg font-bold mb-2" >Navegación</h4>
+            <ul className="text-sm font-semibold" style={font}>
+              <li><Link href="/" className="hover:underline">🏠 Inicio</Link></li>
+              <li><Link href="/productos-frescos/ternera" className="hover:underline">🛒 Productos</Link></li>
+              <li><Link href="/pedido" className="hover:underline">📦 Haz tu pedido</Link></li>
+              <li><Link href="/comida-semanal" className="hover:underline">📅 Menú semanal</Link></li>
+              <li><Link href="/micuenta" className="hover:underline">👤 Mi cuenta</Link></li>
             </ul>
           </div>
 
           {/* Contacto */}
-          <div>
-            <h4 className="text-lg font-bold mb-2">Contacto</h4>
-            <ul className="space-y-1 text-sm">
-              <li className="flex items-center gap-2"><FaMapMarkerAlt /> C/ de Valencia Ponce 2</li>
-              <li className="flex items-center gap-2"><FaPhone /> +34 969 221 018</li>
-              <li className="flex items-center gap-2"><FaEnvelope /> info@carniceriasvicente.es</li>
-              <li className="flex items-center gap-2"><HiOutlineClock /> L-V: 9:00–14:00 / 17:00–20:00</li>
-              <li className="pl-6">Sábados: 9:00–14:00</li>
+          <div className="w-[300px] mr-[4px]">
+            <h4 className="text-lg font-bold mb-2" >Contacto</h4>
+            <ul className="text-sm font-semibold" style={font}>
+              <li>
+                📍 <a
+                  href="https://www.google.com/maps?q=Av.+de+Castilla-la+Mancha,+Nº+27,+Bajo,+16003+Cuenca"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:underline"
+                >
+                  Av. de Castilla-La Mancha, 27 Bajo, 16003 Cuenca
+                </a>
+              </li>
+              <li className="mt-2">📞 <a href="tel:969221018" className="hover:underline">969 221 018</a></li>
+              <li>📞 <a href="tel:+34646982666" className="hover:underline">+34 646 982 666</a></li>
+              <li className="mt-2">✉️ <a>carniceriavicentevalencia@gmail.com</a></li>
             </ul>
           </div>
 
-          {/* Redes Sociales */}
-          <div>
-            <h4 className="text-lg font-bold mb-2">Redes Sociales</h4>
-            <ul className="space-y-1 text-sm">
-              <li>
-                <a
-                  href="https://wa.me/34699221018"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 hover:text-green-500"
-                >
-                  <FaWhatsapp /> Unirse a nuestra comunidad
-                </a>
-              </li>
+          {/* Horario */}
+          <div className="w-[200px] mr-[30px]">
+            <h4 className="text-lg font-bold mb-2" style={font}><br></br></h4>
+            <ul className="text-sm font-semibold" style={font}>
+              <li>⏰ Horario</li>
+              <li>Lun–Jue: 9:30–15:00</li>
+              <li>Vie: 9:30–15:00 / 17:30–20:30</li>
+              <li>Sáb: 9:30–15:00</li>
             </ul>
           </div>
 
           {/* Información Legal */}
-          <div>
-            <h4 className="text-lg font-bold mb-2">Información Legal</h4>
-            <ul className="space-y-1 text-sm">
-              <li><Link href="/aviso-legal" className="hover:underline">Aviso Legal</Link></li>
-              <li><Link href="/politica-de-privacidad" className="hover:underline">Política de Privacidad</Link></li>
-              <li><Link href="/terminos-y-condiciones" className="hover:underline">Términos y Condiciones</Link></li>
+          <div className="w-[220px] mr-[25px]">
+            <h4 className="text-lg font-bold mb-2" >Información Legal</h4>
+            <ul className="text-sm font-semibold" style={font}>
+              <li><Link href="/informacionlegal/aviso-legal" className="hover:underline">Aviso Legal</Link></li>
+              <li><Link href="/informacionlegal/politica-de-privacidad" className="hover:underline">Política de Privacidad</Link></li>
+              <li><Link href="/informacionlegal/terminos-y-condiciones" className="hover:underline">Términos y Condiciones</Link></li>
             </ul>
           </div>
+
+         {/* Menú Semanal */}
+          <div className="w-[200px]">
+            <h4 className="text-lg font-bold mb-2" >Menú Semanal</h4>
+            <p className="text-sm mb-5 font-semibold" style={font}>
+              ¿Quieres estar al tanto de<br></br> los menús semanales?
+            </p>
+            <a
+              href="https://wa.me/34699221018"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex flex-row items-center gap-x-3"
+            >
+              
+              <div className="w-12 h-12 flex items-center justify-center rounded-full border-2 border-white group-hover:bg-green-500 transition">
+                <FaWhatsapp className="text-2xl text-white group-hover:text-black transition" />
+              </div>
+              <span className="text-sm font-semibold group-hover:text-green-500" style={font}>
+                Únete a nuestra comunidad
+              </span>
+              
+            </a>
+          </div>
+
+
+
+
         </div>
       </div>
 
-      {/* Métodos de pago */}
-      <div className="max-w-screen-xl mx-auto mt-8 px-4 flex flex-wrap justify-center gap-4">
-        <Image src="/visa.png" alt="Visa" width={50} height={30} />
-        <Image src="/mastercard.png" alt="Mastercard" width={50} height={30} />
-        <Image src="/amex.png" alt="American Express" width={50} height={30} />
-        <Image src="/paypal.png" alt="PayPal" width={50} height={30} />
-      </div>
-
       {/* Línea inferior */}
-      <div className="text-center text-xs text-gray-400 mt-10 border-t border-gray-700 pt-4">
-        <p>© {new Date().getFullYear()} Carnicerías Vicente Valencia. Todos los derechos reservados.</p>
-        <p className="mt-1">Desarrollado por [Tu Nombre] como parte del TFG en Ingeniería de Telecomunicaciones</p>
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mt-8 border-t border-gray-700 pt-4 px-6 text-xs text-gray-400">
+        <div className="mb-4 md:mb-0 pl-10">
+          <p style={font}>© {new Date().getFullYear()} Carnicerías Vicente Valencia. Todos los derechos reservados.</p>
+          <p className="mt-1" style={font}>Desarrollado por Carmen Vicente Crespo para el Trabajo Fin de Grado en Ingeniería de Telecomunicaciones</p>
+        </div>
+        <div className="flex gap-2">
+          <Image src="/imagenes/iconos/visa.png" alt="Visa" width={35} height={20} />
+          <Image src="/imagenes/iconos/mastercard.png" alt="Mastercard" width={35} height={20} />
+          <Image src="/imagenes/iconos/paypal.png" alt="PayPal" width={35} height={20} />
+        </div>
       </div>
     </footer>
   );
