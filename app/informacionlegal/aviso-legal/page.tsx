@@ -41,15 +41,15 @@ export default function AvisoLegal() {
           y de Comercio Electrónico (LSSICE), BOE Nº 166, así como informar a todos los usuarios del sitio web respecto a cuáles son las condiciones de uso.
         </p>
 
-        <p className="mb-6">
+        <p className="mb-20">
           Toda persona que acceda a este sitio web asume el papel de usuario, comprometiéndose a la observancia y cumplimiento riguroso de las disposiciones
           aquí dispuestas, así como a cualquier otra disposición legal que fuera de aplicación. El RESPONSABLE se reserva el derecho de modificar cualquier tipo
           de información que pudiera aparecer en el sitio web, sin que exista obligación de preavisar o poner en conocimiento de los usuarios dichas obligaciones,
-          entendiéndose como suficiente con la publicación en el sitio web del RESPONSABLE.
+          entendiéndose como suficiente con la publicación en el sitio web del RESPONSABLE. 
         </p>
 
         <h2 className="text-lg font-semibold mb-4">1. Datos identificativos</h2>
-        <p className="mb-6">
+        <p className="mb-20">
           Denominación social: Carnicería Vicente Valencia SL<br />
           CIF: B16188021<br />
           Domicilio social: Av. de Castilla-la Mancha, N° 27, Bajo, 16003 Cuenca <br />
@@ -61,7 +61,7 @@ export default function AvisoLegal() {
           El sitio web, incluyendo su programación, edición, compilación, diseños, logotipos, texto y/o gráficos, son propiedad del RESPONSABLE o, en su caso,
           dispone de licencia o autorización expresa por parte de los autores. Todos los contenidos están protegidos por la normativa de propiedad intelectual e industrial.
         </p>
-        <p className="mb-6">
+        <p className="mb-20">
           La reproducción total o parcial, uso, explotación, distribución y comercialización requiere en todo caso autorización escrita previa por parte del RESPONSABLE.
           Cualquier uso no autorizado será considerado un incumplimiento grave.
         </p>
@@ -85,7 +85,7 @@ export default function AvisoLegal() {
         </p>
 
         <h2 className="text-lg font-semibold mb-4">Direcciones IP</h2>
-        <p className="mb-6">
+        <p className="mb-20">
           Los servidores del sitio web podrán detectar automáticamente la dirección IP del usuario para obtener estadísticas de navegación. Estos datos no se asocian
           a información personal y son tratados de forma anónima.
         </p>
