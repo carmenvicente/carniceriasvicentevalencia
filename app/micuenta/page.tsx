@@ -83,7 +83,7 @@ export default function MiCuenta() {
         <Tarjeta icono={<FaUser size={24} />} texto="Información" href="/micuenta/informacion" />
         {usuario.role === 'admin' ? (
           <Link
-            href="/admin/editar-productos"
+            href="/micuenta/editar-productos"
             className="border rounded-md p-6 flex flex-col items-center justify-center bg-[#990000] text-white hover:bg-[#b30000] transition"
             style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
           >

@@ -73,7 +73,6 @@ export default function AvisoCookies() {
       </div>
 
       <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 mt-4 text-xs">
-        <a href="/politica-de-cookies" className="text-white hover:underline">Política de Cookies</a>
         <a href="/politica-de-privacidad" className="text-white hover:underline">Política de Privacidad</a>
         <a href="/aviso-legal" className="text-white hover:underline">Aviso Legal</a>
       </div>
