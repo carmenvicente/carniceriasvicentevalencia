@@ -46,12 +46,20 @@ export default function CrearProducto({ volver }: CrearProductoProps) {
 
     try {
       const res = await fetch('/api/productos', {
-        method: 'POST',
-        body: formData,
-      })
+  method: 'POST',
+  body: formData,
+})
 
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.message || 'Error')
+let data
+try {
+  data = await res.json()
+} catch (err) {
+  const text = await res.text()
+  throw new Error(`Respuesta inesperada: ${text}`)
+}
+
+if (!res.ok) throw new Error(data.message || 'Error')
+
 
       setMensaje('Producto creado correctamente.')
       setNombre('')

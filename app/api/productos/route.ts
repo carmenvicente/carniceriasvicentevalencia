@@ -119,7 +119,11 @@ export async function POST(request: Request) {
     }
 
     try {
-      const buffer = Buffer.from(await imagen.arrayBuffer());
+      const buffer = Buffer.from(await imagen.arrayBuffer())
+if (buffer.length > 4 * 1024 * 1024) {
+  return NextResponse.json({ message: 'La imagen supera los 4 MB' }, { status: 400 })
+}
+
       const filePath = path.join(process.cwd(), 'public', 'imagenes', 'productos', imagen.name);
       await writeFile(filePath, buffer);
 
