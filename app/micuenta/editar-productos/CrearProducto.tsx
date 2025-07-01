@@ -19,10 +19,11 @@ export default function CrearProducto({ volver }: CrearProductoProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (!imagen) {
-      setMensaje('Selecciona una imagen.')
-      return
-    }
+    if (!imagen || !(imagen instanceof File) || !imagen.name) {
+  setMensaje('Selecciona una imagen válida.')
+  return
+}
+
 
     const formData = new FormData()
     formData.append('nombre', nombre)
@@ -31,6 +32,17 @@ export default function CrearProducto({ volver }: CrearProductoProps) {
     formData.append('stock', String(stock))
     formData.append('subcategoria', String(subcategoria))
     formData.append('imagen', imagen)
+
+
+    console.log('🟢 Enviando producto:', {
+  nombre,
+  descripcion,
+  precio,
+  stock,
+  subcategoria,
+  imagenNombre: imagen?.name,
+})
+
 
     try {
       const res = await fetch('/api/productos', {
@@ -106,14 +118,15 @@ export default function CrearProducto({ volver }: CrearProductoProps) {
         <div className="flex flex-col">
           <label className="font-semibold">Stock:</label>
           <select
-            value={stock ? 'sí' : 'no'}
-            onChange={(e) => setStock(e.target.value === 'sí')}
-            className="border p-3 rounded"
-            style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
-          >
-            <option value="sí">Hay stock</option>
-            <option value="no">No hay stock</option>
-          </select>
+  value={String(stock)}
+  onChange={(e) => setStock(e.target.value === 'true')}
+  className="border p-3 rounded"
+  style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
+>
+  <option value="true">Hay stock</option>
+  <option value="false">No hay stock</option>
+</select>
+
         </div>
 
         <div className="flex flex-col">
