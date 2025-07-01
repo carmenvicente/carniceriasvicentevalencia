@@ -169,10 +169,11 @@ export default function Elaborados() {
                   <div className={`${styles.productCard} flex flex-col justify-start h-full space-y-4 transition-transform hover:-translate-y-1`}>  
                     <div>
                       <Image
-                        src={`/imagenes/productos/${p.imagen}`}
+                        src={p.imagen.startsWith('http') ? p.imagen : `/imagenes/productos/${p.imagen}`}
                         alt={p.nombre}
                         width={320}
                         height={200}
+                        style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}
                         className={`${styles.productImage} mx-auto rounded`}
                       />
                       <h2 className="mt-2 font-semibold text-white text-left text-sm">{p.nombre}</h2>
@@ -196,10 +197,10 @@ export default function Elaborados() {
               {sortedProductos.map(p => (
                 <Link key={p.id} href={`/detalle-productos/${p.id}`}>  
                   <div className={`${styles.productCardList} flex items-center justify-between p-4 bg-[rgba(0,0,0,0.8)] rounded-lg shadow-md transition-transform hover:-translate-y-1`}>
-                    <Image src={`/imagenes/productos/${p.imagen}`} alt={p.nombre} width={260} height={240} className="rounded object-cover" />
+                    <Image src={p.imagen.startsWith('http') ? p.imagen : `/imagenes/productos/${p.imagen}`} alt={p.nombre} width={260} height={240} className="rounded object-cover" />
                     <div className="flex-1 px-4 text-left">
                       <h2 className="font-semibold text-white text-lg">{p.nombre}</h2>
-                      <p className="text-gray-300 text-sm mt-1">{p.descripcion}</p>
+                      <p className="text-gray-300 text-sm mt-1"  style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600}}>{p.descripcion}</p>
                     </div>
                     <div className="product-info flex flex-col space-y-5 border-l border-gray-700 pl-4">
                       <p className="text-[#990000] font-bold text-lg">{p.precio}€</p>

@@ -5,6 +5,11 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
   reactStrictMode: true, // opcional pero recomendable
+  images: {
+    domains: [
+      'eixv30h8jqr5avph.public.blob.vercel-storage.com',
+    ],
+  },
 };
 
-export default nextConfig;
+module.exports = nextConfig
