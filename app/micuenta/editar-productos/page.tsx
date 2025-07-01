@@ -230,10 +230,15 @@ async function eliminarProductos() {
                                     title={estaSeleccionado ? 'Producto seleccionado' : 'Haz clic para seleccionar'}
                                   >
                                     <img
-                                      src={`/imagenes/productos/${producto.imagen}`}
-                                      alt={producto.nombre}
-                                      className="w-full h-32 object-cover"
-                                    />
+  src={
+    producto.imagen.startsWith('http')
+      ? producto.imagen
+      : `/imagenes/productos/${producto.imagen}`
+  }
+  alt={producto.nombre}
+  className="w-full h-32 object-cover"
+/>
+
                                     <div
                                       className="p-2 text-center font-medium"
                                       style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
@@ -287,10 +292,15 @@ async function eliminarProductos() {
                                   title={estaSeleccionado ? 'Producto seleccionado' : 'Haz clic para seleccionar'}
                                 >
                                   <img
-                                    src={`/imagenes/productos/${producto.imagen}`}
-                                    alt={producto.nombre}
-                                    className="w-full h-32 object-cover"
-                                  />
+  src={
+    producto.imagen.startsWith('http')
+      ? producto.imagen
+      : `/imagenes/productos/${producto.imagen}`
+  }
+  alt={producto.nombre}
+  className="w-full h-32 object-cover"
+/>
+
                                   <div
                                     className="p-2 text-center font-medium"
                                     style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
@@ -337,10 +347,15 @@ async function eliminarProductos() {
                                 title={estaSeleccionado ? 'Producto seleccionado' : 'Haz clic para seleccionar'}
                               >
                                 <img
-                                  src={`/imagenes/productos/${producto.imagen}`}
-                                  alt={producto.nombre}
-                                  className="w-full h-32 object-cover"
-                                />
+  src={
+    producto.imagen.startsWith('http')
+      ? producto.imagen
+      : `/imagenes/productos/${producto.imagen}`
+  }
+  alt={producto.nombre}
+  className="w-full h-32 object-cover"
+/>
+
                                 <div
                                   className="p-2 text-center font-medium"
                                   style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
