@@ -20,10 +20,9 @@ export default function CrearProducto({ volver }: CrearProductoProps) {
     e.preventDefault()
 
     if (!imagen || !(imagen instanceof File) || !imagen.name) {
-  setMensaje('Selecciona una imagen válida.')
-  return
-}
-
+      setMensaje('Selecciona una imagen válida.')
+      return
+    }
 
     const formData = new FormData()
     formData.append('nombre', nombre)
@@ -33,33 +32,31 @@ export default function CrearProducto({ volver }: CrearProductoProps) {
     formData.append('subcategoria', String(subcategoria))
     formData.append('imagen', imagen)
 
-
     console.log('🟢 Enviando producto:', {
-  nombre,
-  descripcion,
-  precio,
-  stock,
-  subcategoria,
-  imagenNombre: imagen?.name,
-})
-
+      nombre,
+      descripcion,
+      precio,
+      stock,
+      subcategoria,
+      imagenNombre: imagen?.name,
+    })
 
     try {
       const res = await fetch('/api/productos', {
-  method: 'POST',
-  body: formData,
-})
+        method: 'POST',
+        body: formData,
+      })
 
-let data
-try {
-  data = await res.json()
-} catch (err) {
-  const text = await res.text()
-  throw new Error(`Respuesta inesperada: ${text}`)
-}
+      const responseText = await res.text() // Se lee solo UNA vez
 
-if (!res.ok) throw new Error(data.message || 'Error')
+      let data
+      try {
+        data = JSON.parse(responseText)
+      } catch {
+        throw new Error(`Respuesta inesperada del servidor: ${responseText}`)
+      }
 
+      if (!res.ok) throw new Error(data.message || 'Error desconocido')
 
       setMensaje('Producto creado correctamente.')
       setNombre('')
@@ -126,15 +123,14 @@ if (!res.ok) throw new Error(data.message || 'Error')
         <div className="flex flex-col">
           <label className="font-semibold">Stock:</label>
           <select
-  value={String(stock)}
-  onChange={(e) => setStock(e.target.value === 'true')}
-  className="border p-3 rounded"
-  style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
->
-  <option value="true">Hay stock</option>
-  <option value="false">No hay stock</option>
-</select>
-
+            value={String(stock)}
+            onChange={(e) => setStock(e.target.value === 'true')}
+            className="border p-3 rounded"
+            style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
+          >
+            <option value="true">Hay stock</option>
+            <option value="false">No hay stock</option>
+          </select>
         </div>
 
         <div className="flex flex-col">
