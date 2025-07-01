@@ -169,7 +169,7 @@ export default function Ternera() {
                   <div className={`${styles.productCard} flex flex-col justify-start h-full space-y-4 transition-transform hover:-translate-y-1`}>  
                     <div>
                       <Image
-                        src={`/imagenes/productos/${p.imagen}`}
+                        src={p.imagen.startsWith('http') ? p.imagen : `/imagenes/productos/${p.imagen}`}
                         alt={p.nombre}
                         width={320}
                         height={200}
@@ -197,7 +197,7 @@ export default function Ternera() {
               {sortedProductos.map(p => (
                 <Link key={p.id} href={`/detalle-productos/${p.id}`}>  
                   <div className={`${styles.productCardList} flex items-center justify-between p-4 bg-[rgba(0,0,0,0.8)] rounded-lg shadow-md transition-transform hover:-translate-y-1`}>
-                    <Image src={`/imagenes/productos/${p.imagen}`} alt={p.nombre} width={260} height={240} className="rounded object-cover" />
+                    <Image src={p.imagen.startsWith('http') ? p.imagen : `/imagenes/productos/${p.imagen}`} alt={p.nombre} width={260} height={240} className="rounded object-cover" />
                     <div className="flex-1 px-4 text-left">
                       <h2 className="font-semibold text-white text-lg">{p.nombre}</h2>
                       <p className="text-gray-300 text-sm mt-1"  style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600}}>{p.descripcion}</p>
