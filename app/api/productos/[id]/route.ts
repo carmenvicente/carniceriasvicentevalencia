@@ -29,9 +29,14 @@ export async function GET(request: Request) {
 }
 
 
-// Actualizar producto por ID
-export async function PUT(request: Request, { params }: { params: { id: string } }) {
-  const { id } = params
+// Actualizar producto por ID // PUT
+export async function PUT(request: Request) {
+  const url = new URL(request.url)
+  const id = url.pathname.split('/').pop()
+
+  if (!id) {
+    return NextResponse.json({ message: 'Falta el ID del producto' }, { status: 400 })
+  }
 
   try {
     const formData = await request.formData()
@@ -66,18 +71,11 @@ export async function PUT(request: Request, { params }: { params: { id: string }
       return NextResponse.json({ message: 'No se han recibido cambios para actualizar' }, { status: 400 })
     }
 
-    // Construir consulta dinámica segura
+    // Construcción dinámica de la query
     const keys = Object.keys(actualizaciones)
     const values = Object.values(actualizaciones)
-
     const setQuery = keys.map((key, i) => `${key} = $${i + 2}`).join(', ')
     const query = `UPDATE productos SET ${setQuery} WHERE id = $1`
-
-    console.log('📦 Actualizaciones recibidas:', actualizaciones)
-    console.log('🧱 Keys:', keys)
-    console.log('🔢 Values:', values)
-    console.log('📄 Query:', query)
-    console.log('📄 Parámetros:', [id, ...values])
 
     await psql.unsafe(query, [id, ...values])
 
@@ -88,9 +86,14 @@ export async function PUT(request: Request, { params }: { params: { id: string }
   }
 }
 
+
+
+
+
 // Eliminar producto por ID
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
-  const { id } = params
+export async function DELETE(request: Request) {
+  const url = new URL(request.url)
+  const id = url.pathname.split('/').pop()
 
   if (!id) {
     return NextResponse.json({ message: 'Falta el ID del producto' }, { status: 400 })
