@@ -31,12 +31,21 @@ export default function CrearProducto({ volver }: CrearProductoProps) {
       imagenForm.append('file', imagen)
 
       const resImagen = await fetch('/api/subir-imagen', {
-        method: 'POST',
-        body: imagenForm,
-      })
+  method: 'POST',
+  body: imagenForm,
+})
 
-      const imagenData = await resImagen.json()
-      if (!resImagen.ok) throw new Error(imagenData.error || 'Error al subir la imagen')
+let imagenData
+try {
+  imagenData = await resImagen.json()
+} catch {
+  throw new Error('Error al procesar la respuesta del servidor al subir la imagen')
+}
+
+if (!resImagen.ok) {
+  throw new Error(imagenData?.error || 'Error al subir la imagen')
+}
+
 
       const urlImagen = imagenData.url
 
