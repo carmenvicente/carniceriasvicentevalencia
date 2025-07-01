@@ -1,4 +1,4 @@
-import { NextResponse, NextRequest } from 'next/server'
+import { NextResponse } from 'next/server'
 import { neon } from '@neondatabase/serverless'
 import postgres from 'postgres'
 import path from 'path'
@@ -8,8 +8,9 @@ const sql = neon(process.env.DATABASE_URL as string)  // para consultas estátic
 const psql = postgres(process.env.DATABASE_URL as string) // para consultas dinámicas con .unsafe
 
 // Obtener producto por ID
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
-  const { id } = params
+export async function GET(request: Request) {
+  const url = new URL(request.url)
+  const id = url.pathname.split('/').pop()
 
   if (!id) {
     return NextResponse.json({ message: 'Falta el ID del producto' }, { status: 400 })
@@ -27,8 +28,9 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
   }
 }
 
+
 // Actualizar producto por ID
-export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(request: Request, { params }: { params: { id: string } }) {
   const { id } = params
 
   try {
@@ -87,7 +89,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
 }
 
 // Eliminar producto por ID
-export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(request: Request, { params }: { params: { id: string } }) {
   const { id } = params
 
   if (!id) {
