@@ -7,16 +7,9 @@ import { writeFile } from 'fs/promises'
 const sql = neon(process.env.DATABASE_URL as string)  // para consultas estáticas
 const psql = postgres(process.env.DATABASE_URL as string) // para consultas dinámicas con .unsafe
 
-
-type Props = {
-  params: Promise<{
-    id: string
-  }>
-}
-
 // Obtener producto por ID
-export async function GET(request: NextRequest, props: Props) {
-  const { id } = await props.params
+export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+  const { id } = params
 
   if (!id) {
     return NextResponse.json({ message: 'Falta el ID del producto' }, { status: 400 })
@@ -76,22 +69,15 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     const values = Object.values(actualizaciones)
 
     const setQuery = keys.map((key, i) => `${key} = $${i + 2}`).join(', ')
-
-
-    
     const query = `UPDATE productos SET ${setQuery} WHERE id = $1`
 
     console.log('📦 Actualizaciones recibidas:', actualizaciones)
-console.log('🧱 Keys:', keys)
-console.log('🔢 Values:', values)
-console.log('📄 Query:', query)
-console.log('📄 Parámetros:', [id, ...values])
+    console.log('🧱 Keys:', keys)
+    console.log('🔢 Values:', values)
+    console.log('📄 Query:', query)
+    console.log('📄 Parámetros:', [id, ...values])
 
-
-await psql.unsafe(query, [id, ...values])
-
-
-
+    await psql.unsafe(query, [id, ...values])
 
     return NextResponse.json({ message: 'Producto actualizado correctamente' })
   } catch (error: any) {
@@ -99,7 +85,6 @@ await psql.unsafe(query, [id, ...values])
     return NextResponse.json({ message: 'Error al actualizar producto', error: error.message }, { status: 500 })
   }
 }
-
 
 // Eliminar producto por ID
 export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
