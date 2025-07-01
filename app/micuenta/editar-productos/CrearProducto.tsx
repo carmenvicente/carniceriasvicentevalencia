@@ -18,46 +18,46 @@ export default function CrearProducto({ volver }: CrearProductoProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setMensaje('')
 
     if (!imagen || !(imagen instanceof File) || !imagen.name) {
       setMensaje('Selecciona una imagen válida.')
       return
     }
 
-    const formData = new FormData()
-    formData.append('nombre', nombre)
-    formData.append('descripcion', descripcion)
-    formData.append('precio', String(precio))
-    formData.append('stock', String(stock))
-    formData.append('subcategoria', String(subcategoria))
-    formData.append('imagen', imagen)
-
-    console.log('🟢 Enviando producto:', {
-      nombre,
-      descripcion,
-      precio,
-      stock,
-      subcategoria,
-      imagenNombre: imagen?.name,
-    })
-
     try {
-      const res = await fetch('/api/productos', {
+      // 🔸 1. Subir imagen a Vercel Blob
+      const imagenForm = new FormData()
+      imagenForm.append('file', imagen)
+
+      const resImagen = await fetch('/api/subir-imagen', {
         method: 'POST',
-        body: formData,
+        body: imagenForm,
       })
 
-      const responseText = await res.text() // Se lee solo UNA vez
+      const imagenData = await resImagen.json()
+      if (!resImagen.ok) throw new Error(imagenData.error || 'Error al subir la imagen')
 
-      let data
-      try {
-        data = JSON.parse(responseText)
-      } catch {
-        throw new Error(`Respuesta inesperada del servidor: ${responseText}`)
-      }
+      const urlImagen = imagenData.url
 
-      if (!res.ok) throw new Error(data.message || 'Error desconocido')
+      // 🔸 2. Crear producto con la URL de la imagen
+      const resProducto = await fetch('/api/productos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nombre,
+          descripcion,
+          precio,
+          stock,
+          subcategoria_id: subcategoria,
+          imagen: urlImagen,
+        }),
+      })
 
+      const productoData = await resProducto.json()
+      if (!resProducto.ok) throw new Error(productoData.message || 'Error al crear producto')
+
+      // 🔸 3. Limpiar formulario
       setMensaje('Producto creado correctamente.')
       setNombre('')
       setDescripcion('')
@@ -84,7 +84,6 @@ export default function CrearProducto({ volver }: CrearProductoProps) {
       <h2 className="text-2xl font-bold mb-4">Crear nuevo producto</h2>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-
         <div className="flex flex-col">
           <label className="font-semibold">Nombre:</label>
           <input
@@ -92,8 +91,8 @@ export default function CrearProducto({ volver }: CrearProductoProps) {
             value={nombre}
             onChange={(e) => setNombre(e.target.value)}
             className="border p-3 rounded bg-gray-100"
-            required
             style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
+            required
           />
         </div>
 
@@ -103,8 +102,8 @@ export default function CrearProducto({ volver }: CrearProductoProps) {
             value={descripcion}
             onChange={(e) => setDescripcion(e.target.value)}
             className="border p-3 rounded bg-gray-100"
-            required
             style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
+            required
           />
         </div>
 
@@ -115,8 +114,8 @@ export default function CrearProducto({ volver }: CrearProductoProps) {
             value={precio}
             onChange={(e) => setPrecio(Number(e.target.value))}
             className="border p-3 rounded bg-gray-100"
-            required
             style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
+            required
           />
         </div>
 
@@ -159,15 +158,12 @@ export default function CrearProducto({ volver }: CrearProductoProps) {
             onChange={(e) => {
               const file = e.target.files?.[0] || null
               setImagen(file)
-              if (file) {
-                setPreview(URL.createObjectURL(file))
-              } else {
-                setPreview(null)
-              }
+              if (file) setPreview(URL.createObjectURL(file))
+              else setPreview(null)
             }}
             className="border p-3 rounded text-gray-700 bg-gray-100"
-            required
             style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
+            required
           />
           {preview && (
             <div className="mt-4">
@@ -190,12 +186,7 @@ export default function CrearProducto({ volver }: CrearProductoProps) {
       </form>
 
       {mensaje && (
-        <p
-          className="mt-6 text-sm font-semibold text-red-600"
-          style={{ fontFamily: "'Inter', sans-serif" }}
-        >
-          {mensaje}
-        </p>
+        <p className="mt-6 text-sm font-semibold text-red-600">{mensaje}</p>
       )}
     </div>
   )
