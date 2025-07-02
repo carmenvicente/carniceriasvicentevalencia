@@ -30,6 +30,7 @@ export default function BusquedaClient({ initialQuery }: { initialQuery: string 
         cache: 'no-store',
       })
       const data: Producto[] = await res.json()
+      console.log("Resultados:", data) // 👈 Esto
       setProductos(data)
       setLoading(false)
     }
@@ -59,10 +60,10 @@ export default function BusquedaClient({ initialQuery }: { initialQuery: string 
         <aside className={`${styles.sidebar} flex flex-col`}>
           <h2 className="text-white text-lg mb-3 pl-4">PRODUCTOS FRESCOS</h2>
           <ul className="space-y-2 pl-4 text-left">
-            {['TERNERA','CERDO','CORDERO','AVES Y CONEJOS'].map(cat => (
+            {['TERNERA', 'CERDO', 'CORDERO', 'AVES Y CONEJOS'].map(cat => (
               <li key={cat}>
                 <Link
-                  href={`/productos-frescos/${cat.toLowerCase().replace(/ /g,'')}`}
+                  href={`/productos-frescos/${cat.toLowerCase().replace(/ /g, '')}`}
                   className="text-sm text-white hover:text-[#990000] transition-colors"
                 >
                   {cat}
@@ -73,10 +74,10 @@ export default function BusquedaClient({ initialQuery }: { initialQuery: string 
 
           <h2 className="text-white text-lg mb-3 pl-4 mt-6">PRODUCTOS ELABORADOS</h2>
           <ul className="space-y-2 pl-4 text-left">
-            {['EMBUTIDOS CASEROS','ELABORADOS'].map(cat => (
+            {['EMBUTIDOS CASEROS', 'ELABORADOS'].map(cat => (
               <li key={cat}>
                 <Link
-                  href={`/productos-elaborados/${cat.toLowerCase().replace(/ /g,'')}`}
+                  href={`/productos-elaborados/${cat.toLowerCase().replace(/ /g, '')}`}
                   className="text-sm text-white hover:text-[#990000] transition-colors"
                 >
                   {cat}
@@ -107,14 +108,14 @@ export default function BusquedaClient({ initialQuery }: { initialQuery: string 
                   src="/imagenes/iconos/aplicaciones.png"
                   alt="Grid"
                   width={20} height={20}
-                  className={`cursor-pointer ${viewMode==='grid'?'opacity-100':'opacity-50'}`}
+                  className={`cursor-pointer ${viewMode === 'grid' ? 'opacity-100' : 'opacity-50'}`}
                   onClick={() => setViewMode('grid')}
                 />
                 <Image
                   src="/imagenes/iconos/lista.png"
                   alt="List"
                   width={20} height={20}
-                  className={`cursor-pointer ${viewMode==='list'?'opacity-100':'opacity-50'}`}
+                  className={`cursor-pointer ${viewMode === 'list' ? 'opacity-100' : 'opacity-50'}`}
                   onClick={() => setViewMode('list')}
                 />
                 <span className="ml-3 text-white border-l border-gray-500 pl-3">
@@ -140,23 +141,25 @@ export default function BusquedaClient({ initialQuery }: { initialQuery: string 
                 >
                   <div>
                     <Image
-                      src={`/imagenes/productos/${p.imagen}`}
+                      src={p.imagen.startsWith('http') ? p.imagen : `/imagenes/productos/${p.imagen}`}
                       alt={p.nombre}
-                      width={320} height={200}
+                      width={320}
+                      height={200}
+                      unoptimized={p.imagen.startsWith('http')} // IMPORTANTE PARA EVITAR PROBLEMAS DE DOMINIO
                       className={`${styles.productImage} mx-auto rounded`}
                     />
+
                     <h2 className="mt-2 font-semibold text-white text-left text-sm">{p.nombre}</h2>
                     <p className="mt-1 font-bold text-[#990000] text-left text-sm">
-                      {typeof p.precio==='number' ? p.precio.toFixed(2) : Number(p.precio).toFixed(2)}€
+                      {typeof p.precio === 'number' ? p.precio.toFixed(2) : Number(p.precio).toFixed(2)}€
                     </p>
                   </div>
                   <button
                     disabled={!p.stock}
-                    className={`mt-auto w-full rounded text-sm px-3 py-2 transition ${
-                      p.stock
+                    className={`mt-auto w-full rounded text-sm px-3 py-2 transition ${p.stock
                         ? 'bg-gray-200 text-gray-800 hover:bg-[#990000] hover:text-white'
                         : 'bg-gray-400 text-gray-600 cursor-not-allowed'
-                    }`}
+                      }`}
                   >
                     Añadir a la cesta
                   </button>
@@ -173,18 +176,21 @@ export default function BusquedaClient({ initialQuery }: { initialQuery: string 
                   className={`${styles.productCardList} flex items-center justify-between p-4 bg-[rgba(0,0,0,0.8)] rounded-lg shadow-md transition-transform hover:-translate-y-1`}
                 >
                   <Image
-                    src={`/imagenes/productos/${p.imagen}`}
+                    src={p.imagen.startsWith('http') ? p.imagen : `/imagenes/productos/${p.imagen}`}
                     alt={p.nombre}
-                    width={260} height={240}
+                    width={260}
+                    height={240}
+                    unoptimized={p.imagen.startsWith('http')} // IGUAL QUE ARRIBA
                     className="rounded object-cover"
                   />
+
                   <div className="flex-1 px-4 text-left">
                     <h2 className="font-semibold text-white text-lg">{p.nombre}</h2>
                     <p className="text-gray-300 text-sm mt-1">{p.descripcion}</p>
                   </div>
                   <div className="product-info flex flex-col space-y-5 border-l border-gray-700 pl-4">
                     <p className="text-[#990000] font-bold text-lg">
-                      {typeof p.precio==='number' ? p.precio.toFixed(2) : Number(p.precio).toFixed(2)}€
+                      {typeof p.precio === 'number' ? p.precio.toFixed(2) : Number(p.precio).toFixed(2)}€
                     </p>
                     <p className="text-white font-medium text-sm">
                       Disponibilidad:{' '}
@@ -194,11 +200,10 @@ export default function BusquedaClient({ initialQuery }: { initialQuery: string 
                     </p>
                     <button
                       disabled={!p.stock}
-                      className={`w-full rounded text-sm px-3 py-2 transition ${
-                        p.stock
+                      className={`w-full rounded text-sm px-3 py-2 transition ${p.stock
                           ? 'bg-gray-200 text-gray-800 hover:bg-[#990000] hover:text-white'
                           : 'bg-gray-400 text-gray-600 cursor-not-allowed'
-                      }`}
+                        }`}
                     >
                       Añadir a la cesta
                     </button>

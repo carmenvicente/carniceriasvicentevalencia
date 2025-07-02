@@ -156,7 +156,7 @@ export default function Navbar() {
                   >
                     <div className="flex items-center px-4 py-2 bg-white transition-colors hover:bg-gray-100">
                       <Image
-                        src={`/imagenes/productos/${p.imagen}`}
+                        src={p.imagen.startsWith('http') ? p.imagen : `/imagenes/productos/${p.imagen}`}
                         alt={p.nombre}
                         width={100}
                         height={32}
