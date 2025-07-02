@@ -1,7 +1,9 @@
+// app/layout.tsx
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import AvisoCookies from '@/app/componentes/Cookies/AvisoCookies';
+import { CarritoProvider } from '@/app/contextos/CarritoContexto' // ← NUEVO
 
 // Google Fonts
 const geistSans = Geist({
@@ -41,11 +43,11 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-        <AvisoCookies />
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <CarritoProvider>
+          {children}
+          <AvisoCookies />
+        </CarritoProvider>
       </body>
     </html>
   );

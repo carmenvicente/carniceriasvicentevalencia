@@ -6,6 +6,9 @@ import Link from 'next/link'
 import '../styles/navbar.css'
 import Image from 'next/image'
 import { PerfilMenu } from '@/app/componentes/PerfilMenu';
+import PopupCarrito from '@/app/componentes/PopupCarrito'
+import { useCarrito } from '@/app/contextos/CarritoContexto'
+
 
 export default function Navbar() {
   const router = useRouter()
@@ -78,6 +81,10 @@ export default function Navbar() {
 
     return () => ctl.abort()
   }, [searchQuery])
+
+  const [hoverVisible, setHoverVisible] = useState(false)
+const { carrito } = useCarrito()
+
 
   return (
     <>
@@ -291,15 +298,29 @@ export default function Navbar() {
             <PerfilMenu />
 
           
-            <Link href="/cart" className="navbar-link">
-              <Image
-              src="/imagenes/iconos/carrito-de-compras.png"
-              alt="Cesta"
-              width={16}
-              height={16}
-              className="navbar-icon h-6 w-6"
-            />
-            </Link>
+            
+            <div
+  id="contenedor-carrito"
+  className="relative"
+  onMouseEnter={() => setHoverVisible(true)}
+  onMouseLeave={() => setHoverVisible(false)}
+>
+  <Link href="/cart" className="navbar-link">
+    <Image
+      src="/imagenes/iconos/carrito-de-compras.png"
+      alt="Cesta"
+      width={16}
+      height={16}
+      className="navbar-icon h-6 w-6"
+    />
+  </Link>
+
+  <PopupCarrito visible={hoverVisible} />
+</div>
+
+
+
+
           </div>
         </div>
       </nav>
