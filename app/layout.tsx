@@ -3,9 +3,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import AvisoCookies from '@/app/componentes/Cookies/AvisoCookies';
-import { CarritoProvider } from '@/app/contextos/CarritoContexto' // ← NUEVO
+import { CarritoProvider } from '@/app/contextos/CarritoContexto';
 
-// Google Fonts
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -16,7 +15,6 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// SEO y metadata
 export const metadata: Metadata = {
   title: "Carnicería Vicente Valencia",
   description: "Compra productos cárnicos frescos y elaborados online",
@@ -47,6 +45,7 @@ export default function RootLayout({
         <CarritoProvider>
           {children}
           <AvisoCookies />
+          <div id="contenedor-carrito" /> {/* << NECESARIO PARA EL POPUP */}
         </CarritoProvider>
       </body>
     </html>

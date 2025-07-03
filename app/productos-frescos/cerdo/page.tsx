@@ -75,9 +75,9 @@ export default function Cerdo() {
         <div className="max-w-screen-xl mx-auto text-center px-4 mt-30">
           <h1 className="text-xl md:text-2xl font-bold text-white">Cerdo</h1>
           <div className="mt-1 text-white text-sm">
-            <Link href="/" className="hover:text-gray-300 font-semibold">Home</Link>
+            <Link href="/" className="hover:text-gray-300 font-semibold" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600}}>Home</Link>
             <span className="mx-1">/</span>
-            <span className="font-semibold">Cerdo</span>
+            <span className="font-semibold" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600}}>Cerdo</span>
           </div>
         </div>
       </div>
@@ -151,11 +151,11 @@ export default function Cerdo() {
                   <select
                     value={sortOrder}
                     onChange={(e) => setSortOrder(e.target.value as typeof sortOrder)}
-                    className="bg-black-900 border border-gray-500 py-1 px-2 rounded text-white text-xs focus:outline-none"
+                    className="bg-[rgb(22,22,22)] border border-gray-500 py-1 px-2 rounded text-white text-xs focus:outline-none"
                   >
-                    <option className="bg-gray-900 text-white">Relevancia</option>
-                    <option className="bg-gray-900 text-white">Precio ↑</option>
-                    <option className="bg-gray-900 text-white">Precio ↓</option>
+                    <option className="bg-[rgb(22,22,22)] text-white">Relevancia</option>
+                    <option className="bg-[rgb(22,22,22)] text-white">Precio ↑</option>
+                    <option className="bg-[rgb(22,22,22)] text-white">Precio ↓</option>
                   </select>
                 </label>
               </div>

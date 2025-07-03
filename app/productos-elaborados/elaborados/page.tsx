@@ -137,11 +137,11 @@ export default function Elaborados() {
                   <select
                     value={sortOrder}
                     onChange={(e) => setSortOrder(e.target.value as typeof sortOrder)}
-                    className="bg-black-900 border border-gray-500 py-1 px-2 rounded text-white text-xs focus:outline-none"
+                    className="bg-[rgb(22,22,22)] border border-gray-500 py-1 px-2 rounded text-white text-xs focus:outline-none"
                   >
-                    <option className="bg-gray-900 text-white">Relevancia</option>
-                    <option className="bg-gray-900 text-white">Precio ↑</option>
-                    <option className="bg-gray-900 text-white">Precio ↓</option>
+                    <option className="bg-[rgb(22,22,22)] text-white">Relevancia</option>
+                    <option className="bg-[rgb(22,22,22)] text-white">Precio ↑</option>
+                    <option className="bg-[rgb(22,22,22)] text-white">Precio ↓</option>
                   </select>
                 </label>
               </div>
