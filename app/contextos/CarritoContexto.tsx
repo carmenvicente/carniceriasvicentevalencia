@@ -17,12 +17,13 @@ type CarritoContextType = {
   añadirAlCarrito: (producto: Omit<Producto, 'cantidad'>) => void
   eliminarDelCarrito: (id: number) => void
   vaciarCarrito: () => void
+  actualizarCantidad: (id: number, nuevaCantidad: number) => void // ✅ NUEVO
 }
 
 // Crear el contexto
 const CarritoContext = createContext<CarritoContextType | undefined>(undefined)
 
-// Hook personalizado para usar el contexto
+// Hook personalizado
 export function useCarrito() {
   const context = useContext(CarritoContext)
   if (!context) throw new Error('useCarrito debe usarse dentro de CarritoProvider')
@@ -32,6 +33,19 @@ export function useCarrito() {
 // Provider
 export function CarritoProvider({ children }: { children: React.ReactNode }) {
   const [carrito, setCarrito] = useState<Producto[]>([])
+
+  // ✅ Recuperar carrito guardado al cargar
+  useEffect(() => {
+    const carritoGuardado = localStorage.getItem('carrito')
+    if (carritoGuardado) {
+      setCarrito(JSON.parse(carritoGuardado))
+    }
+  }, [])
+
+  // ✅ Guardar carrito en localStorage cada vez que cambie
+  useEffect(() => {
+    localStorage.setItem('carrito', JSON.stringify(carrito))
+  }, [carrito])
 
   // Añadir producto al carrito
   const añadirAlCarrito = (producto: Omit<Producto, 'cantidad'>) => {
@@ -46,7 +60,7 @@ export function CarritoProvider({ children }: { children: React.ReactNode }) {
     })
   }
 
-  // Eliminar producto del carrito
+  // Eliminar producto del carrito completamente
   const eliminarDelCarrito = (id: number) => {
     setCarrito(prev => prev.filter(p => p.id !== id))
   }
@@ -56,8 +70,25 @@ export function CarritoProvider({ children }: { children: React.ReactNode }) {
     setCarrito([])
   }
 
+  // ✅ Actualizar cantidad sin cambiar el orden
+  const actualizarCantidad = (id: number, nuevaCantidad: number) => {
+    setCarrito(prev =>
+      prev.map(p =>
+        p.id === id ? { ...p, cantidad: nuevaCantidad } : p
+      )
+    )
+  }
+
   return (
-    <CarritoContext.Provider value={{ carrito, añadirAlCarrito, eliminarDelCarrito, vaciarCarrito }}>
+    <CarritoContext.Provider
+      value={{
+        carrito,
+        añadirAlCarrito,
+        eliminarDelCarrito,
+        vaciarCarrito,
+        actualizarCantidad, // ✅ Incluido en el value
+      }}
+    >
       {children}
     </CarritoContext.Provider>
   )

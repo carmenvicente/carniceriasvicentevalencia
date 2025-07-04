@@ -68,14 +68,14 @@ export default function PopupCarrito({ visible }: { visible: boolean }) {
             <Image
               src={item.imagen.startsWith('http') ? item.imagen : `/imagenes/productos/${item.imagen}`}
               alt={item.nombre}
-              width={60}
+              width={100}
               height={60}
               className="rounded object-cover"
               unoptimized={item.imagen.startsWith('http')}
             />
-            <div className="flex-1">
+            <div className="flex-1" >
               <p className="font-semibold text-sm">{item.nombre}</p>
-              <p className="text-xs text-gray-700">Cantidad: {item.cantidad}</p>
+              <p className="text-xs text-gray-700" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>Cantidad: {item.cantidad}</p>
               <p className="text-[#990000] font-bold text-sm">
                 {(item.precio * item.cantidad).toFixed(2)}€
               </p>
@@ -98,13 +98,13 @@ export default function PopupCarrito({ visible }: { visible: boolean }) {
         </div>
         <div className="mt-3 flex flex-col gap-2">
           <Link
-            href="/cart"
-            className="text-center bg-gray-800 text-white py-1.5 rounded hover:bg-[#990000] transition"
+            href="/carrito"
+            className="text-center bg-gray-800 text-white py-1.5 rounded hover:bg-[#990000] transition" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
           >
             Ver mi cesta
           </Link>
           <Link
-            href="/checkout"
+            href="/realizar-pedido"
             className="text-center bg-[#990000] text-white py-1.5 rounded hover:bg-red-700 transition"
           >
             Finalizar compra

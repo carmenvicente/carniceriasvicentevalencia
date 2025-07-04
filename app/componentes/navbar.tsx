@@ -305,7 +305,7 @@ const { carrito } = useCarrito()
   onMouseEnter={() => setHoverVisible(true)}
   onMouseLeave={() => setHoverVisible(false)}
 >
-  <Link href="/cart" className="navbar-link">
+  <Link href="/carrito" className="navbar-link">
     <Image
       src="/imagenes/iconos/carrito-de-compras.png"
       alt="Cesta"

@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import AvisoCookies from '@/app/componentes/Cookies/AvisoCookies';
-import { CarritoProvider } from '@/app/contextos/CarritoContexto';
+import { Providers } from './providers'; // <-- AÑADIDO
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -42,11 +42,11 @@ export default function RootLayout({
         />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <CarritoProvider>
+        <Providers>
           {children}
           <AvisoCookies />
-          <div id="contenedor-carrito" /> {/* << NECESARIO PARA EL POPUP */}
-        </CarritoProvider>
+          <div id="contenedor-carrito" />
+        </Providers>
       </body>
     </html>
   );
