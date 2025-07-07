@@ -2,10 +2,8 @@ import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { neon } from '@neondatabase/serverless'
 
-// Conexión con Neon
 const sql = neon(process.env.DATABASE_URL as string)
 
-// Configuración de Stripe
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: '2025-06-30.basil',
 })
@@ -14,7 +12,6 @@ export async function POST(req: Request) {
   try {
     const { productos, email, metodoPago } = await req.json()
 
-    // Preparar productos para Stripe
     const line_items = productos.map((item: any) => ({
       price_data: {
         currency: 'eur',
@@ -38,15 +35,11 @@ export async function POST(req: Request) {
       },
     })
 
-    // Guardar el pedido en la base de datos (estado: pendiente)
     const total = productos.reduce((sum: number, item: any) => sum + item.precio * item.cantidad, 0)
 
     await sql`
-      INSERT INTO pedidos (
-        email, metodo_pago, total, estado, stripe_session_id, creado_en
-      ) VALUES (
-        ${email}, ${metodoPago}, ${total}, 'pendiente', ${session.id}, NOW()
-      )
+      INSERT INTO pedidos (email, metodo_pago, total, estado, stripe_session_id, creado_en)
+      VALUES (${email}, ${metodoPago}, ${total}, 'pendiente', ${session.id}, NOW())
     `
 
     return NextResponse.json({ url: session.url })
