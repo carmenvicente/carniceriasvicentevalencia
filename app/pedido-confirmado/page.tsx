@@ -1,11 +1,13 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import Navbar from '@/app/componentes/navbar'
 import Footer from '@/app/componentes/footer'
 
-export default function PedidoConfirmado({ searchParams }: { searchParams: { session_id?: string } }) {
-  const sessionId = searchParams.session_id
+export default function PedidoConfirmado() {
+  const searchParams = useSearchParams()
+  const sessionId = searchParams.get('session_id')
 
   const [cargando, setCargando] = useState(true)
   const [email, setEmail] = useState('')
