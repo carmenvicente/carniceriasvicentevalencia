@@ -182,8 +182,10 @@ export default function Cordero() {
                       unoptimized={p.imagen.startsWith('http')}
                     />
                   </Link>
-                  <h2 className="mt-2 font-semibold text-white text-left text-sm">{p.nombre}</h2>
-                  <p className="mt-1 font-bold text-[#990000] text-left text-sm">{p.precio.toFixed(2)}€</p>
+                  <div className="flex flex-col gap-[2px]">
+  <h2 className="font-semibold text-white text-left text-sm">{p.nombre}</h2>
+  <p className="font-bold text-[#990000] text-left text-sm">{p.precio.toFixed(2)}€</p>
+</div>
                   <button
                     onClick={() => handleAñadir(p)}
                     disabled={!p.stock}
@@ -210,11 +212,11 @@ export default function Cordero() {
                   </Link>
                   <div className="flex-1 px-4 text-left">
                     <h2 className="font-semibold text-white text-lg">{p.nombre}</h2>
-                    <p className="text-gray-300 text-sm mt-1">{p.descripcion}</p>
+                    <p className="text-gray-300 text-sm mt-1" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>{p.descripcion}</p>
                   </div>
                   <div className="product-info flex flex-col space-y-5 border-l border-gray-700 pl-4">
                     <p className="text-[#990000] font-bold text-lg">{p.precio.toFixed(2)}€</p>
-                    <p className="text-white font-medium text-sm">
+                    <p className="text-white font-medium text-sm" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
                       Disponibilidad:{' '}
                       <span className={p.stock ? 'text-[#00994a]' : 'text-gray-400'}>
                         {p.stock ? 'En Stock' : 'Sin Stock'}

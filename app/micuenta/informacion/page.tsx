@@ -211,7 +211,7 @@ export default function InformacionUsuario() {
                 onClick={() => setVerActual(!verActual)}
                 className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-600"
               >
-                {verActual ? <FaEyeSlash /> : <FaEye />}
+                {verActual ? <FaEye /> : <FaEyeSlash />}
               </button>
             </div>
           </div>
@@ -233,7 +233,7 @@ export default function InformacionUsuario() {
                 onClick={() => setVerNueva(!verNueva)}
                 className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-600"
               >
-                {verNueva ? <FaEyeSlash /> : <FaEye />}
+                {verNueva ? <FaEye /> : <FaEyeSlash />}
               </button>
             </div>
           </div>
@@ -256,7 +256,7 @@ export default function InformacionUsuario() {
                 onClick={() => setVerRepetida(!verRepetida)}
                 className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-600"
               >
-                {verRepetida ? <FaEyeSlash /> : <FaEye />}
+                {verRepetida ? <FaEye /> : <FaEyeSlash />}
               </button>
             </div>
           </div>

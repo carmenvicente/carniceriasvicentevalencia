@@ -1,5 +1,7 @@
 'use client'
 
+export const dynamic = 'force-dynamic'
+
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Navbar from '@/app/componentes/navbar'
@@ -23,7 +25,7 @@ export default function PedidoConfirmado() {
       }
 
       try {
-        const res = await fetch('/api/pedido/confirmar', {
+        const res = await fetch('/api/pedidos/confirmar', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ sessionId }),

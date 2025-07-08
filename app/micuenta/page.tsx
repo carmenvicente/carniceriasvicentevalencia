@@ -79,7 +79,7 @@ export default function MiCuenta() {
 
 
       {/* Tarjetas de opciones */}
-      <div className="max-w-screen-xl mx-auto px-4 py-8 grid grid-cols-1 sm:grid-cols-2 sm:grid-cols-4 gap-6" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
+      <div className="max-w-screen-xl mx-auto px-4 py-8 grid grid-cols-1 sm:grid-cols-2 sm:grid-cols-4 gap-6 mb-77" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
         <Tarjeta icono={<FaUser size={24} />} texto="Información" href="/micuenta/informacion" />
         {usuario.role === 'admin' ? (
           <Link

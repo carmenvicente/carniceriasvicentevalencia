@@ -159,8 +159,10 @@ export default function Charcuteria() {
                   <Link href={`/detalle-productos/${p.id}`}>
                     <Image src={p.imagen.startsWith('http') ? p.imagen : `/imagenes/productos/${p.imagen}`} alt={p.nombre} width={320} height={200} className={`${styles.productImage} mx-auto rounded`} unoptimized={p.imagen.startsWith('http')} />
                   </Link>
-                  <h2 className="mt-2 font-semibold text-white text-left text-sm">{p.nombre}</h2>
-                  <p className="mt-1 font-bold text-[#990000] text-left text-sm">{p.precio.toFixed(2)}€</p>
+                  <div className="flex flex-col gap-[2px]">
+  <h2 className="font-semibold text-white text-left text-sm">{p.nombre}</h2>
+  <p className="font-bold text-[#990000] text-left text-sm">{p.precio.toFixed(2)}€</p>
+</div>
                   <button onClick={() => handleAñadir(p)} disabled={!p.stock} className={`mt-auto w-full rounded text-sm px-3 py-2 transition ${p.stock ? 'bg-gray-200 text-gray-800 hover:bg-[#990000] hover:text-white' : 'bg-gray-400 text-gray-600 cursor-not-allowed'}`}>
                     Añadir a la cesta
                   </button>
@@ -180,7 +182,7 @@ export default function Charcuteria() {
                   </div>
                   <div className="product-info flex flex-col space-y-5 border-l border-gray-700 pl-4">
                     <p className="text-[#990000] font-bold text-lg">{p.precio.toFixed(2)}€</p>
-                    <p className="text-white font-medium text-sm">
+                    <p className="text-white font-medium text-sm" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
                       Disponibilidad:{' '}
                       <span className={p.stock ? 'text-[#00994a]' : 'text-gray-400'}>
                         {p.stock ? 'En Stock' : 'Sin Stock'}

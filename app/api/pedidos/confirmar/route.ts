@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { neon } from '@neondatabase/serverless'
-import nodemailer from 'nodemailer'
+import { enviarCorreoConfirmacionPedido } from '@/lib/email'
 
 const sql = neon(process.env.DATABASE_URL as string)
 
@@ -17,6 +17,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Falta sessionId' }, { status: 400 })
     }
 
+    // Obtener la sesión de Stripe
     const session = await stripe.checkout.sessions.retrieve(sessionId)
 
     if (!session || !session.customer_details?.email) {
@@ -24,40 +25,36 @@ export async function POST(req: Request) {
     }
 
     const email = session.customer_details.email
-    const total = session.amount_total ? session.amount_total / 100 : null
+    const total = session.amount_total ? session.amount_total / 100 : 0
 
-    // Actualizar el pedido en la base de datos
+    // Recuperar datos del cliente desde la base de datos
+    const resultado = await sql`
+  SELECT nombre, apellidos, tratamiento
+  FROM pedidos
+  WHERE stripe_session_id = ${sessionId}
+`
+
+const pedido = resultado[0] as {
+  nombre?: string
+  apellidos?: string
+  tratamiento?: string
+} || {}
+
+
+    // Actualizar estado del pedido a "confirmado"
     await sql`
       UPDATE pedidos
       SET estado = 'confirmado'
       WHERE stripe_session_id = ${sessionId}
     `
 
-    // Enviar correo de confirmación
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.GMAIL_USER,
-        pass: process.env.GMAIL_APP_PASSWORD,
-      },
-    })
-
-    await transporter.sendMail({
-      from: `"Carnicería Vicente Valencia" <${process.env.GMAIL_USER}>`,
-      to: email,
-      subject: 'Confirmación de pedido - Carnicería Vicente Valencia',
-      html: `
-        <div style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">
-          <h2>¡Gracias por tu compra!</h2>
-          <p>Hemos recibido tu pedido correctamente y está en preparación.</p>
-          <p><strong>Importe total:</strong> ${(total ?? 0).toFixed(2)} €</p>
-          <p>Recuerda que podrás recogerlo en nuestra tienda física en horario comercial.</p>
-          <p style="margin-top: 20px;">Dirección: <strong>Av. de Castilla-la Mancha, N° 27, Bajo, 16003 Cuenca</strong></p>
-          <br/>
-          <p>Un saludo,</p>
-          <p><strong>Carnicería Vicente Valencia</strong></p>
-        </div>
-      `,
+    // Enviar correo personalizado
+    await enviarCorreoConfirmacionPedido({
+      email,
+      nombre: pedido.nombre ?? undefined,
+      apellidos: pedido.apellidos ?? undefined,
+      tratamiento: pedido.tratamiento ?? undefined,
+      total,
     })
 
     return NextResponse.json({ email, total })

@@ -1,4 +1,3 @@
-// app/api/auth/login/route.ts
 import { NextResponse } from 'next/server';
 import { neon } from '@neondatabase/serverless';
 import bcrypt from 'bcryptjs';
@@ -20,7 +19,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: 'Faltan email o contraseña' }, { status: 400 });
     }
 
-    // 1) Obtener el usuario por email
+    // 1) Buscar el usuario por email
     const rows = await sql`
       SELECT id, email, password_hash, role, nombre, apellidos, tratamiento
       FROM usuarios
@@ -33,7 +32,7 @@ export async function POST(request: Request) {
 
     const user = rows[0];
 
-    // ✅ Función para limpiar texto (tildes incluidas)
+    // 2) Función para limpiar posibles errores de codificación
     function limpiarTexto(texto: any) {
       return texto ? texto.toString() : '';
     }
@@ -42,13 +41,13 @@ export async function POST(request: Request) {
     const apellidos = limpiarTexto(user.apellidos);
     const tratamiento = limpiarTexto(user.tratamiento);
 
-    // 2) Comparar hashes
+    // 3) Comparar la contraseña con el hash
     const passwordMatch = await bcrypt.compare(password, user.password_hash);
     if (!passwordMatch) {
       return NextResponse.json({ message: 'Credenciales inválidas' }, { status: 401 });
     }
 
-    // 3) Generar el token usando los campos limpiados
+    // 4) Crear token JWT con los datos del usuario
     const token = jwt.sign(
       {
         id: user.id,
@@ -62,7 +61,7 @@ export async function POST(request: Request) {
       { expiresIn: '7d' }
     );
 
-    // 4) Devolver datos y token
+    // 5) Devolver usuario y token
     return NextResponse.json({
       user: {
         id: user.id,

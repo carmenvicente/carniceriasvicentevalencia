@@ -276,7 +276,6 @@ const { carrito } = useCarrito()
               )}
             </li>
             <li><Link href="/charcuteria" className="navbar-link">CHARCUTERÍA</Link></li>
-            <li><Link href="/comida-semanal" className="navbar-link">COMIDA SEMANAL</Link></li>
             <li><Link href="/contacto" className="navbar-link">CONTACTO</Link></li>
           </ul>
 

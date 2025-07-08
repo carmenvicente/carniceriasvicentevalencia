@@ -12,7 +12,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Falta la imagen' }, { status: 400 })
     }
 
-    // 🔍 Log de información básica
     console.log('📸 Subiendo imagen:', file.name, 'Tamaño:', file.size, 'bytes')
 
     if (file.size > 5 * 1024 * 1024) {
@@ -21,8 +20,14 @@ export async function POST(request: Request) {
 
     const nombreSeguro = `${randomUUID()}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`
 
-    const blob = await put(`productos/${nombreSeguro}`, file, {
+    // ✅ Leer el contenido del archivo como ArrayBuffer
+    const arrayBuffer = await file.arrayBuffer()
+    const buffer = Buffer.from(arrayBuffer)
+
+    // ✅ Subir con `put`
+    const blob = await put(`productos/${nombreSeguro}`, buffer, {
       access: 'public',
+      contentType: file.type || 'application/octet-stream',
     })
 
     console.log('✅ Imagen subida correctamente:', blob.url)
@@ -36,5 +41,3 @@ export async function POST(request: Request) {
     )
   }
 }
-
-

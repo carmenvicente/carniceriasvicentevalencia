@@ -70,14 +70,18 @@ export default function EditarProducto({ producto, volver }: EditarProductoProps
       const data = await res.json()
       if (!res.ok) throw new Error(data.message || 'Error')
 
-      setMensaje('Producto actualizado correctamente.')
+      setMensaje(' Producto actualizado correctamente.')
       setExito(true)
       setImagen(null)
       if (!imagen) {
         setPreview(`/imagenes/productos/${producto.imagen}`)
       }
+
+      setTimeout(() => {
+        volver()
+      }, 2000)
     } catch (error: any) {
-      setMensaje(`Error: ${error.message}`)
+      setMensaje(`❌ Error: ${error.message}`)
       setExito(false)
     }
   }
@@ -201,7 +205,9 @@ export default function EditarProducto({ producto, volver }: EditarProductoProps
 
       {mensaje && (
         <p
-          className={`mt-6 text-sm font-semibold ${exito === true ? 'text-green-600' : 'text-red-600'}`}
+          className={`mt-6 text-sm font-semibold ${
+            exito === true ? 'text-green-600' : 'text-red-600'
+          }`}
           style={{ fontFamily: "'Inter', sans-serif" }}
         >
           {mensaje}

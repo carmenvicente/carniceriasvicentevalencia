@@ -332,46 +332,78 @@ export default function Inicio() {
 
 
 
-      {/* Sección de Reseñas */}
-      <section className="bg-white py-10 px-4 text-center">
-        <h2 className="text-3xl font-bold mb-2">Reseñas</h2>
-        <p className="text-xl text-gray-700 mb-8">Los clientes hablan por nosotros</p>
-        <div className="max-w-screen-xl mx-auto grid gap-6 grid-cols-1 md:grid-cols-3">
-          {/* Reseña 1 */}
-          <div className="shadow-lg p-6 rounded-lg flex flex-col items-center">
-            <p className="text-gray-600 mb-4">
-              “Muy buena relación calidad precio para comprar ternera, y la atención es
-              excelente. Me encantan la carne de hamburguesa.”
-            </p>
-            <p className="font-semibold text-red-600">Jorge García García</p>
-            <p className="text-sm text-gray-400">Reseña de Google</p>
-          </div>
-          {/* Reseña 2 */}
-          <div className="shadow-lg p-6 rounded-lg flex flex-col items-center">
-            <p className="text-gray-600 mb-4">
-              “Excelente tienda de carnes y productos gourmet. Ofrecen carne de una
-              calidad excepcional con variedad de tipos de corte y provienen de una
-              finca con altos estándares ecológicos.”
-            </p>
-            <p className="font-semibold text-red-600">Daniel Vargas</p>
-            <p className="text-sm text-gray-400">Reseña de Google</p>
-          </div>
-          {/* Reseña 3 */}
-          <div className="shadow-lg p-6 rounded-lg flex flex-col items-center">
-            <p className="text-gray-600 mb-4">
-              “Estupendo producto y buenos precios para lo que son. La mejor carnicería de
-              la zona. Buen vino y buenas hamburguesas...”
-            </p>
-            <p className="font-semibold text-red-600">Daniel Fuente</p>
-            <p className="text-sm text-gray-400">Reseña de Google</p>
+     {/* Sección de Reseñas estilo Google */}
+<section className="bg-white py-20 px-4 text-center">
+  <div className="max-w-screen-xl mx-auto">
+    <h2 className="text-xl text-black font-bold uppercase mb-2">Reseñas</h2>
+    <h3 className="text-4xl font-extrabold text-[#a13a3a] mb-10" style={{ fontFamily: "'Inter', sans-serif" }}>
+      Los clientes hablan por nosotros
+    </h3>
+
+    <div className="grid gap-6 grid-cols-1 md:grid-cols-3">
+      {/* Reseña 1 */}
+      <div className="bg-white shadow-md rounded-lg p-6 flex flex-col items-start text-left border border-gray-200">
+        <Image src="/imagenes/iconos/google.webp" alt="Google" width={40} height={40} className="mb-4" />
+        <p className="text-gray-700 mb-4"  style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
+          Es el lugar que nos recomendaron —con todo acierto— para adquirir productos típicos de la tierra. Compramos principalmente morteruelo y unas deliciosas hamburguesas de ciervo.
+        </p>
+        <div className="flex items-center gap-2 mt-auto">
+          <span className="text-[#a13a3a] text-2xl">“</span>
+          <div>
+            <p className="font-semibold text-black"style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }} >oZe Fera</p>
+            <p className="text-sm text-gray-500" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>Reseña de Google</p>
           </div>
         </div>
-        <div className="mt-6">
-          <p className="text-gray-700">
-            La evaluación general en Google es <strong>5 de 5</strong>, en base a 17 reseñas
-          </p>
+      </div>
+
+      {/* Reseña 2 */}
+      <div className="bg-white shadow-md rounded-lg p-6 flex flex-col items-start text-left border border-gray-200">
+        <Image src="/imagenes/iconos/google.webp" alt="Google" width={40} height={40} className="mb-4" />
+        <p className="text-gray-700 mb-4" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
+          Para mí, la mejor carnicería de Cuenca. Conservan todo el sabor de los productos tradicionales de la ciudad. El lomo adobado es insuperable, y los cortes que hacen del cerdo y del cordero son inmejorables. Recomiendo sus platos de cocina diaria, que son como comer en casa, pero teniendo en casa a un chef. Si tenéis posibilidad, y ese día hay, recomiendo comprar croquetas y cachopos, porque los elaboran ellos mismos y son de lo mejor que podéis probar.
+        </p>
+        <div className="flex items-center gap-2 mt-auto">
+          <span className="text-[#a13a3a] text-2xl">“</span>
+          <div>
+            <p className="font-semibold text-black" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>Jose Luis Millán de las Heras</p>
+            <p className="text-sm text-gray-500" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>Reseña de Google</p>
+          </div>
         </div>
-      </section>
+      </div>
+
+      {/* Reseña 3 */}
+      <div className="bg-white shadow-md rounded-lg p-6 flex flex-col items-start text-left border border-gray-200">
+        <Image src="/imagenes/iconos/google.webp" alt="Google" width={40} height={40} className="mb-4" />
+        <p className="text-gray-700 mb-4" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
+          Siempre que necesito buen género acudo a esta carnicería. No solo el trato es inmejorable, sino que el producto también lo es. Se ha convertido en mi carnicería de confianza.
+        </p>
+        <div className="flex items-center gap-2 mt-auto">
+          <span className="text-[#a13a3a] text-2xl">“</span>
+          <div>
+            <p className="font-semibold text-black" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>Alvaro Barrero Lucena</p>
+            <p className="text-sm text-gray-500" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>Reseña de Google</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Valoración global y enlace a todas las reseñas */}
+<p className="mt-10 text-black text-base font-semibold" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
+  La evaluación general en Google es <span className="font-bold">4.6 de 5</span>, en base a <span className="font-bold">11 reseñas</span>.
+</p>
+<a
+  href="https://www.google.com/search?sa=X&sca_esv=137b759269c363f4&tbm=lcl&q=Carnicer%C3%ADa+Vicente+Valencia+Rese%C3%B1as&rflfq=1&num=20&stick=H4sIAAAAAAAAAONgkxIxNLUwNDY1MTA1NzU1NTczMTIyNdjAyPiKUdU5sSgvMzm16PDaRIUwICOvJFUhLDEnNS85M1EhKLU49fDGxOJFrMSpAwBmN3JzawAAAA&rldimm=15813540575557642250&hl=es-ES&ved=2ahUKEwjfx-uB4K2OAxXSfKQEHWVeA9QQ9fQKegQILhAF&biw=1707&bih=825&dpr=2.25#lkt=LocalPoiReviews"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="inline-block mt-4 text-red-700 hover:text-red-900 font-semibold underline transition"
+  style={{ fontFamily: "'Inter', sans-serif" }}
+>
+  Ver todas las reseñas en Google
+</a>
+
+  </div>
+</section>
+
 
       {/* Footer */}
       <Footer />

@@ -191,7 +191,7 @@ export default function RegisterPage() {
                 onClick={() => setShowPassword((prev) => !prev)}
                 className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-600"
               >
-                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                {showPassword ? <FaEye /> : <FaEyeSlash />}
               </button>
 
             </div>

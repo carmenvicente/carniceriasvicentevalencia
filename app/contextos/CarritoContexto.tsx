@@ -11,13 +11,14 @@ type Producto = {
   cantidad: number
 }
 
-// Tipo del contexto
+// Tipo del contexto incluyendo setCarrito
 type CarritoContextType = {
   carrito: Producto[]
   añadirAlCarrito: (producto: Omit<Producto, 'cantidad'>) => void
   eliminarDelCarrito: (id: number) => void
   vaciarCarrito: () => void
-  actualizarCantidad: (id: number, nuevaCantidad: number) => void // ✅ NUEVO
+  actualizarCantidad: (id: number, nuevaCantidad: number) => void
+  setCarrito: (carrito: Producto[]) => void
 }
 
 // Crear el contexto
@@ -34,20 +35,25 @@ export function useCarrito() {
 export function CarritoProvider({ children }: { children: React.ReactNode }) {
   const [carrito, setCarrito] = useState<Producto[]>([])
 
-  // ✅ Recuperar carrito guardado al cargar
   useEffect(() => {
-    const carritoGuardado = localStorage.getItem('carrito')
-    if (carritoGuardado) {
-      setCarrito(JSON.parse(carritoGuardado))
+    try {
+      const carritoGuardado = localStorage.getItem('carrito')
+      if (carritoGuardado) {
+        setCarrito(JSON.parse(carritoGuardado))
+      }
+    } catch (err) {
+      console.error('❌ Error al cargar el carrito desde localStorage:', err)
     }
   }, [])
 
-  // ✅ Guardar carrito en localStorage cada vez que cambie
   useEffect(() => {
-    localStorage.setItem('carrito', JSON.stringify(carrito))
+    try {
+      localStorage.setItem('carrito', JSON.stringify(carrito))
+    } catch (err) {
+      console.error('❌ Error al guardar el carrito en localStorage:', err)
+    }
   }, [carrito])
 
-  // Añadir producto al carrito
   const añadirAlCarrito = (producto: Omit<Producto, 'cantidad'>) => {
     setCarrito(prev => {
       const existente = prev.find(p => p.id === producto.id)
@@ -60,17 +66,19 @@ export function CarritoProvider({ children }: { children: React.ReactNode }) {
     })
   }
 
-  // Eliminar producto del carrito completamente
   const eliminarDelCarrito = (id: number) => {
     setCarrito(prev => prev.filter(p => p.id !== id))
   }
 
-  // Vaciar carrito
   const vaciarCarrito = () => {
+    try {
+      localStorage.removeItem('carrito')
+    } catch (err) {
+      console.error('❌ Error al limpiar carrito en localStorage:', err)
+    }
     setCarrito([])
   }
 
-  // ✅ Actualizar cantidad sin cambiar el orden
   const actualizarCantidad = (id: number, nuevaCantidad: number) => {
     setCarrito(prev =>
       prev.map(p =>
@@ -86,7 +94,8 @@ export function CarritoProvider({ children }: { children: React.ReactNode }) {
         añadirAlCarrito,
         eliminarDelCarrito,
         vaciarCarrito,
-        actualizarCantidad, // ✅ Incluido en el value
+        actualizarCantidad,
+        setCarrito, // ✅ añadido al contexto
       }}
     >
       {children}

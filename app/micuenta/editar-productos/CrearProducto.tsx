@@ -15,10 +15,12 @@ export default function CrearProducto({ volver }: CrearProductoProps) {
   const [imagen, setImagen] = useState<File | null>(null)
   const [preview, setPreview] = useState<string | null>(null)
   const [mensaje, setMensaje] = useState('')
+  const [esExito, setEsExito] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setMensaje('')
+    setEsExito(false)
 
     if (!imagen || !(imagen instanceof File) || !imagen.name) {
       setMensaje('Selecciona una imagen válida.')
@@ -26,30 +28,27 @@ export default function CrearProducto({ volver }: CrearProductoProps) {
     }
 
     try {
-      // 🔸 1. Subir imagen a Vercel Blob
       const imagenForm = new FormData()
       imagenForm.append('file', imagen)
 
       const resImagen = await fetch('/api/subir-imagen', {
-  method: 'POST',
-  body: imagenForm,
-})
+        method: 'POST',
+        body: imagenForm,
+      })
 
-let imagenData
-try {
-  imagenData = await resImagen.json()
-} catch {
-  throw new Error('Error al procesar la respuesta del servidor al subir la imagen')
-}
+      let imagenData
+      try {
+        imagenData = await resImagen.json()
+      } catch {
+        throw new Error('Error al procesar la respuesta del servidor al subir la imagen')
+      }
 
-if (!resImagen.ok) {
-  throw new Error(imagenData?.error || 'Error al subir la imagen')
-}
-
+      if (!resImagen.ok) {
+        throw new Error(imagenData?.error || 'Error al subir la imagen')
+      }
 
       const urlImagen = imagenData.url
 
-      // 🔸 2. Crear producto con la URL de la imagen
       const resProducto = await fetch('/api/productos', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -66,8 +65,8 @@ if (!resImagen.ok) {
       const productoData = await resProducto.json()
       if (!resProducto.ok) throw new Error(productoData.message || 'Error al crear producto')
 
-      // 🔸 3. Limpiar formulario
-      setMensaje('Producto creado correctamente.')
+      setMensaje(' Producto creado correctamente.')
+      setEsExito(true)
       setNombre('')
       setDescripcion('')
       setPrecio('')
@@ -75,8 +74,13 @@ if (!resImagen.ok) {
       setSubcategoria(1)
       setImagen(null)
       setPreview(null)
+
+      setTimeout(() => {
+        volver()
+      }, 2000)
     } catch (error: any) {
-      setMensaje(`Error: ${error.message}`)
+      setMensaje(`❌ Error: ${error.message}`)
+      setEsExito(false)
     }
   }
 
@@ -195,7 +199,13 @@ if (!resImagen.ok) {
       </form>
 
       {mensaje && (
-        <p className="mt-6 text-sm font-semibold text-red-600">{mensaje}</p>
+        <p
+          className={`mt-6 text-sm font-semibold  ${
+            esExito ? 'text-green-600' : 'text-red-600'
+          }`}
+         style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
+          {mensaje}
+        </p>
       )}
     </div>
   )
