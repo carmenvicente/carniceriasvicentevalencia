@@ -63,7 +63,10 @@ export default function PedidoConfirmadoClient() {
             <p className="text-sm text-gray-300">Se ha enviado un email de confirmación a:</p>
             <p className="text-base font-semibold">{email}</p>
             {total !== null && (
-              <p className="text-sm text-gray-400">Importe total: <span className="text-white font-semibold">{total.toFixed(2)} €</span></p>
+              <p className="text-sm text-gray-400">
+                Importe total:{' '}
+                <span className="text-white font-semibold">{total.toFixed(2)} €</span>
+              </p>
             )}
           </div>
         )}
