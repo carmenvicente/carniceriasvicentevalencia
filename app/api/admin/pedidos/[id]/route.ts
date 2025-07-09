@@ -1,24 +1,19 @@
 // app/api/admin/pedidos/[id]/route.ts
 
-import { NextResponse, NextRequest } from 'next/server'; // Importa NextRequest
+import { NextResponse, NextRequest } from 'next/server'; // Asegúrate de importar NextRequest
 import { neon } from '@neondatabase/serverless';
 import { enviarCorreoPedidoListo } from '@/lib/email';
 
 const sql = neon(process.env.DATABASE_URL as string);
 
-// Define una interfaz para los parámetros de la ruta dinámica
-interface RouteParams {
-  id: string;
-}
-
-// ******* CAMBIO AQUÍ: Alternativa de tipado para la función PUT *******
+// ******* CAMBIO AQUÍ: La firma de la función PUT con tipado inline *******
 export async function PUT(
-  req: NextRequest, // Usamos NextRequest para el primer argumento
-  context: { params: RouteParams } // Definimos 'context' con los 'params' tipados
+  req: NextRequest, // El primer argumento es la Request (o NextRequest)
+  context: { params: { id: string } } // El segundo argumento es un objeto con 'params' tipado directamente
 ) {
   try {
     const pedidoId = context.params.id; // Accedemos a los parámetros a través de 'context.params'
-    const { estado } = await req.json();
+    const { estado } = await req.json(); // Esperamos { estado: 'listo' }
 
     console.log(`API Admin: Recibida petición PUT para pedido ${pedidoId} con estado: ${estado}`);
 
@@ -27,6 +22,7 @@ export async function PUT(
       return NextResponse.json({ error: 'ID de pedido o estado no proporcionado' }, { status: 400 });
     }
 
+    // Primero, obtener los datos del pedido para el correo antes de actualizar
     const [pedidoExistente] = await sql`
       SELECT email, productos, estado
       FROM pedidos
@@ -38,6 +34,7 @@ export async function PUT(
       return NextResponse.json({ error: 'Pedido no encontrado' }, { status: 404 });
     }
 
+    // Actualizar el estado del pedido en la base de datos
     await sql`
       UPDATE pedidos
       SET estado = ${estado}
@@ -45,10 +42,15 @@ export async function PUT(
     `;
     console.log(`🎉 Pedido ${pedidoId} actualizado a estado '${estado}'.`);
 
+    // Si el estado es 'listo', enviar el correo de notificación
     if (estado === 'listo') {
       let nombreCliente: string | undefined;
       let apellidosCliente: string | undefined;
       let tratamientoCliente: string | undefined;
+
+      // Si necesitas obtener nombre/apellidos/tratamiento, tendrías que recuperarlos
+      // de `pedidoExistente.productos` (si los guardaste ahí como JSON)
+      // o de otro lugar en tu DB. Por ahora, se pasarán como undefined.
 
       await enviarCorreoPedidoListo({
         email: pedidoExistente.email,
