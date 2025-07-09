@@ -1,15 +1,24 @@
 // app/api/admin/pedidos/[id]/route.ts
 
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server'; // Importa NextRequest
 import { neon } from '@neondatabase/serverless';
-import { enviarCorreoPedidoListo } from '@/lib/email'; // Importa la función de correo
+import { enviarCorreoPedidoListo } from '@/lib/email';
 
 const sql = neon(process.env.DATABASE_URL as string);
 
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
+// Define una interfaz para los parámetros de la ruta dinámica
+interface RouteParams {
+  id: string;
+}
+
+// ******* CAMBIO AQUÍ: Alternativa de tipado para la función PUT *******
+export async function PUT(
+  req: NextRequest, // Usamos NextRequest para el primer argumento
+  context: { params: RouteParams } // Definimos 'context' con los 'params' tipados
+) {
   try {
-    const pedidoId = params.id;
-    const { estado } = await req.json(); // Esperamos { estado: 'listo' }
+    const pedidoId = context.params.id; // Accedemos a los parámetros a través de 'context.params'
+    const { estado } = await req.json();
 
     console.log(`API Admin: Recibida petición PUT para pedido ${pedidoId} con estado: ${estado}`);
 
@@ -18,7 +27,6 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
       return NextResponse.json({ error: 'ID de pedido o estado no proporcionado' }, { status: 400 });
     }
 
-    // Primero, obtener los datos del pedido para el correo antes de actualizar
     const [pedidoExistente] = await sql`
       SELECT email, productos, estado
       FROM pedidos
@@ -30,7 +38,6 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
       return NextResponse.json({ error: 'Pedido no encontrado' }, { status: 404 });
     }
 
-    // Actualizar el estado del pedido en la base de datos
     await sql`
       UPDATE pedidos
       SET estado = ${estado}
@@ -38,35 +45,16 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
     `;
     console.log(`🎉 Pedido ${pedidoId} actualizado a estado '${estado}'.`);
 
-    // Si el estado es 'listo', enviar el correo de notificación
     if (estado === 'listo') {
       let nombreCliente: string | undefined;
       let apellidosCliente: string | undefined;
       let tratamientoCliente: string | undefined;
 
-      // Intenta obtener nombre/apellidos del JSON de productos si están ahí
-      // O si los pasas en metadata en la sesión de Stripe y los guardaste en la DB
-      // Por ahora, si no están explícitamente en columnas, usaremos el email
-      // Si tu JSON de productos contiene el nombre del cliente, tendrías que parsearlo
-      // Ejemplo: si el primer producto tiene un campo 'clienteNombre'
-      /*
-      try {
-          const productosParsed = JSON.parse(pedidoExistente.productos);
-          if (productosParsed && productosParsed.length > 0 && productosParsed[0].clienteNombre) {
-              nombreCliente = productosParsed[0].clienteNombre;
-              apellidosCliente = productosParsed[0].clienteApellidos;
-              tratamientoCliente = productosParsed[0].clienteTratamiento;
-          }
-      } catch (parseError) {
-          console.error('Error al parsear productos para obtener nombre/apellidos:', parseError);
-      }
-      */
-
       await enviarCorreoPedidoListo({
         email: pedidoExistente.email,
-        nombre: nombreCliente, // Será undefined si no se obtiene de arriba
-        apellidos: apellidosCliente, // Será undefined si no se obtiene de arriba
-        tratamiento: tratamientoCliente, // Será undefined si no se obtiene de arriba
+        nombre: nombreCliente,
+        apellidos: apellidosCliente,
+        tratamiento: tratamientoCliente,
       });
       console.log(`✉️ Correo de pedido listo enviado a ${pedidoExistente.email}.`);
     }
