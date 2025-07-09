@@ -35,7 +35,6 @@ export default function Footer() {
               <li><Link href="/" className="hover:underline">🏠 Inicio</Link></li>
               <li><Link href="/productos-frescos/ternera" className="hover:underline">🛒 Productos</Link></li>
               <li><Link href="/pedido" className="hover:underline">📦 Haz tu pedido</Link></li>
-              <li><Link href="/comida-semanal" className="hover:underline">📅 Menú semanal</Link></li>
               <li><Link href="/micuenta" className="hover:underline">👤 Mi cuenta</Link></li>
             </ul>
           </div>
@@ -81,28 +80,7 @@ export default function Footer() {
             </ul>
           </div>
 
-         {/* Menú Semanal */}
-          <div className="w-[200px]">
-            <h4 className="text-lg font-bold mb-2" >Menú Semanal</h4>
-            <p className="text-sm mb-5 font-semibold" style={font}>
-              ¿Quieres estar al tanto de<br></br> los menús semanales?
-            </p>
-            <a
-              href="https://wa.me/34699221018"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex flex-row items-center gap-x-3"
-            >
-              
-              <div className="w-12 h-12 flex items-center justify-center rounded-full border-2 border-white group-hover:bg-green-500 transition">
-                <FaWhatsapp className="text-2xl text-white group-hover:text-black transition" />
-              </div>
-              <span className="text-sm font-semibold group-hover:text-green-500" style={font}>
-                Únete a nuestra comunidad
-              </span>
-              
-            </a>
-          </div>
+         
 
 
 
