@@ -80,62 +80,19 @@ export default function PedidosUsuarioPage() {
       case 'cancelado':
         return 'Cancelado ❌';
       case 'pagado_en_tienda':
-        return 'Pagado en tienda �'; // Estado para pagos en tienda
+        return 'Pagado en tienda 🏬'; // Estado para pagos en tienda
       default:
         return estado; // Si el estado no coincide con ninguno, muestra el valor original
     }
   };
 
-  // Renderizado condicional basado en el estado de carga y error
-  if (cargando) {
-    return (
-      <>
-        <Navbar />
-        <div className="min-h-[60vh] bg-gray-100 flex items-center justify-center">
-          <p className="p-4 text-gray-700 text-lg">Cargando tus pedidos...</p>
-        </div>
-        <Footer />
-      </>
-    );
-  }
-
-  if (errorCarga) {
-    return (
-      <>
-        <Navbar />
-        <div className="min-h-[60vh] bg-gray-100 flex flex-col items-center justify-center text-center">
-          <p className="p-4 text-red-600 text-lg font-semibold">No se pudieron cargar tus pedidos.</p>
-          <p className="text-gray-700">Por favor, asegúrate de haber iniciado sesión correctamente.</p>
-          <Link href="/registrologin/login" className="mt-4 text-blue-600 hover:underline">
-            Ir a Iniciar Sesión
-          </Link>
-        </div>
-        <Footer />
-      </>
-    );
-  }
-
-  if (pedidos.length === 0) {
-    return (
-      <>
-        <Navbar />
-        <div className="min-h-[60vh] bg-gray-100 flex flex-col items-center justify-center text-center">
-          <p className="p-4 text-gray-700 text-lg font-semibold">No tienes pedidos registrados todavía.</p>
-          <p className="text-gray-600">¡Explora nuestros productos y haz tu primer pedido!</p>
-          <Link href="/productos-frescos/ternera" className="mt-4 bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors">
-            Ver Productos
-          </Link>
-        </div>
-        <Footer />
-      </>
-    );
-  }
-
-  // Renderizado de la lista de pedidos si hay pedidos y no hay errores
   return (
     <>
       <Navbar />
-      {/* Cabecera blanca con título y navegación de migas de pan */}
+      {/* Barra negra debajo del Navbar */}
+      <div className="h-22 w-full bg-black" />
+
+      {/* Cabecera blanca con título y navegación de migas de pan - SIEMPRE VISIBLE */}
       <div className="w-full py-3 bg-white">
         <div className="max-w-screen-xl mx-auto text-center px-4 mt-10">
           <h1 className="text-xl md:text-2xl font-bold text-black">Mis pedidos</h1>
@@ -153,39 +110,61 @@ export default function PedidosUsuarioPage() {
         </div>
       </div>
 
-      {/* Contenedor principal de la lista de pedidos */}
-      <div className="max-w-3xl mx-auto p-6 bg-gray-100 shadow-md rounded-lg mt-8 mb-8">
-        <ul className="space-y-6">
-          {pedidos.map(pedido => (
-            <li key={pedido.id} className="border border-gray-200 rounded-lg p-5 bg-white hover:shadow-md transition-shadow">
-              <div className="flex justify-between items-center mb-3">
-                <p className="text-lg font-semibold text-gray-900">Pedido #{pedido.id}</p>
-                <p className={`font-medium ${pedido.estado === 'listo' ? 'text-green-600' : pedido.estado === 'pagado' ? 'text-blue-600' : 'text-gray-600'}`}>
-                  {renderEstado(pedido.estado)}
-                </p>
-              </div>
-              
-              <p className="text-sm text-gray-600 mb-2"><strong>Fecha del pedido:</strong> {new Date(pedido.fecha).toLocaleDateString()} a las {new Date(pedido.fecha).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
-              <p className="text-sm text-gray-600 mb-4"><strong>Total pagado:</strong> <span className="font-bold text-gray-900">{pedido.total.toFixed(2)} €</span></p>
+      {/* Contenido principal condicional (cargando, error, sin pedidos, o lista de pedidos) */}
+      {cargando ? (
+        <div className="min-h-[60vh] bg-white flex items-center justify-center">
+          <p className="p-4 text-gray-700 text-lg" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>Cargando tus pedidos...</p>
+        </div>
+      ) : errorCarga ? (
+        <div className="min-h-[60vh] bg-white flex flex-col items-center justify-center text-center">
+          <p className="p-4 text-red-600 text-lg font-semibold">No se pudieron cargar tus pedidos.</p>
+          <p className="text-gray-700" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>Por favor, asegúrate de haber iniciado sesión correctamente.</p>
+          <Link href="/registrologin/login" className="mt-4 text-blue-600 hover:underline">
+            Ir a Iniciar Sesión
+          </Link>
+        </div>
+      ) : pedidos.length === 0 ? (
+        <div className="min-h-[60vh] bg-white flex flex-col items-center justify-center text-center">
+          <p className="p-4 text-gray-700 text-lg font-semibold">No tienes pedidos registrados todavía.</p>
+          <p className="text-gray-600" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>¡Explora nuestros productos y haz tu primer pedido!</p>
+          <Link href="/productos-frescos/ternera" className="mt-4 bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors">
+            Ver Productos
+          </Link>
+        </div>
+      ) : (
+        <div className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-lg mt-8 mb-8">
+          <ul className="space-y-6">
+            {pedidos.map(pedido => (
+              <li key={pedido.id} className="border border-gray-200 rounded-lg p-5 bg-white hover:shadow-md transition-shadow">
+                <div className="flex justify-between items-center mb-3">
+                  <p className="text-lg font-semibold text-gray-900">Pedido #{pedido.id}</p>
+                  <p className={`font-medium ${pedido.estado === 'listo' ? 'text-green-600' : pedido.estado === 'pagado' ? 'text-blue-600' : 'text-gray-600'}`}>
+                    {renderEstado(pedido.estado)}
+                  </p>
+                </div>
+                
+                <p className="text-sm text-gray-600 mb-2"><strong>Fecha del pedido:</strong> {new Date(pedido.fecha).toLocaleDateString()} a las {new Date(pedido.fecha).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                <p className="text-sm text-gray-600 mb-4"><strong>Total pagado:</strong> <span className="font-bold text-gray-900">{pedido.total.toFixed(2)} €</span></p>
 
-              <div className="mb-3">
-                <h3 className="text-base font-semibold text-gray-700 mb-2">Artículos:</h3>
-                <ul className="list-disc list-inside text-sm text-gray-700 space-y-1">
-                  {pedido.productos && pedido.productos.length > 0 ? (
-                    pedido.productos.map((item, index) => (
-                      <li key={index}>
-                        {item.nombre} (x{item.cantidad}) - {item.precio.toFixed(2)} €/ud
-                      </li>
-                    ))
-                  ) : (
-                    <li>No se pudieron cargar los detalles de los productos.</li>
-                  )}
-                </ul>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
+                <div className="mb-3">
+                  <h3 className="text-base font-semibold text-gray-700 mb-2">Artículos:</h3>
+                  <ul className="list-disc list-inside text-sm text-gray-700 space-y-1">
+                    {pedido.productos && pedido.productos.length > 0 ? (
+                      pedido.productos.map((item, index) => (
+                        <li key={index}>
+                          {item.nombre} (x{item.cantidad}) - {item.precio.toFixed(2)} €/ud
+                        </li>
+                      ))
+                    ) : (
+                      <li>No se pudieron cargar los detalles de los productos.</li>
+                    )}
+                  </ul>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
       <Footer />
     </>
   );
