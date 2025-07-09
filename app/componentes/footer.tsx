@@ -119,7 +119,6 @@ export default function Footer() {
         <div className="flex gap-2">
           <Image src="/imagenes/iconos/visa.png" alt="Visa" width={35} height={20} />
           <Image src="/imagenes/iconos/mastercard.png" alt="Mastercard" width={35} height={20} />
-          <Image src="/imagenes/iconos/paypal.png" alt="PayPal" width={35} height={20} />
         </div>
       </div>
     </footer>

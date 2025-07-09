@@ -1,4 +1,5 @@
 // app/api/stripe-webhook/route.ts
+
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { neon } from '@neondatabase/serverless';
@@ -19,8 +20,8 @@ export async function POST(req: Request) {
   try {
     event = stripe.webhooks.constructEvent(
       buf,
-      signature!, // El '!' asegura que no es nulo, pero deberías verificarlo
-      process.env.STRIPE_WEBHOOK_SECRET! // ¡IMPORTANTE! Esta variable debe estar configurada en Vercel
+      signature!,
+      process.env.STRIPE_WEBHOOK_SECRET!
     );
   } catch (err: any) {
     console.error(`❌ Error al verificar la firma del webhook: ${err.message}`);
@@ -37,17 +38,36 @@ export async function POST(req: Request) {
     console.log(`✅ Webhook: checkout.session.completed para sesión: ${sessionId}`);
 
     try {
+      // Primero, obtenemos el pedido para obtener el campo 'productos'
+      // Asumimos que `email` se guarda en la sesión de Stripe
+      const [existingPedido] = await sql`
+        SELECT id, productos, email
+        FROM pedidos
+        WHERE stripe_session_id = ${sessionId}
+        LIMIT 1;
+      `;
+
+      let productosDelPedido: any[] = [];
+      if (existingPedido && existingPedido.productos) {
+        try {
+          // Intentamos parsear la columna productos si es una cadena JSON
+          productosDelPedido = JSON.parse(existingPedido.productos);
+        } catch (parseError) {
+          console.error('Error al parsear la columna productos:', parseError);
+          // Si hay un error, productosDelPedido se quedará como un array vacío
+        }
+      }
+
       // Actualiza el estado del pedido a 'pagado' en tu base de datos
       await sql`
         UPDATE pedidos
-        SET estado = 'pagado', total = ${totalAmount} -- Asegúrate de que total se actualiza si cambias algo
-        WHERE stripe_session_id = ${sessionId} AND email = ${customerEmail}
+        SET estado = 'pagado', total = ${totalAmount}
+        WHERE stripe_session_id = ${sessionId}
       `;
       console.log(`🎉 Pedido ${sessionId} actualizado a 'pagado' en DB y email ${customerEmail}.`);
 
-      // Enviar correo de confirmación DESDE AQUÍ (es más fiable)
-      // Como no tienes nombre/apellidos en la DB, y el webhook no siempre tiene todos los detalles del cliente
-      // Usaremos lo que tenemos de la sesión de Stripe
+
+      // Enviar correo de confirmación
       await enviarCorreoConfirmacionPedido({
         email: customerEmail,
         // nombre y apellidos no están directamente en la sesión para el webhook,
@@ -57,6 +77,7 @@ export async function POST(req: Request) {
         apellidos: undefined,
         tratamiento: undefined,
         total: totalAmount,
+        productos: productosDelPedido, // ¡PASAMOS LOS PRODUCTOS AQUÍ!
       });
       console.log(`✉️ Correo de confirmación enviado para ${customerEmail}.`);
 

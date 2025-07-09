@@ -1,10 +1,17 @@
+// app/api/auth/login/route.ts
 import { NextResponse } from 'next/server';
 import { neon } from '@neondatabase/serverless';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 const sql = neon(process.env.DATABASE_URL as string);
-const JWT_SECRET = process.env.JWT_SECRET || 'CAMBIA_ESTA_CLAVE_POR_ALGO_MUY_SEGURO';
+
+// ******* VALIDACIÓN CRÍTICA DE JWT_SECRET *******
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  throw new Error('JWT_SECRET no está definido en las variables de entorno. Por favor, configúralo en .env.local y en Vercel.');
+}
+// *************************************************
 
 interface Body {
   email: string;
@@ -57,7 +64,7 @@ export async function POST(request: Request) {
         tratamiento,
         role: user.role,
       },
-      JWT_SECRET,
+      JWT_SECRET!, // <--- ¡CAMBIO AQUÍ! Añadimos '!' para asegurar a TypeScript que no es undefined
       { expiresIn: '7d' }
     );
 

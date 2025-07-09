@@ -1,3 +1,5 @@
+// lib/email.ts
+
 import nodemailer from 'nodemailer';
 
 const transporter = nodemailer.createTransport({
@@ -31,7 +33,7 @@ export async function enviarCorreo({
   }
 }
 
-// 📩 Correo de bienvenida tras registro
+// 📩 Correo de bienvenida tras registro (SIN CAMBIOS)
 export async function enviarCorreoBienvenida(
   nombre: string,
   email: string,
@@ -59,7 +61,7 @@ export async function enviarCorreoBienvenida(
   });
 }
 
-// 📩 Correo de notificación por cambio de datos
+// 📩 Correo de notificación por cambio de datos (SIN CAMBIOS)
 export async function enviarCorreoCambioDatos(
   nombre: string,
   email: string,
@@ -86,33 +88,80 @@ export async function enviarCorreoCambioDatos(
   });
 }
 
-// 📩 Correo de confirmación de pedido
+// 📩 Correo de confirmación de pedido (CAMBIOS AQUÍ)
+// Añadimos el tipo para los productos esperados
+interface ProductoPedido {
+  id?: string; // id del producto, opcional
+  nombre: string; // Nombre del producto
+  cantidad: number;
+  precio: number;
+}
+
 export async function enviarCorreoConfirmacionPedido({
   email,
   nombre,
   apellidos,
   tratamiento,
   total,
+  productos, // ¡NUEVO PARÁMETRO!
 }: {
   email: string;
   nombre?: string;
   apellidos?: string;
   tratamiento?: string;
   total: number;
+  productos?: ProductoPedido[]; // ¡NUEVO TIPO!
 }) {
   const saludo = tratamiento === 'Sra.' ? 'Estimada' : 'Estimado';
   const destinatario = nombre ? `${saludo} ${tratamiento || ''} ${nombre} ${apellidos || ''}` : 'Estimado cliente';
 
+  // Generar la lista de productos para el correo
+  let productosHtml = '';
+  if (productos && productos.length > 0) {
+    productosHtml = `
+      <h3 style="color: #555; margin-top: 20px;">Detalle del Pedido:</h3>
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+        <thead>
+          <tr style="background-color: #f2f2f2;">
+            <th style="padding: 8px; border: 1px solid #ddd; text-align: left;">Producto</th>
+            <th style="padding: 8px; border: 1px solid #ddd; text-align: left;">Cantidad</th>
+            <th style="padding: 8px; border: 1px solid #ddd; text-align: right;">Precio Unitario</th>
+            <th style="padding: 8px; border: 1px solid #ddd; text-align: right;">Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${productos.map(item => `
+            <tr>
+              <td style="padding: 8px; border: 1px solid #ddd;">${item.nombre}</td>
+              <td style="padding: 8px; border: 1px solid #ddd;">${item.cantidad}</td>
+              <td style="padding: 8px; border: 1px solid #ddd; text-align: right;">${item.precio.toFixed(2)} €</td>
+              <td style="padding: 8px; border: 1px solid #ddd; text-align: right;">${(item.cantidad * item.precio).toFixed(2)} €</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    `;
+  } else {
+    productosHtml = '<p>No se encontraron detalles de productos para este pedido.</p>';
+  }
+
+
   const html = `
     <div style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">
-      <h2>¡Gracias por tu compra!</h2>
+      <h2 style="color: #0056b3;">¡Gracias por tu compra!</h2>
       <p>${destinatario}, hemos recibido tu pedido correctamente y está en preparación.</p>
-      <p><strong>Importe total:</strong> ${total.toFixed(2)} €</p>
+
+      ${productosHtml} <p style="font-size: 1.1em; font-weight: bold; margin-top: 20px;">
+        Importe total: <span style="color: #d9534f;">${total.toFixed(2)} €</span>
+      </p>
       <p>Recuerda que podrás recogerlo en nuestra tienda física en horario comercial.</p>
       <p style="margin-top: 20px;">Dirección: <strong>Av. de Castilla-la Mancha, N° 27, Bajo, 16003 Cuenca</strong></p>
       <br/>
       <p>Un saludo,</p>
       <p><strong>Carnicería Vicente Valencia</strong></p>
+      <p style="font-size: 0.8em; color: #888; margin-top: 30px;">
+        Este es un correo automático. Por favor, no respondas a este mensaje.
+      </p>
     </div>
   `;
 
@@ -123,7 +172,7 @@ export async function enviarCorreoConfirmacionPedido({
   });
 }
 
-// 📩 Correo cuando el pedido esté listo para recoger
+// 📩 Correo cuando el pedido esté listo para recoger (SIN CAMBIOS)
 export async function enviarCorreoPedidoListo({
   email,
   nombre,

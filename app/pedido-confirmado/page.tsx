@@ -67,7 +67,7 @@ function PedidoConfirmadoContent() {
   return (
     <>
       <Navbar />
-      <div className="min-h-[60vh] bg-[rgb(22,22,22)] text-white flex flex-col items-center justify-center px-6 py-20">
+      <div className="min-h-[90vh] bg-[rgb(22,22,22)] text-white flex flex-col items-center justify-center px-6 py-20">
         {cargando ? (
           <p className="text-lg font-semibold" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>Confirmando tu pedido...</p>
         ) : error ? (
@@ -94,7 +94,7 @@ function PedidoConfirmadoContent() {
 
 
             <p className="text-sm text-gray-300" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>Se ha enviado un email de confirmación a:</p>
-            <p className="text-base font-semibold">{email}</p>
+            <p className="text-base font-semibold" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>{email}</p>
             {total !== null && (
               <p className="text-sm text-gray-400">
                 Importe total:{' '}
