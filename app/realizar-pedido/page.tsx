@@ -107,7 +107,7 @@ export default function CheckoutPage() {
 
     try {
       const res = await fetch(
-        metodoPago === 'tienda' ? '/api/pedido/manual' : '/api/pedidos',
+        metodoPago === 'tienda' ? '/api/pedido/manual' : '/api/auth/pedidos',
         { method: 'POST', headers: { 'Content-Type': 'application/json' }, body }
       )
       if (!res.ok) throw new Error('Fallo al procesar el pedido')
