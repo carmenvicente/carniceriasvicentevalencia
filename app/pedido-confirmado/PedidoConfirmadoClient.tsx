@@ -55,7 +55,9 @@ export default function PedidoConfirmadoClient() {
         {cargando ? (
           <p className="text-lg font-semibold">Confirmando tu pedido...</p>
         ) : error ? (
-          <p className="text-red-500 text-center text-lg font-semibold">Hubo un error al confirmar tu pedido.</p>
+          <p className="text-red-500 text-center text-lg font-semibold">
+            Hubo un error al confirmar tu pedido.
+          </p>
         ) : (
           <div className="text-center space-y-4">
             <h1 className="text-2xl font-bold">¡Gracias por tu compra!</h1>

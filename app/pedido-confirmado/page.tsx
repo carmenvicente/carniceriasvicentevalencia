@@ -1,7 +1,10 @@
 // app/pedido-confirmado/page.tsx
-'use client'
+import dynamic from 'next/dynamic'
 
-import PedidoConfirmadoClient from './PedidoConfirmadoClient'
+// Carga dinámica SOLO en cliente
+const PedidoConfirmadoClient = dynamic(() => import('./PedidoConfirmadoClient'), {
+  ssr: false,
+})
 
 export default function Page() {
   return <PedidoConfirmadoClient />
