@@ -1,3 +1,4 @@
+// app/realizar-pedido/page.tsx
 'use client'
 
 import { useEffect, useState } from 'react'
@@ -106,11 +107,18 @@ export default function CheckoutPage() {
     const body = JSON.stringify({ productos: carrito, email, metodoPago })
 
     try {
-      const res = await fetch(
-        metodoPago === 'tienda' ? '/api/pedido/manual' : '/api/auth/pedidos',
-        { method: 'POST', headers: { 'Content-Type': 'application/json' }, body }
-      )
-      if (!res.ok) throw new Error('Fallo al procesar el pedido')
+      // --- ¡¡¡CAMBIO AQUÍ: LLAMADA DIRECTA A /api/pedidos!!! ---
+      const res = await fetch('/api/pedidos', { // <-- Ruta corregida y simplificada
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body,
+      })
+
+      if (!res.ok) {
+        // Mejorar el manejo de errores para mostrar el mensaje del servidor
+        const errorData = await res.json();
+        throw new Error(errorData.error || 'Fallo al procesar el pedido');
+      }
       const data = await res.json()
 
       localStorage.setItem('carrito', JSON.stringify(carrito))
@@ -119,17 +127,19 @@ export default function CheckoutPage() {
       }
       localStorage.setItem('seccionPedido', 'pago')
 
-      if (data?.url) window.location.href = data.url
-      else window.location.href = '/pedido-confirmado'
-    } catch (err) {
+      if (data?.url) {
+        window.location.href = data.url // Redirige a Stripe Checkout
+      } else {
+        window.location.href = '/pedido-confirmado' // Para el método 'tienda' o manual, si tu API lo maneja así
+      }
+    } catch (err: any) { // Tipado de error para acceder a 'message'
       console.error('Error al procesar el pedido:', err)
-      alert('Hubo un error al procesar el pedido.')
+      alert('Hubo un error al procesar el pedido: ' + err.message) // Muestra el mensaje de error de la API
     }
   }
 
   return (
     <>
-      
       <Navbar />
 
       {/* CABECERA */}
@@ -158,149 +168,149 @@ export default function CheckoutPage() {
             </button>
 
             {seccionDatosAbierta && (
-  <div className="px-6 pb-6 pt-2">
-    {usuario ? (
-      // ✅ Usuario ya logueado
-      <div className="space-y-2">
-        <p className="text-sm font-semibold" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
-          Conectado como <span className="font-bold">{usuario.nombre} {usuario.apellidos}</span>.
-        </p>
-        <button
-          onClick={cerrarSesion}
-          className="text-sm text-red-600 hover:underline font-semibold"
-          style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
-        >
-          ¿No eres tú? Cierra sesión
-        </button>
-      </div>
-    ) : (
-      // ❌ No logueado → Mostrar formulario completo
-      <>
-        <div className="flex justify-center gap-4 mb-10">
-          <button
-            className={`px-4 py-2 rounded text-sm font-semibold transition-colors 
-              ${modoInvitado ? 'bg-[#990000] text-white hover:bg-red-700' : 'bg-gray-100 text-[#990000] hover:bg-gray-200'}`}
-            onClick={() => { setModoInvitado(true); setMostrarLogin(false) }}
-            style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
-          >
-            Pedir como invitado
-          </button>
+              <div className="px-6 pb-6 pt-2">
+                {usuario ? (
+                  // ✅ Usuario ya logueado
+                  <div className="space-y-2">
+                    <p className="text-sm font-semibold" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
+                      Conectado como <span className="font-bold">{usuario.nombre} {usuario.apellidos}</span>.
+                    </p>
+                    <button
+                      onClick={cerrarSesion}
+                      className="text-sm text-red-600 hover:underline font-semibold"
+                      style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
+                    >
+                      ¿No eres tú? Cierra sesión
+                    </button>
+                  </div>
+                ) : (
+                  // ❌ No logueado → Mostrar formulario completo
+                  <>
+                    <div className="flex justify-center gap-4 mb-10">
+                      <button
+                        className={`px-4 py-2 rounded text-sm font-semibold transition-colors 
+                          ${modoInvitado ? 'bg-[#990000] text-white hover:bg-red-700' : 'bg-gray-100 text-[#990000] hover:bg-gray-200'}`}
+                        onClick={() => { setModoInvitado(true); setMostrarLogin(false) }}
+                        style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
+                      >
+                        Pedir como invitado
+                      </button>
 
-          <button
-            className={`px-4 py-2 rounded text-sm font-semibold transition-colors 
-              ${mostrarLogin ? 'bg-[#990000] text-white hover:bg-red-700' : 'bg-gray-100 text-[#990000] hover:bg-gray-200'}`}
-            onClick={() => { setMostrarLogin(true); setModoInvitado(false) }}
-            style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
-          >
-            Iniciar sesión
-          </button>
-        </div>
+                      <button
+                        className={`px-4 py-2 rounded text-sm font-semibold transition-colors 
+                          ${mostrarLogin ? 'bg-[#990000] text-white hover:bg-red-700' : 'bg-gray-100 text-[#990000] hover:bg-gray-200'}`}
+                        onClick={() => { setMostrarLogin(true); setModoInvitado(false) }}
+                        style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
+                      >
+                        Iniciar sesión
+                      </button>
+                    </div>
 
-        {modoInvitado && (
-          <form className="space-y-4 text-sm">
-            <div className="grid grid-cols-[120px_1fr] items-center gap-2">
-              <label className="text-sm font-medium" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>Tratamiento:</label>
-              <div className="flex gap-4">
-                {['Sr.', 'Sra.'].map((valor) => (
-                  <label key={valor} className="flex items-center gap-1" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
-                    <input
-                      type="radio"
-                      name="tratamiento"
-                      value={valor}
-                      required
-                      checked={datosInvitado.tratamiento === valor}
-                      onChange={() => setDatosInvitado({ ...datosInvitado, tratamiento: valor })}
-                    />
-                    {valor}
-                  </label>
-                ))}
+                    {modoInvitado && (
+                      <form className="space-y-4 text-sm">
+                        <div className="grid grid-cols-[120px_1fr] items-center gap-2">
+                          <label className="text-sm font-medium" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>Tratamiento:</label>
+                          <div className="flex gap-4">
+                            {['Sr.', 'Sra.'].map((valor) => (
+                              <label key={valor} className="flex items-center gap-1" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
+                                <input
+                                  type="radio"
+                                  name="tratamiento"
+                                  value={valor}
+                                  required
+                                  checked={datosInvitado.tratamiento === valor}
+                                  onChange={() => setDatosInvitado({ ...datosInvitado, tratamiento: valor })}
+                                />
+                                {valor}
+                              </label>
+                            ))}
+                          </div>
+
+                          <label htmlFor="nombre" className="text-sm font-medium" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>Nombre:</label>
+                          <input id="nombre" type="text" required value={datosInvitado.nombre} onChange={(e) => setDatosInvitado({ ...datosInvitado, nombre: e.target.value })} className="w-full p-2 rounded bg-gray-100 text-black" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }} />
+
+                          <label htmlFor="apellidos" className="text-sm font-medium" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>Apellidos:</label>
+                          <input id="apellidos" type="text" required value={datosInvitado.apellidos} onChange={(e) => setDatosInvitado({ ...datosInvitado, apellidos: e.target.value })} className="w-full p-2 rounded bg-gray-100 text-black" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }} />
+
+                          <label htmlFor="correo" className="text-sm font-medium" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>Correo:</label>
+                          <input id="correo" type="email" required value={datosInvitado.correo} onChange={(e) => setDatosInvitado({ ...datosInvitado, correo: e.target.value })} className="w-full p-2 rounded bg-gray-100 text-black" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }} />
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={guardarDatosInvitado}
+                          className="w-full bg-[#990000] hover:bg-red-700 text-white py-2 rounded font-bold mt-2"
+                          style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
+                        >
+                          Continuar
+                        </button>
+                      </form>
+                    )}
+
+                    {mostrarLogin && (
+                      <form
+                        onSubmit={async (e) => {
+                          e.preventDefault()
+                          const email = (e.currentTarget.email as HTMLInputElement).value
+                          const password = (e.currentTarget.password as HTMLInputElement).value
+                          if (!email || !password) return
+                          try {
+                            const res = await fetch('/api/auth/login', {
+                              method: 'POST',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({ email, password }),
+                            })
+                            if (res.status === 200) {
+                              const { user, token } = await res.json()
+                              localStorage.setItem('usuario', JSON.stringify(user))
+                              localStorage.setItem('token', token)
+                              setUsuario(user)
+                              setDatosCompletados(true)
+                              setSeccionPagoAbierta(true)
+                              setMostrarLogin(false)
+                              setModoInvitado(false)
+                            } else {
+                              alert('Correo o contraseña incorrectos.')
+                            }
+                          } catch {
+                            alert('Error de conexión.')
+                          }
+                        }}
+                        className="space-y-4 text-sm mt-6"
+                      >
+                        <div className="grid grid-cols-[180px_1fr] items-center gap-2">
+                          <label htmlFor="email" className="text-sm font-medium" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>Correo electrónico:</label>
+                          <input name="email" type="email" id="email" required className="w-full p-2 rounded bg-gray-100 text-black" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }} />
+
+                          <label htmlFor="password" className="text-sm font-medium" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>Contraseña:</label>
+                          <div className="relative w-full" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
+                            <input
+                              name="password"
+                              type={mostrarPassword ? 'text' : 'password'}
+                              id="password"
+                              required
+                              className="w-full p-2 pr-10 rounded bg-gray-100 text-black"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => setMostrarPassword(!mostrarPassword)}
+                              className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-600"
+                            >
+                              {mostrarPassword ? <FaEye /> : <FaEyeSlash />}
+                            </button>
+                          </div>
+
+                        </div>
+
+                        <button type="submit" className="w-full bg-[#990000] hover:bg-red-700 text-white py-2 rounded font-bold" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
+                          Iniciar sesión y continuar
+                        </button>
+                      </form>
+                    )}
+                  </>
+                )}
               </div>
-
-              <label htmlFor="nombre" className="text-sm font-medium" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>Nombre:</label>
-              <input id="nombre" type="text" required value={datosInvitado.nombre} onChange={(e) => setDatosInvitado({ ...datosInvitado, nombre: e.target.value })} className="w-full p-2 rounded bg-gray-100 text-black" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }} />
-
-              <label htmlFor="apellidos" className="text-sm font-medium" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>Apellidos:</label>
-              <input id="apellidos" type="text" required value={datosInvitado.apellidos} onChange={(e) => setDatosInvitado({ ...datosInvitado, apellidos: e.target.value })} className="w-full p-2 rounded bg-gray-100 text-black" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }} />
-
-              <label htmlFor="correo" className="text-sm font-medium" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>Correo:</label>
-              <input id="correo" type="email" required value={datosInvitado.correo} onChange={(e) => setDatosInvitado({ ...datosInvitado, correo: e.target.value })} className="w-full p-2 rounded bg-gray-100 text-black" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }} />
-            </div>
-
-            <button
-              type="button"
-              onClick={guardarDatosInvitado}
-              className="w-full bg-[#990000] hover:bg-red-700 text-white py-2 rounded font-bold mt-2"
-              style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
-            >
-              Continuar
-            </button>
-          </form>
-        )}
-
-        {mostrarLogin && (
-          <form
-            onSubmit={async (e) => {
-              e.preventDefault()
-              const email = (e.currentTarget.email as HTMLInputElement).value
-              const password = (e.currentTarget.password as HTMLInputElement).value
-              if (!email || !password) return
-              try {
-                const res = await fetch('/api/auth/login', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ email, password }),
-                })
-                if (res.status === 200) {
-                  const { user, token } = await res.json()
-                  localStorage.setItem('usuario', JSON.stringify(user))
-                  localStorage.setItem('token', token)
-                  setUsuario(user)
-                  setDatosCompletados(true)
-                  setSeccionPagoAbierta(true)
-                  setMostrarLogin(false)
-                  setModoInvitado(false)
-                } else {
-                  alert('Correo o contraseña incorrectos.')
-                }
-              } catch {
-                alert('Error de conexión.')
-              }
-            }}
-            className="space-y-4 text-sm mt-6"
-          >
-            <div className="grid grid-cols-[180px_1fr] items-center gap-2">
-              <label htmlFor="email" className="text-sm font-medium" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>Correo electrónico:</label>
-              <input name="email" type="email" id="email" required className="w-full p-2 rounded bg-gray-100 text-black" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }} />
-
-              <label htmlFor="password" className="text-sm font-medium" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>Contraseña:</label>
-              <div className="relative w-full" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
-  <input
-    name="password"
-    type={mostrarPassword ? 'text' : 'password'}
-    id="password"
-    required
-    className="w-full p-2 pr-10 rounded bg-gray-100 text-black"
-  />
-  <button
-    type="button"
-    onClick={() => setMostrarPassword(!mostrarPassword)}
-    className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-600"
-  >
-    {mostrarPassword ? <FaEye /> : <FaEyeSlash />}
-  </button>
-</div>
-
-            </div>
-
-            <button type="submit" className="w-full bg-[#990000] hover:bg-red-700 text-white py-2 rounded font-bold" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
-              Iniciar sesión y continuar
-            </button>
-          </form>
-        )}
-      </>
-    )}
-  </div>
-)}
+            )}
 
           </div>
 
@@ -351,52 +361,52 @@ export default function CheckoutPage() {
         </div>
 
         <div className="bg-white text-black p-6 rounded shadow-md h-fit">
-  <h3 className="text-xl font-bold mb-5" >
-    RESUMEN DEL PEDIDO
-  </h3>
+          <h3 className="text-xl font-bold mb-5" >
+            RESUMEN DEL PEDIDO
+          </h3>
 
-  {carrito.length === 0 ? (
-    <p className="text-sm text-gray-700">Tu cesta está vacía.</p>
-  ) : (
-    <>
-      {carrito.map((item, index) => (
-        <div key={index} className="flex items-center gap-4 mb-4">
-          <img
-            src={item.imagen.startsWith('http') ? item.imagen : `/imagenes/productos/${item.imagen}`}
-            alt={item.nombre}
-            className="w-16 h-16 object-cover rounded border"
-          />
-          <div className="flex-1">
-            <p className="font-semibold text-sm" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
-              {item.nombre}
-            </p>
-            <p className="text-xs text-gray-600" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}>
-              Cantidad: {item.cantidad} × {item.precio.toFixed(2)} €
-            </p>
-          </div>
-          <p className="font-semibold text-sm" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
-            {(item.precio * item.cantidad).toFixed(2)} €
-          </p>
+          {carrito.length === 0 ? (
+            <p className="text-sm text-gray-700">Tu cesta está vacía.</p>
+          ) : (
+            <>
+              {carrito.map((item, index) => (
+                <div key={index} className="flex items-center gap-4 mb-4">
+                  <img
+                    src={item.imagen.startsWith('http') ? item.imagen : `/imagenes/productos/${item.imagen}`}
+                    alt={item.nombre}
+                    className="w-16 h-16 object-cover rounded border"
+                  />
+                  <div className="flex-1">
+                    <p className="font-semibold text-sm" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
+                      {item.nombre}
+                    </p>
+                    <p className="text-xs text-gray-600" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}>
+                      Cantidad: {item.cantidad} × {item.precio.toFixed(2)} €
+                    </p>
+                  </div>
+                  <p className="font-semibold text-sm" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
+                    {(item.precio * item.cantidad).toFixed(2)} €
+                  </p>
+                </div>
+              ))}
+
+              <hr className="my-4" />
+
+              <p className="text-sm text-gray-700 mb-2" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
+                Total de artículos: {totalArticulos}
+              </p>
+
+              <div className="mb-4">
+                <p className="text-base font-bold">{subtotal.toFixed(2)} €</p>
+                <p className="text-xs text-gray-400 mt-1" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>Impuestos incluidos</p>
+              </div>
+
+              <div className="mt-4 text-xs text-gray-600 space-y-1" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
+                <p>💳 Pago: 100% seguro</p>
+              </div>
+            </>
+          )}
         </div>
-      ))}
-
-      <hr className="my-4" />
-
-      <p className="text-sm text-gray-700 mb-2" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
-        Total de artículos: {totalArticulos}
-      </p>
-
-      <div className="mb-4">
-        <p className="text-base font-bold">{subtotal.toFixed(2)} €</p>
-        <p className="text-xs text-gray-400 mt-1" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>Impuestos incluidos</p>
-      </div>
-
-      <div className="mt-4 text-xs text-gray-600 space-y-1" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
-        <p>💳 Pago: 100% seguro</p>
-      </div>
-    </>
-  )}
-</div>
 
       </div>
 
