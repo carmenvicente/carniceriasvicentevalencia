@@ -86,38 +86,34 @@ export default function EditarProductosPage() {
     }
   }
 
-async function eliminarProductos() {
-  if (seleccionados.length > 0) {
-    if (confirm(`¿Seguro que quieres eliminar ${seleccionados.length} producto(s)?`)) {
-      try {
-        for (const id of seleccionados) {
-          const res = await fetch(`/api/productos/${id}`, {
-            method: 'DELETE',
-          })
-          if (!res.ok) {
-            const data = await res.json()
-            throw new Error(data.message || `Error al eliminar producto con ID ${id}`)
+  async function eliminarProductos() {
+    if (seleccionados.length > 0) {
+      if (confirm(`¿Seguro que quieres eliminar ${seleccionados.length} producto(s)?`)) {
+        try {
+          for (const id of seleccionados) {
+            const res = await fetch(`/api/productos/${id}`, {
+              method: 'DELETE',
+            })
+            if (!res.ok) {
+              const data = await res.json()
+              throw new Error(data.message || `Error al eliminar producto con ID ${id}`)
+            }
           }
-        }
 
-        // Recargar productos desde la base de datos
-        const res = await fetch('/api/productos')
-        if (!res.ok) throw new Error('Error al recargar productos')
-        const data = await res.json()
-        setProductos(data)
-        setSeleccionados([])
-        alert('Producto(s) eliminado(s) correctamente.')
-      } catch (error: any) {
-        console.error('❌ Error al eliminar:', error)
-        alert(`Error al eliminar producto(s): ${error.message}`)
+          const res = await fetch('/api/productos')
+          if (!res.ok) throw new Error('Error al recargar productos')
+          const data = await res.json()
+          setProductos(data)
+          setSeleccionados([])
+          alert('Producto(s) eliminado(s) correctamente.')
+        } catch (error: any) {
+          console.error('❌ Error al eliminar:', error)
+          alert(`Error al eliminar producto(s): ${error.message}`)
+        }
       }
     }
   }
-}
 
-
-
-  // Función para obtener grupo por id
   function getGrupo(id: number) {
     return productosPorSubcategoria.find(g => g.subcategoria_id === id)
   }
@@ -142,7 +138,7 @@ async function eliminarProductos() {
       </div>
 
       <div className="flex-grow">
-        <div className="max-w-screen-2xl mx-auto py-9">
+        <div className="max-w-screen-2xl mx-auto py-9 px-4"> {/* Añadido px-4 para padding en móvil */}
           {!modo && (
             <>
               <div className="flex flex-col md:flex-row gap-6 text-center mb-8 items-center justify-center">
@@ -180,37 +176,32 @@ async function eliminarProductos() {
                 )}
               </div>
 
-              {cargando && <p>Cargando productos...</p>}
-              {error && <p className="text-red-600">{error}</p>}
+              {cargando && <p className="text-center">Cargando productos...</p>}
+              {error && <p className="text-red-600 text-center">{error}</p>}
 
               {!cargando && !error && (
                 <>
-                  {/* Mostrar las otras subcategorías normales (1,2,3,4) */}
+                  {/* Mostrar las subcategorías 1,2,3,4 (Ternera, Cerdo, Cordero, Aves y Conejos) */}
                   {(() => {
-                    // Filtramos y nos quedamos solo con 4 subcategorías (2 filas x 2 columnas)
                     const subcategoriasFiltradas = productosPorSubcategoria
                       .filter(g => ![5, 6, 7].includes(g.subcategoria_id))
-                      .slice(0, 4) // coger solo 4 para hacer 2 filas de 2 subcategorías
+                      .sort((a, b) => a.subcategoria_id - b.subcategoria_id) // Asegurarse del orden
 
-                    // Agrupamos en pares (2 subcategorías por fila)
-                    const paresSubcategorias = []
-                    for (let i = 0; i < subcategoriasFiltradas.length; i += 2) {
-                      paresSubcategorias.push(subcategoriasFiltradas.slice(i, i + 2))
-                    }
-
-                    return paresSubcategorias.map((par, indexFila) => (
-                      <div key={indexFila} className="flex gap-4 mb-8">
-                        {par.map(grupo => (
+                    // Para móvil, cada subcategoría en una fila.
+                    // Para desktop, 2 subcategorías por fila.
+                    return (
+                      <div className="flex flex-col md:grid md:grid-cols-2 md:gap-4 mb-8">
+                        {subcategoriasFiltradas.map(grupo => (
                           <div
                             key={grupo.subcategoria_id}
-                            className="border rounded-lg p-4 shadow flex-1"
+                            className="border rounded-lg p-4 shadow flex-1 mb-4 md:mb-0" // Añadido mb-4 para espaciado en móvil
                             style={{ backgroundColor: 'rgb(22,22,22)', color: 'white' }}
                           >
                             <h2 className="text-lg font-semibold mb-10 text-center">
                               {grupo.subcategoria_nombre}
                             </h2>
 
-                            {/* Aquí ponemos grid con 4 columnas para los productos */}
+                            {/* Aquí ponemos grid con 2 columnas para los productos en móvil y 4 en desktop */}
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                               {grupo.productos.map(producto => {
                                 const estaSeleccionado = seleccionados.includes(producto.id)
@@ -219,8 +210,8 @@ async function eliminarProductos() {
                                     key={producto.id}
                                     onClick={() => toggleSeleccion(producto.id)}
                                     className={`rounded-lg overflow-hidden cursor-pointer transition
-                    ${estaSeleccionado ? 'border-4 border-gray-500 shadow-lg' : 'border'}
-                    hover:shadow-md`}
+                                      ${estaSeleccionado ? 'border-4 border-gray-500 shadow-lg' : 'border'}
+                                      hover:shadow-md`}
                                     style={{
                                       userSelect: 'none',
                                       backgroundColor: 'rgb(22,22,22)',
@@ -230,15 +221,14 @@ async function eliminarProductos() {
                                     title={estaSeleccionado ? 'Producto seleccionado' : 'Haz clic para seleccionar'}
                                   >
                                     <img
-  src={
-    producto.imagen.startsWith('http')
-      ? producto.imagen
-      : `/imagenes/productos/${producto.imagen}`
-  }
-  alt={producto.nombre}
-  className="w-full h-32 object-cover"
-/>
-
+                                      src={
+                                        producto.imagen.startsWith('http')
+                                          ? producto.imagen
+                                          : `/imagenes/productos/${producto.imagen}`
+                                      }
+                                      alt={producto.nombre}
+                                      className="w-full h-32 object-cover"
+                                    />
                                     <div
                                       className="p-2 text-center font-medium"
                                       style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
@@ -251,23 +241,20 @@ async function eliminarProductos() {
                             </div>
                           </div>
                         ))}
-
-                        {/* Si la fila tiene una sola subcategoría, rellenamos espacio */}
-                        {par.length === 1 && <div className="flex-1"></div>}
                       </div>
-                    ))
+                    );
                   })()}
 
-
-                  {/* Grupo Embutidos caseros (5) y Charcutería (7) lado a lado */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                  {/* Grupo Embutidos caseros (5) y Charcutería (7) */}
+                  {/* Ahora también se apilarán en móvil y se mostrarán lado a lado en desktop */}
+                  <div className="flex flex-col md:grid md:grid-cols-2 md:gap-8 mb-8">
                     {[5, 7].map(id => {
                       const grupo = getGrupo(id)
                       if (!grupo) return null
                       return (
                         <div
                           key={grupo.subcategoria_id}
-                          className="border rounded-lg p-4 shadow"
+                          className="border rounded-lg p-4 shadow mb-4 md:mb-0" // Añadido mb-4 para espaciado en móvil
                           style={{ backgroundColor: 'rgb(22,22,22)', color: 'white' }}
                         >
                           <h2 className="text-lg font-semibold mb-10 text-center">
@@ -281,8 +268,8 @@ async function eliminarProductos() {
                                   key={producto.id}
                                   onClick={() => toggleSeleccion(producto.id)}
                                   className={`rounded-lg overflow-hidden cursor-pointer transition
-                                  ${estaSeleccionado ? 'border-4 border-blue-500 shadow-lg' : 'border'}
-                                  hover:shadow-md`}
+                                    ${estaSeleccionado ? 'border-4 border-blue-500 shadow-lg' : 'border'}
+                                    hover:shadow-md`}
                                   style={{
                                     userSelect: 'none',
                                     backgroundColor: 'rgb(22,22,22)',
@@ -292,15 +279,14 @@ async function eliminarProductos() {
                                   title={estaSeleccionado ? 'Producto seleccionado' : 'Haz clic para seleccionar'}
                                 >
                                   <img
-  src={
-    producto.imagen.startsWith('http')
-      ? producto.imagen
-      : `/imagenes/productos/${producto.imagen}`
-  }
-  alt={producto.nombre}
-  className="w-full h-32 object-cover"
-/>
-
+                                    src={
+                                      producto.imagen.startsWith('http')
+                                        ? producto.imagen
+                                        : `/imagenes/productos/${producto.imagen}`
+                                    }
+                                    alt={producto.nombre}
+                                    className="w-full h-32 object-cover"
+                                  />
                                   <div
                                     className="p-2 text-center font-medium"
                                     style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
@@ -316,7 +302,7 @@ async function eliminarProductos() {
                     })}
                   </div>
 
-                  {/* Grupo Elaborados (6) abajo, ocupando todo el ancho, con grid 8 columnas */}
+                  {/* Grupo Elaborados (6) */}
                   {(() => {
                     const grupo = getGrupo(6)
                     if (!grupo) return null
@@ -336,8 +322,8 @@ async function eliminarProductos() {
                                 key={producto.id}
                                 onClick={() => toggleSeleccion(producto.id)}
                                 className={`rounded-lg overflow-hidden cursor-pointer transition
-                                ${estaSeleccionado ? 'border-4 border-blue-500 shadow-lg' : 'border'}
-                                hover:shadow-md`}
+                                  ${estaSeleccionado ? 'border-4 border-blue-500 shadow-lg' : 'border'}
+                                  hover:shadow-md`}
                                 style={{
                                   userSelect: 'none',
                                   backgroundColor: 'rgb(22,22,22)',
@@ -347,15 +333,14 @@ async function eliminarProductos() {
                                 title={estaSeleccionado ? 'Producto seleccionado' : 'Haz clic para seleccionar'}
                               >
                                 <img
-  src={
-    producto.imagen.startsWith('http')
-      ? producto.imagen
-      : `/imagenes/productos/${producto.imagen}`
-  }
-  alt={producto.nombre}
-  className="w-full h-32 object-cover"
-/>
-
+                                  src={
+                                    producto.imagen.startsWith('http')
+                                      ? producto.imagen
+                                      : `/imagenes/productos/${producto.imagen}`
+                                  }
+                                  alt={producto.nombre}
+                                  className="w-full h-32 object-cover"
+                                />
                                 <div
                                   className="p-2 text-center font-medium"
                                   style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}

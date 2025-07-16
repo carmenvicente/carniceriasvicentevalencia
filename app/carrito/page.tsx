@@ -53,7 +53,8 @@ export default function PaginaCarrito() {
           <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12 px-6">
             {/* Lista de productos */}
             <div className="flex-1 space-y-6">
-              <div className="grid grid-cols-[2fr_1fr_1fr_1fr] text-sm text-gray-400 font-bold border-b border-gray-600 pb-2 px-2" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
+              {/* Encabezados de la tabla (ocultos en móvil, visibles en sm+) */}
+              <div className="hidden sm:grid grid-cols-[2fr_1fr_1fr_1fr] text-sm text-gray-400 font-bold border-b border-gray-600 pb-2 px-2" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
                 <span>Producto</span>
                 <span>Precio</span>
                 <span>Cantidad</span>
@@ -61,8 +62,9 @@ export default function PaginaCarrito() {
               </div>
 
               {carrito.map(producto => (
-                <div key={producto.id} className="grid grid-cols-[2fr_1fr_1fr_1fr] items-center gap-x-4 bg-black/20 p-4 rounded">
-                  <div className="flex items-center gap-5">
+                <div key={producto.id} className="flex flex-col sm:grid sm:grid-cols-[2fr_1fr_1fr_1fr] items-start sm:items-center gap-x-4 bg-black/20 p-4 rounded">
+                  {/* Información del producto (imagen y nombre) */}
+                  <div className="flex items-center gap-5 mb-4 sm:mb-0">
                     <Image
                       src={producto.imagen.startsWith('http') ? producto.imagen : `/imagenes/productos/${producto.imagen}`}
                       alt={producto.nombre}
@@ -74,19 +76,32 @@ export default function PaginaCarrito() {
                     <p className="font-semibold text-sm">{producto.nombre}</p>
                   </div>
 
-                  <p className="text-[#990000] font-bold">{producto.precio.toFixed(2)} €</p>
+                  {/* PRECIO Y CANTIDAD EN LA MISMA FILA PARA MÓVIL */}
+                  <div className="flex items-center justify-between w-full sm:w-auto sm:block mb-2 sm:mb-0">
+                      {/* Precio por unidad */}
+                      <div className="mr-4 sm:mr-0"> {/* Añadido mr-4 para espacio en móvil */}
+                          <span className="sm:hidden text-gray-400 text-xs font-semibold mr-2">Precio:</span> {/* Etiqueta para móvil */}
+                          <p className="text-[#990000] font-bold inline-block sm:block">{producto.precio.toFixed(2)} €</p> {/* inline-block para que se junte con Cantidad en móvil */}
+                      </div>
 
-                  <div className="flex items-center">
-                    <button onClick={() => decrementar(producto.id)} className="px-2 py-1 hover:bg-gray-600 rounded-l">−</button>
-                    <div className="px-4 py-1">{producto.cantidad}</div>
-                    <button onClick={() => incrementar(producto.id)} className="px-2 py-1 hover:bg-gray-600 rounded-r">+</button>
+                      {/* Selector de cantidad */}
+                      <div className="flex items-center">
+                          <span className="sm:hidden text-gray-400 text-xs font-semibold mr-2">Cant.:</span> {/* Etiqueta para móvil más corta */}
+                          <button onClick={() => decrementar(producto.id)} className="px-2 py-1 hover:bg-gray-600 rounded-l transition-colors duration-200">–</button>
+                          <div className="px-4 py-1 border-y border-gray-600">{producto.cantidad}</div>
+                          <button onClick={() => incrementar(producto.id)} className="px-2 py-1 hover:bg-gray-600 rounded-r transition-colors duration-200">+</button>
+                      </div>
                   </div>
 
-                  <div className="flex justify-between items-center">
-                    <p className="font-bold">{(producto.precio * producto.cantidad).toFixed(2)} €</p>
+                  {/* Precio total por ítem y botón de eliminar */}
+                  <div className="flex justify-between items-center w-full sm:w-auto">
+                    <div>
+                        <span className="sm:hidden text-gray-400 text-xs font-semibold mr-2">Total:</span> {/* Etiqueta para móvil */}
+                        <p className="font-bold">{(producto.precio * producto.cantidad).toFixed(2)} €</p>
+                    </div>
                     <button
                       onClick={() => eliminarDelCarrito(producto.id)}
-                      className="ml-4 text-red-400 hover:text-red-600 text-sm"
+                      className="ml-4 text-red-400 hover:text-red-600 text-lg transition-colors duration-200"
                     >
                       ✕
                     </button>
@@ -94,7 +109,7 @@ export default function PaginaCarrito() {
                 </div>
               ))}
 
-              <Link href="/" className="inline-block mt-4 text-sm bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600">
+              <Link href="/" className="inline-block mt-4 text-sm bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors duration-200">
                 ← Seguir comprando
               </Link>
             </div>
@@ -120,7 +135,7 @@ export default function PaginaCarrito() {
               <Link href="/realizar-pedido">
                 <button
                   disabled={carrito.length === 0}
-                  className={`w-full font-bold py-2 rounded  ${
+                  className={`w-full font-bold py-2 rounded transition-colors duration-200 ${
                     carrito.length === 0
                       ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
                       : 'bg-[#990000] text-white hover:bg-red-700'
@@ -132,7 +147,7 @@ export default function PaginaCarrito() {
 
               <button
                 onClick={vaciarCarrito}
-                className="w-full mt-4 text-sm text-gray-400 hover:text-red-500" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
+                className="w-full mt-4 text-sm text-gray-400 hover:text-red-500 transition-colors duration-200" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
               >
                 Vaciar carrito
               </button>

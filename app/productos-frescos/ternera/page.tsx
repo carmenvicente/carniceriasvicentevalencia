@@ -10,7 +10,6 @@ import { useCarrito } from '@/app/contextos/CarritoContexto'
 import PopupCarrito from '@/app/componentes/PopupCarrito'
 import { createPortal } from 'react-dom'
 
-
 interface Producto {
   id: number
   nombre: string
@@ -27,8 +26,10 @@ export default function Ternera() {
   const [popupVisible, setPopupVisible] = useState(false)
   const [productoPopup, setProductoPopup] = useState<Producto | null>(null)
 
-
   const { añadirAlCarrito } = useCarrito()
+
+  // Estado para detectar el tamaño de la ventana y ajustar la vista de forma condicional
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     async function fetchProductos() {
@@ -50,6 +51,20 @@ export default function Ternera() {
       }
     }
     fetchProductos()
+
+    // Lógica para detectar el tamaño de la pantalla y establecer isMobile
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    // Establecer el estado inicial
+    handleResize();
+
+    // Añadir el event listener
+    window.addEventListener('resize', handleResize);
+
+    // Limpiar el event listener al desmontar el componente
+    return () => window.removeEventListener('resize', handleResize);
   }, [])
 
   const sortedProductos = useMemo(() => {
@@ -69,7 +84,6 @@ export default function Ternera() {
     setPopupVisible(true)
   }
 
-
   return (
     <>
       <Navbar />
@@ -78,15 +92,16 @@ export default function Ternera() {
         <div className="max-w-screen-xl mx-auto text-center px-4 mt-30">
           <h1 className="text-xl md:text-2xl font-bold text-white">Ternera</h1>
           <div className="mt-1 text-white text-sm">
-            <Link href="/" className="hover:text-gray-300 font-semibold" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600}}>Home</Link>
+            <Link href="/" className="hover:text-gray-300 font-semibold" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>Home</Link>
             <span className="mx-1">/</span>
-            <span className="font-semibold" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600}}>Ternera</span>
+            <span className="font-semibold" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>Ternera</span>
           </div>
         </div>
       </div>
 
       <div className={styles.pageContainer}>
-        <aside className={`${styles.sidebar} flex flex-col`}>
+        {/* Menú lateral: oculto en móvil, visible en md+ */}
+        <aside className={`${styles.sidebar} hidden md:flex flex-col`}>
           <h2 className="text-white text-lg mb-3 pl-4">PRODUCTOS FRESCOS</h2>
           <ul className="space-y-2 pl-4 text-left">
             {['TERNERA', 'CERDO', 'CORDERO', 'AVES Y CONEJOS'].map(cat => (
@@ -124,10 +139,11 @@ export default function Ternera() {
 
         <div className={styles.divider} />
 
-        <main className={styles.productContainer}>
-          <div className="w-full bg-[rgb(22,22,22)] py-3 mb-4">
-            <div className="max-w-screen-xl mx-auto px-4 flex items-center justify-between text-sm">
-              <div className="flex items-center space-x-3">
+        {/* Main productos: ocupa todo el ancho en móvil, y el espacio restante en escritorio */}
+        <main className={`${styles.productContainer} w-full md:w-auto`}>
+          <div className="w-full bg-[rgb(22,22,22)] py-3 mb-4 rounded-md">
+            <div className="max-w-screen-xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between space-y-2 md:space-y-0">
+              <div className="flex items-center space-x-3 hidden sm:flex">
                 <Image
                   src="/imagenes/iconos/aplicaciones.png"
                   alt="Ver en rejilla"
@@ -144,17 +160,18 @@ export default function Ternera() {
                   className={`cursor-pointer ${viewMode === 'list' ? 'opacity-100' : 'opacity-50'}`}
                   onClick={() => setViewMode('list')}
                 />
-                <span className="ml-3 text-white border-l border-gray-500 pl-3">
+                <span className="ml-3 text-white border-l border-gray-500 pl-3 text-xs md:text-sm">
                   Mostrando 1–{sortedProductos.length} de {sortedProductos.length}
                 </span>
               </div>
-              <div className="flex items-center space-x-4 text-white text-sm">
-                <label className="flex items-center space-x-1">
+
+              <div className="flex items-center space-x-4 text-white text-sm w-full sm:w-auto">
+                <label className="flex items-center space-x-1 w-full sm:w-auto">
                   <span>Ordenar:</span>
                   <select
                     value={sortOrder}
                     onChange={(e) => setSortOrder(e.target.value as typeof sortOrder)}
-                    className="bg-[rgb(22,22,22)] border border-gray-500 py-1 px-2 rounded text-white text-xs focus:outline-none"
+                    className="bg-[rgb(22,22,22)] border border-gray-500 py-1 px-2 rounded text-white text-xs sm:text-sm focus:outline-none w-full sm:w-auto"
                   >
                     <option className="bg-[rgb(22,22,22)] text-white">Relevancia</option>
                     <option className="bg-[rgb(22,22,22)] text-white">Precio ↑</option>
@@ -162,33 +179,37 @@ export default function Ternera() {
                   </select>
                 </label>
               </div>
-
             </div>
           </div>
 
-          {viewMode === 'grid' ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {/* Vista de productos */}
+          {/* Se usa isMobile para asegurar que la vista de rejilla se fuerce en móvil */}
+          {viewMode === 'grid' || isMobile ? (
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {sortedProductos.map(p => (
-                <div key={p.id} className={`${styles.productCard} flex flex-col justify-start h-full space-y-4 transition-transform hover:-translate-y-1`}>
+                <div key={p.id} className={`${styles.productCard} flex flex-col justify-start h-full space-y-2 sm:space-y-4 transition-transform hover:-translate-y-1`}> {/* Ajustado space-y para móvil */}
                   <Link href={`/detalle-productos/${p.id}`}>
                     <Image
                       src={p.imagen.startsWith('http') ? p.imagen : `/imagenes/productos/${p.imagen}`}
                       alt={p.nombre}
-                      width={320}
-                      height={200}
-                      className={`${styles.productImage} mx-auto rounded`}
+                      // Ajuste de tamaño de imagen para móvil (más grande)
+                      width={isMobile ? 400 : 320} // Más grande en móvil
+                      height={isMobile ? 250 : 200} // Más grande en móvil
+                      className={`${styles.productImage} mx-auto rounded w-full h-auto object-cover`} // Añadido w-full h-auto object-cover para responsividad
                       unoptimized={p.imagen.startsWith('http')}
                     />
                   </Link>
                   <div className="flex flex-col gap-[2px]">
-  <h2 className="font-semibold text-white text-left text-sm">{p.nombre}</h2>
-  <p className="font-bold text-[#990000] text-left text-sm">{p.precio.toFixed(2)}€</p>
-</div>
+                    {/* Ajuste de tamaño de nombre y precio para móvil (más pequeños) */}
+                    <h2 className="font-semibold text-white text-left text-sm sm:text-base">{p.nombre}</h2> {/* sm:text-base para desktop */}
+                    <p className="font-bold text-[#990000] text-left text-sm sm:text-base">{p.precio.toFixed(2)}€</p> {/* sm:text-base para desktop */}
+                  </div>
 
                   <button
                     onClick={() => handleAñadir(p)}
                     disabled={!p.stock}
-                    className={`mt-auto w-full rounded text-sm px-3 py-2 transition ${p.stock ? 'bg-gray-200 text-gray-800 hover:bg-[#990000] hover:text-white' : 'bg-gray-400 text-gray-600 cursor-not-allowed'}`}
+                    // Ajuste de tamaño de botón para móvil (más pequeño)
+                    className={`mt-auto w-full rounded text-xs sm:text-sm px-2 py-1 sm:px-3 sm:py-2 transition ${p.stock ? 'bg-gray-200 text-gray-800 hover:bg-[#990000] hover:text-white' : 'bg-gray-400 text-gray-600 cursor-not-allowed'}`}
                   >
                     Añadir a la cesta
                   </button>
@@ -242,9 +263,7 @@ export default function Ternera() {
           document.getElementById('contenedor-carrito')!
         )}
 
-
       <Footer />
-
     </>
   )
 }

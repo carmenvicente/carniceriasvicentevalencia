@@ -6,6 +6,13 @@
   min-height: 100vh;
   align-items: flex-start;
   color: #fff;
+  flex-wrap: wrap; /* Permite que los hijos se ajusten en móvil */
+}
+
+@media (max-width: 767px) {
+  .pageContainer {
+    background-color: #161616; /* Fondo más uniforme en móvil */
+  }
 }
 
 .sidebar {
@@ -21,15 +28,92 @@
 .productContainer {
   flex: 1;
   padding: 1.5rem;
-  max-width: calc(100% - 500px);
+  max-width: 100%; /* Por defecto ocupa todo el ancho */
+}
+
+@media (min-width: 768px) {
+  .productContainer {
+    max-width: calc(100% - 500px); /* Espacio para sidebar en escritorio */
+  }
 }
 
 .productCard {
+  background: rgba(0,0,0,0.9);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.7);
+  transition: transform 0.2s ease;
+}
+
+@media (max-width: 767px) {
+  .productCard {
+    padding: 1.5rem;
+  }
+}
+
+.productCardList {
   background: rgba(0,0,0,0.8);
   border-radius: 0.5rem;
-  padding: 0.75rem;
   box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+  padding: 1.5rem;
+  min-height: 260px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;.pageContainer {
+  display: flex;
+  background-color: rgb(22,22,22);
+  min-height: 100vh;
+  align-items: flex-start;
+  color: #fff;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 767px) {
+  .pageContainer {
+    background-color: #161616;
+  }
+}
+
+.sidebar {
+  width: 400px;
+  padding: 50px;
+}
+
+@media (max-width: 767px) {
+  .sidebar {
+    display: none; /* Ocultar sidebar en móvil */
+  }
+}
+
+.divider {
+  width: 1px;
+  background-color: #454545;
+}
+
+.productContainer {
+  flex: 1;
+  padding: 1.5rem;
+  max-width: 100%;
+}
+
+@media (min-width: 768px) {
+  .productContainer {
+    max-width: calc(100% - 500px);
+  }
+}
+
+.productCard {
+  background: rgba(0,0,0,0.9);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.7);
   transition: transform 0.2s ease;
+}
+
+@media (max-width: 767px) {
+  .productCard {
+    padding: 1.5rem;
+  }
 }
 
 .productCardList {
@@ -41,6 +125,17 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+}
+
+.productImage {
+  border-radius: 0.25rem;
+  object-fit: cover;
+}
+
+.productInfo {
+  align-items: flex-start;
+}
+
 }
 
 .productImage {

@@ -25,7 +25,6 @@ export default function CheckoutPage() {
   const subtotal = carrito.reduce((acc, item) => acc + item.precio * item.cantidad, 0)
 
   useEffect(() => {
-    // Restaurar carrito desde localStorage
     const carritoGuardado = localStorage.getItem('carrito')
     if (carritoGuardado) {
       try {
@@ -107,15 +106,13 @@ export default function CheckoutPage() {
     const body = JSON.stringify({ productos: carrito, email, metodoPago })
 
     try {
-      // --- ¡¡¡CAMBIO AQUÍ: LLAMADA DIRECTA A /api/pedidos!!! ---
-      const res = await fetch('/api/pedidos', { // <-- Ruta corregida y simplificada
+      const res = await fetch('/api/pedidos', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body,
       })
 
       if (!res.ok) {
-        // Mejorar el manejo de errores para mostrar el mensaje del servidor
         const errorData = await res.json();
         throw new Error(errorData.error || 'Fallo al procesar el pedido');
       }
@@ -128,13 +125,13 @@ export default function CheckoutPage() {
       localStorage.setItem('seccionPedido', 'pago')
 
       if (data?.url) {
-        window.location.href = data.url // Redirige a Stripe Checkout
+        window.location.href = data.url
       } else {
-        window.location.href = '/pedido-confirmado' // Para el método 'tienda' o manual, si tu API lo maneja así
+        window.location.href = '/pedido-confirmado'
       }
-    } catch (err: any) { // Tipado de error para acceder a 'message'
+    } catch (err: any) {
       console.error('Error al procesar el pedido:', err)
-      alert('Hubo un error al procesar el pedido: ' + err.message) // Muestra el mensaje de error de la API
+      alert('Hubo un error al procesar el pedido: ' + err.message)
     }
   }
 
@@ -155,6 +152,7 @@ export default function CheckoutPage() {
       </div>
 
       {/* CONTENIDO PRINCIPAL */}
+      {/* Ajustado el responsive de las columnas principales: una columna por defecto, dos en pantallas lg */}
       <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-10 bg-[rgb(22,22,22)] px-6 md:px-20 py-10">
         <div className="space-y-6">
 
@@ -186,9 +184,10 @@ export default function CheckoutPage() {
                 ) : (
                   // ❌ No logueado → Mostrar formulario completo
                   <>
-                    <div className="flex justify-center gap-4 mb-10">
+                    {/* Botones de Invitado/Login - Flex en móviles, gap ajustado */}
+                    <div className="flex flex-col sm:flex-row justify-center gap-4 mb-10">
                       <button
-                        className={`px-4 py-2 rounded text-sm font-semibold transition-colors 
+                        className={`px-4 py-2 rounded text-sm font-semibold transition-colors w-full sm:w-auto
                           ${modoInvitado ? 'bg-[#990000] text-white hover:bg-red-700' : 'bg-gray-100 text-[#990000] hover:bg-gray-200'}`}
                         onClick={() => { setModoInvitado(true); setMostrarLogin(false) }}
                         style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
@@ -197,7 +196,7 @@ export default function CheckoutPage() {
                       </button>
 
                       <button
-                        className={`px-4 py-2 rounded text-sm font-semibold transition-colors 
+                        className={`px-4 py-2 rounded text-sm font-semibold transition-colors w-full sm:w-auto
                           ${mostrarLogin ? 'bg-[#990000] text-white hover:bg-red-700' : 'bg-gray-100 text-[#990000] hover:bg-gray-200'}`}
                         onClick={() => { setMostrarLogin(true); setModoInvitado(false) }}
                         style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
@@ -208,7 +207,8 @@ export default function CheckoutPage() {
 
                     {modoInvitado && (
                       <form className="space-y-4 text-sm">
-                        <div className="grid grid-cols-[120px_1fr] items-center gap-2">
+                        {/* Ajuste para grid en móvil y desktop */}
+                        <div className="grid grid-cols-1 sm:grid-cols-[120px_1fr] items-center gap-2">
                           <label className="text-sm font-medium" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>Tratamiento:</label>
                           <div className="flex gap-4">
                             {['Sr.', 'Sra.'].map((valor) => (
@@ -278,7 +278,8 @@ export default function CheckoutPage() {
                         }}
                         className="space-y-4 text-sm mt-6"
                       >
-                        <div className="grid grid-cols-[180px_1fr] items-center gap-2">
+                        {/* Ajuste para grid en móvil y desktop */}
+                        <div className="grid grid-cols-1 sm:grid-cols-[180px_1fr] items-center gap-2">
                           <label htmlFor="email" className="text-sm font-medium" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>Correo electrónico:</label>
                           <input name="email" type="email" id="email" required className="w-full p-2 rounded bg-gray-100 text-black" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }} />
 
@@ -342,17 +343,28 @@ export default function CheckoutPage() {
               <div className="px-6 pb-6 pt-2">
                 <form onSubmit={handleSubmit} className="space-y-4 text-sm text-gray-800" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
                   <p className="text-sm text-gray-700">Selecciona tu método de pago:</p>
-                  {['tarjeta', 'apple', 'google', 'tienda'].map((m) => (
-                    <label key={m} className="flex items-center gap-2">
-                      <input type="radio" name="metodoPago" value={m} onChange={(e) => setMetodoPago(e.target.value)} required />
-                      {m === 'tarjeta' ? 'Tarjeta 💳' : m === 'apple' ? 'Apple Pay 🍎' : m === 'google' ? 'Google Pay 🔵' : 'Pagar al recoger 🏬'}
-                    </label>
-                  ))}
-                  <label className="flex items-center gap-2 text-xs text-gray-600">
-                    <input type="checkbox" required /> Estoy de acuerdo con los <a href="/informacionlegal/terminos-y-condiciones" className="text-gray-600 hover:underline"target="_blank" rel="noopener noreferrer">
-términos del servicio
-  </a> y los acepto sin reservas.
-                  </label>
+                  {/* Contenedor para los radio buttons, ahora se apilan en móvil y luego son flex */}
+                  <div className="flex flex-col gap-2"> {/* Modificado: flex-col para apilar en móvil */}
+                    {['tarjeta', 'apple', 'google', 'tienda'].map((m) => (
+                      <label key={m} className="flex items-center gap-2">
+                        <input type="radio" name="metodoPago" value={m} onChange={(e) => setMetodoPago(e.target.value)} required />
+                        {m === 'tarjeta' ? 'Tarjeta 💳' : m === 'apple' ? 'Apple Pay 🍎' : m === 'google' ? 'Google Pay 🔵' : 'Pagar al recoger 🏬'}
+                      </label>
+                    ))}
+                  </div>
+
+                  {/* LÍNEA DE TÉRMINOS Y CONDICIONES: MODIFICADA AQUÍ */}
+                  <div className="flex items-start text-xs text-gray-600" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
+                    <input type="checkbox" required className="mt-1 mr-2 flex-shrink-0" /> {/* Añadimos mt-1 para alinear con el texto */}
+                    <span>
+                      Estoy de acuerdo con los
+                      <Link href="/informacionlegal/terminos-y-condiciones" className="text-gray-600 hover:underline mx-1" target="_blank" rel="noopener noreferrer">
+                        términos del servicio
+                      </Link>
+                      los acepto sin reservas.
+                    </span>
+                  </div>
+
                   <button type="submit" className="w-full bg-green-700 hover:bg-green-600 text-white py-2 rounded font-bold">
                     Finalizar pedido
                   </button>
@@ -362,6 +374,8 @@ términos del servicio
           </div>
         </div>
 
+        {/* RESUMEN DEL PEDIDO */}
+        {/* En móvil, el resumen puede ir abajo del todo o ser menos prominente, pero aquí mantenemos la estructura original con responsive */}
         <div className="bg-white text-black p-6 rounded shadow-md h-fit">
           <h3 className="text-xl font-bold mb-5" >
             RESUMEN DEL PEDIDO
@@ -372,21 +386,21 @@ términos del servicio
           ) : (
             <>
               {carrito.map((item, index) => (
-                <div key={index} className="flex items-center gap-4 mb-4">
+                <div key={index} className="flex items-start gap-4 mb-4"> {/* items-start para que la imagen y texto se alineen arriba */}
                   <img
                     src={item.imagen.startsWith('http') ? item.imagen : `/imagenes/productos/${item.imagen}`}
                     alt={item.nombre}
-                    className="w-16 h-16 object-cover rounded border"
+                    className="w-16 h-16 object-cover rounded border flex-shrink-0" // flex-shrink-0 para que la imagen no se encoja
                   />
-                  <div className="flex-1">
-                    <p className="font-semibold text-sm" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
+                  <div className="flex-1 min-w-0"> {/* min-w-0 para permitir el encogimiento del texto */}
+                    <p className="font-semibold text-sm truncate" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}> {/* truncate para evitar desbordamiento del nombre */}
                       {item.nombre}
                     </p>
                     <p className="text-xs text-gray-600" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}>
                       Cantidad: {item.cantidad} × {item.precio.toFixed(2)} €
                     </p>
                   </div>
-                  <p className="font-semibold text-sm" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
+                  <p className="font-semibold text-sm flex-shrink-0" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}> {/* flex-shrink-0 para el precio final */}
                     {(item.precio * item.cantidad).toFixed(2)} €
                   </p>
                 </div>
@@ -409,7 +423,6 @@ términos del servicio
             </>
           )}
         </div>
-
       </div>
 
       <Footer />

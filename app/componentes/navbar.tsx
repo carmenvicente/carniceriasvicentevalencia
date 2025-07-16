@@ -30,6 +30,13 @@ export default function Navbar() {
   }[]>([])
   const inputRef = useRef<HTMLInputElement>(null)
 
+  // Estados para el menú móvil
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  // Las siguientes dos ya no controlan el despliegue en móvil, pero las mantenemos si se usan en otra lógica.
+  const [mobileFrescosOpen, setMobileFrescosOpen] = useState(false)
+  const [mobileElaboradosOpen, setMobileElaboradosOpen] = useState(false)
+
+
   // Detectar scroll
   useEffect(() => {
     const onScroll = () => setScrolling(window.scrollY > 50)
@@ -37,7 +44,7 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // Menú Frescos
+  // Menú Frescos (Escritorio - Hover)
   const handleFrescosEnter = () => {
     if (frescosTimer.current) clearTimeout(frescosTimer.current)
     setMenuFrescosOpen(true)
@@ -46,7 +53,7 @@ export default function Navbar() {
     frescosTimer.current = window.setTimeout(() => setMenuFrescosOpen(false), 500)
   }
 
-  // Menú Elaborados
+  // Menú Elaborados (Escritorio - Hover)
   const handleElaboradosEnter = () => {
     if (elaboradosTimer.current) clearTimeout(elaboradosTimer.current)
     setMenuElaboradosOpen(true)
@@ -58,7 +65,7 @@ export default function Navbar() {
   // Abrir/Cerrar buscador
   const toggleSearch = () => setSearchOpen(o => !o)
 
-  // Al abrir, enfocamos el input
+  // Al abrir el buscador, enfocar el input
   useEffect(() => {
     if (searchOpen) requestAnimationFrame(() => inputRef.current?.focus())
   }, [searchOpen])
@@ -83,24 +90,23 @@ export default function Navbar() {
   }, [searchQuery])
 
   const [hoverVisible, setHoverVisible] = useState(false)
-const { carrito } = useCarrito()
+  const { carrito } = useCarrito()
 
 
   return (
     <>
-      {/* Overlay de búsqueda */}
+      {/* Overlay de búsqueda (Mantiene su backdrop si searchOpen es true) */}
       <div
         className={`
           fixed top-0 left-0 w-full h-24 bg-white z-50 flex overflow-visible items-center justify-center px-4
           transform transition-transform duration-300 ease-out
           ${searchOpen ? 'translate-y-0' : '-translate-y-full'}
         `}
-
       >
         {/* Botón cerrar overlay */}
         <button
           onClick={toggleSearch}
-          className="text-2xl font-bold leading-none mr-4"
+          className="text-2xl font-bold leading-none mr-4 text-black"
           aria-label="Cerrar búsqueda"
         >
           ×
@@ -136,6 +142,7 @@ const { carrito } = useCarrito()
             href={`/busqueda?search=${encodeURIComponent(searchQuery)}`}
             className="absolute right-2 top-1/2 -translate-y-1/2 bg-[#990000] hover:bg-red-700 text-white p-2 rounded-full"
             aria-label="Buscar"
+            onClick={toggleSearch} // Cerrar el overlay de búsqueda al hacer clic
           >
             <Image
               src="/imagenes/iconos/busqueda.png"
@@ -148,8 +155,7 @@ const { carrito } = useCarrito()
         </div>
       </div>
 
-
-      {/* Dropdown de resultados */}
+      {/* Dropdown de resultados de búsqueda */}
       {searchOpen && searchResults.length > 0 && (
         <div className="fixed top-24 left-0 w-full bg-white z-50">
           <div className="w-full max-h-80 overflow-auto">
@@ -179,16 +185,15 @@ const { carrito } = useCarrito()
         </div>
       )}
 
-
-      {/* Backdrop semitransparente */}
-      {searchOpen && (
+      {/* Backdrop semitransparente (MODIFICADO) */}
+      {searchOpen && ( // Solo muestra el backdrop si el buscador está abierto
         <div
-          onClick={toggleSearch}
+          onClick={() => toggleSearch()} // Solo cierra el buscador al hacer clic
           className="fixed inset-0 bg-black/50 z-40"
         />
       )}
 
-      {/* Navbar */}
+      {/* Navbar principal */}
       <nav
         className={`
           fixed top-0 left-0 w-full py-0.5 transition-all duration-300 text-white
@@ -196,20 +201,40 @@ const { carrito } = useCarrito()
         `}
         style={{ zIndex: 30 }}
       >
-        <div className="flex items-center justify-between w-full px-4 text-xs font-semibold">
-          {/* Logo */}
-          <Link href="/" className="navbar-link">
+        <div className="flex items-center justify-between w-full px-4 text-xs font-semibold h-20">
+          {/* Icono de menú de hamburguesa (Móvil) */}
+          <div className="md:hidden flex items-center">
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="text-white p-2 focus:outline-none"
+              aria-label="Abrir menú"
+            >
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
+              </svg>
+            </button>
+          </div>
+
+          {/* Logo (Visible en todos los tamaños, pero más pequeño en móvil) */}
+          <Link href="/" className="navbar-link flex items-center">
             <Image
               src="/imagenes/logos/logoblancocolor.png"
               alt="Logo"
               width={190}
               height={200}
-              className="h-20"
+              className="h-10 w-auto object-contain md:h-20"
+              priority
             />
           </Link>
 
-          {/* Menú central */}
-          <ul className="flex-grow flex justify-center items-center space-x-6">
+          {/* Menú central (Escritorio) */}
+          <ul className="hidden md:flex flex-grow justify-center items-center space-x-6">
             <li>
               <Link href="/" className="navbar-link">INICIO</Link>
             </li>
@@ -279,7 +304,7 @@ const { carrito } = useCarrito()
             <li><Link href="/contacto" className="navbar-link">CONTACTO</Link></li>
           </ul>
 
-          {/* Iconos derecha */}
+          {/* Iconos a la derecha (Visible en todos los tamaños de pantalla) */}
           <div className="flex items-center space-x-3">
             <button
               onClick={toggleSearch}
@@ -287,40 +312,80 @@ const { carrito } = useCarrito()
               aria-label="Abrir búsqueda"
             >
               <Image
-              src="/imagenes/iconos/busqueda.png"
-              alt="Buscar"
-              width={16}
-              height={16}
-              className="navbar-icon h-6 w-6"
-            />
+                src="/imagenes/iconos/busqueda.png"
+                alt="Buscar"
+                width={16}
+                height={16}
+                className="navbar-icon h-6 w-6"
+              />
             </button>
             <PerfilMenu />
 
-          
-            
             <div
-  id="contenedor-carrito"
-  className="relative"
-  onMouseEnter={() => setHoverVisible(true)}
-  onMouseLeave={() => setHoverVisible(false)}
->
-  <Link href="/carrito" className="navbar-link">
-    <Image
-      src="/imagenes/iconos/carrito-de-compras.png"
-      alt="Cesta"
-      width={16}
-      height={16}
-      className="navbar-icon h-6 w-6"
-    />
-  </Link>
+              id="contenedor-carrito"
+              className="relative"
+              onMouseEnter={() => setHoverVisible(true)}
+              onMouseLeave={() => setHoverVisible(false)}
+            >
+              <Link href="/carrito" className="navbar-link">
+                <Image
+                  src="/imagenes/iconos/carrito-de-compras.png"
+                  alt="Cesta"
+                  width={16}
+                  height={16}
+                  className="navbar-icon h-6 w-6"
+                />
+              </Link>
 
-  <PopupCarrito visible={hoverVisible} />
-</div>
-
-
-
-
+              <PopupCarrito visible={hoverVisible} />
+            </div>
           </div>
+        </div>
+
+        {/* Menú Móvil (Overlay/Deslizamiento) */}
+        <div
+          className={`
+            fixed top-0 left-0 w-64 h-full bg-black text-white z-50 transform transition-transform duration-300 ease-in-out py-8
+            ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
+            md:hidden
+          `}
+        >
+          <div className="flex justify-end pr-4 mb-4">
+            <button
+              onClick={() => setMobileMenuOpen(false)}
+              className="text-2xl font-bold leading-none text-white"
+              aria-label="Cerrar menú"
+            >
+              ×
+            </button>
+          </div>
+          <ul className="flex flex-col space-y-4 px-4">
+            <li>
+              <Link href="/" className="block text-lg hover:text-[#990000]" onClick={() => setMobileMenuOpen(false)}>INICIO</Link>
+            </li>
+            <li>
+              <span className="block text-lg font-semibold mb-2">PRODUCTOS FRESCOS</span>
+              <ul className="pl-4 space-y-2">
+                <li><Link href="/productos-frescos/ternera" className="block text-base hover:text-[#990000]" onClick={() => setMobileMenuOpen(false)}>TERNERA</Link></li>
+                <li><Link href="/productos-frescos/cerdo" className="block text-base hover:text-[#990000]" onClick={() => setMobileMenuOpen(false)}>CERDO</Link></li>
+                <li><Link href="/productos-frescos/cordero" className="block text-base hover:text-[#990000]" onClick={() => setMobileMenuOpen(false)}>CORDERO</Link></li>
+                <li><Link href="/productos-frescos/avesyconejos" className="block text-base hover:text-[#990000]" onClick={() => setMobileMenuOpen(false)}>AVES Y CONEJOS</Link></li>
+              </ul>
+            </li>
+            <li>
+              <span className="block text-lg font-semibold mt-4 mb-2">PRODUCTOS ELABORADOS</span>
+              <ul className="pl-4 space-y-2">
+                <li><Link href="/productos-elaborados/embutidoscaseros" className="block text-base hover:text-[#990000]" onClick={() => setMobileMenuOpen(false)}>EMBUTIDOS CASEROS</Link></li>
+                <li><Link href="/productos-elaborados/elaborados" className="block text-base hover:text-[#990000]" onClick={() => setMobileMenuOpen(false)}>ELABORADOS</Link></li>
+              </ul>
+            </li>
+            <li>
+              <Link href="/charcuteria" className="block text-lg hover:text-[#990000]" onClick={() => setMobileMenuOpen(false)}>CHARCUTERÍA</Link>
+            </li>
+            <li>
+              <Link href="/contacto" className="block text-lg hover:text-[#990000]" onClick={() => setMobileMenuOpen(false)}>CONTACTO</Link>
+            </li>
+          </ul>
         </div>
       </nav>
     </>
