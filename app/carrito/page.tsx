@@ -1,3 +1,4 @@
+// app/carrito/PaginaCarrito.tsx
 'use client'
 
 import { useCarrito } from '@/app/contextos/CarritoContexto'
@@ -56,9 +57,9 @@ export default function PaginaCarrito() {
               {/* Encabezados de la tabla (ocultos en móvil, visibles en sm+) */}
               <div className="hidden sm:grid grid-cols-[2fr_1fr_1fr_1fr] text-sm text-gray-400 font-bold border-b border-gray-600 pb-2 px-2" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
                 <span>Producto</span>
-                <span>Precio</span>
-                <span>Cantidad</span>
-                <span>Precio total</span>
+                <span className="text-center">Precio</span>
+                <span className="text-center">Cantidad</span>
+                <span className="text-right">Precio total</span>
               </div>
 
               {carrito.map(producto => (
@@ -76,35 +77,40 @@ export default function PaginaCarrito() {
                     <p className="font-semibold text-sm">{producto.nombre}</p>
                   </div>
 
-                  {/* PRECIO Y CANTIDAD EN LA MISMA FILA PARA MÓVIL */}
-                  <div className="flex items-center justify-between w-full sm:w-auto sm:block mb-2 sm:mb-0">
-                      {/* Precio por unidad */}
-                      <div className="mr-4 sm:mr-0"> {/* Añadido mr-4 para espacio en móvil */}
-                          <span className="sm:hidden text-gray-400 text-xs font-semibold mr-2">Precio:</span> {/* Etiqueta para móvil */}
-                          <p className="text-[#990000] font-bold inline-block sm:block">{producto.precio.toFixed(2)} €</p> {/* inline-block para que se junte con Cantidad en móvil */}
-                      </div>
-
-                      {/* Selector de cantidad */}
-                      <div className="flex items-center">
-                          <span className="sm:hidden text-gray-400 text-xs font-semibold mr-2">Cant.:</span> {/* Etiqueta para móvil más corta */}
-                          <button onClick={() => decrementar(producto.id)} className="px-2 py-1 hover:bg-gray-600 rounded-l transition-colors duration-200">–</button>
-                          <div className="px-4 py-1 border-y border-gray-600">{producto.cantidad}</div>
-                          <button onClick={() => incrementar(producto.id)} className="px-2 py-1 hover:bg-gray-600 rounded-r transition-colors duration-200">+</button>
-                      </div>
-                  </div>
-
-                  {/* Precio total por ítem y botón de eliminar */}
-                  <div className="flex justify-between items-center w-full sm:w-auto">
-                    <div>
-                        <span className="sm:hidden text-gray-400 text-xs font-semibold mr-2">Total:</span> {/* Etiqueta para móvil */}
-                        <p className="font-bold">{(producto.precio * producto.cantidad).toFixed(2)} €</p>
+                  {/* PRECIO, CANTIDAD, PRECIO TOTAL y Botón ELIMINAR */}
+                  <div className="flex flex-col w-full sm:contents">
+                    {/* Precio por unidad - Visible en móvil con etiqueta, solo valor en desktop */}
+                    <div className="sm:text-center mb-2 sm:mb-0">
+                      <span className="sm:hidden text-gray-400 text-xs font-semibold mr-2">Precio:</span>
+                      <p className="text-[#990000] font-bold inline-block sm:block">{producto.precio.toFixed(2)} €</p>
                     </div>
-                    <button
-                      onClick={() => eliminarDelCarrito(producto.id)}
-                      className="ml-4 text-red-400 hover:text-red-600 text-lg transition-colors duration-200"
-                    >
-                      ✕
-                    </button>
+
+                    {/* Selector de cantidad - Ajustado para móvil y desktop */}
+                    {/* CAMBIO CLAVE AQUÍ: Etiqueta y sumatorio en la misma línea en móvil */}
+                    <div className="flex items-center justify-between w-full sm:w-auto sm:justify-center mb-2 sm:mb-0">
+                      <span className="sm:hidden text-gray-400 text-xs font-semibold mr-2">
+                        Cant.: <span className="text-white">{producto.cantidad}</span> {/* Sumatorio al lado de la etiqueta */}
+                      </span>
+                      <div className="flex items-center sm:ml-auto"> {/* sm:ml-auto para empujar a la derecha en desktop */}
+                        <button onClick={() => decrementar(producto.id)} className="px-2 py-1 hover:bg-gray-600 rounded-l transition-colors duration-200">–</button>
+                        <div className="px-4 py-1 border-y border-gray-600">{producto.cantidad}</div>
+                        <button onClick={() => incrementar(producto.id)} className="px-2 py-1 hover:bg-gray-600 rounded-r transition-colors duration-200">+</button>
+                      </div>
+                    </div>
+
+                    {/* Precio total por ítem y botón de eliminar - Alineación para desktop y móvil */}
+                    <div className="flex items-center justify-between w-full sm:w-auto sm:justify-end">
+                      <div className="sm:text-right">
+                        <span className="sm:hidden text-gray-400 text-xs font-semibold mr-2">Total:</span>
+                        <p className="font-bold inline-block sm:block">{(producto.precio * producto.cantidad).toFixed(2)} €</p>
+                      </div>
+                      <button
+                        onClick={() => eliminarDelCarrito(producto.id)}
+                        className="ml-4 text-red-400 hover:text-red-600 text-lg transition-colors duration-200"
+                      >
+                        ✕
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}

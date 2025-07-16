@@ -345,10 +345,10 @@ export default function CheckoutPage() {
                   <p className="text-sm text-gray-700">Selecciona tu método de pago:</p>
                   {/* Contenedor para los radio buttons, ahora se apilan en móvil y luego son flex */}
                   <div className="flex flex-col gap-2"> {/* Modificado: flex-col para apilar en móvil */}
-                    {['tarjeta', 'apple', 'google', 'tienda'].map((m) => (
+                    {['tarjeta', 'apple', 'tienda'].map((m) => (
                       <label key={m} className="flex items-center gap-2">
                         <input type="radio" name="metodoPago" value={m} onChange={(e) => setMetodoPago(e.target.value)} required />
-                        {m === 'tarjeta' ? 'Tarjeta 💳' : m === 'apple' ? 'Apple Pay 🍎' : m === 'google' ? 'Google Pay 🔵' : 'Pagar al recoger 🏬'}
+                        {m === 'tarjeta' ? 'Tarjeta 💳' : m === 'apple' ? 'Apple Pay ' : 'Pagar al recoger 🏬'}
                       </label>
                     ))}
                   </div>
