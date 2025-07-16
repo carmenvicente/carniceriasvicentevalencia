@@ -67,7 +67,7 @@ function PedidoConfirmadoContent() {
   return (
     <>
       <Navbar />
-      <div className="min-h-[90vh] bg-[rgb(22,22,22)] text-white flex flex-col items-center justify-center px-6 py-20">
+      <div className="min-h-[110vh] bg-[rgb(22,22,22)] text-white flex flex-col items-center justify-center px-6 py-20">
         {cargando ? (
           <p className="text-lg font-semibold" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>Confirmando tu pedido...</p>
         ) : error ? (

@@ -92,7 +92,7 @@ export default function Footer() {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mt-8 border-t border-gray-700 pt-4 px-6 text-xs text-gray-400">
         <div className="mb-4 md:mb-0 pl-10">
           <p style={font}>© {new Date().getFullYear()} Carnicerías Vicente Valencia. Todos los derechos reservados.</p>
-          <p className="mt-1" style={font}>Desarrollado por Carmen Vicente Crespo para el Trabajo Fin de Grado en Ingeniería de Telecomunicaciones</p>
+          <p className="mt-1" style={font}>Desarrollado por Carmen Vicente Crespo para el Trabajo Fin de Grado en Ingeniería de Tecnologías de Telecomunicación</p>
         </div>
         <div className="flex gap-2">
           <Image src="/imagenes/iconos/visa.png" alt="Visa" width={35} height={20} />

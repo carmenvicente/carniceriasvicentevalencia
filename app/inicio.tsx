@@ -64,16 +64,21 @@ export default function Inicio() {
           </div>
 
           {/* Columna Derecha: Imagen */}
-          <div className="md:w-1/2 flex items-center justify-center">
-            <Image
-              src="/imagenes/otros/dueno2.webp" 
-              alt="Imagen Carnicería J Vicente Valencia"
-              width={580}
-              height={450}
-              className="rounded-md object-cover "
-              style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500, objectPosition: "center top" }}
-            />
-          </div>
+          <div className="md:w-1/2 flex flex-col items-center justify-center">
+  <figure>
+    <Image
+      src="/imagenes/otros/dueno2.webp"
+      alt="Imagen Carnicería J Vicente Valencia"
+      width={580}
+      height={450}
+      className="rounded-md object-cover"
+      style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500, objectPosition: "center top" }}
+    />
+    <figcaption className="text-xs text-gray-500 mt-2 text-left" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}>
+      De toda la vida – Foto: Reyes Martínez
+    </figcaption>
+  </figure>
+</div>
         </div>
 
         {/* Sección de Productos Frescos */}
@@ -212,19 +217,23 @@ export default function Inicio() {
               </p>
             </div>
             <div className="transition-transform duration-300 hover:scale-105">
-              <Image
-                src="/imagenes/iconos/apreton-de-manos.png"
-                alt="Imagen icono de Atención al Cliente"
-                width={32}
-                height={32}
-                style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}
-                className="mx-auto mb-2"
-              />
-              <h6 className="text-base font-semibold">Atención al Cliente</h6>
-              <p className="text-sm mt-2" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}>
-                Resolvemos tus dudas vía WhatsApp o llamada
-              </p>
-            </div>
+  <Image
+    src="/imagenes/iconos/apreton-de-manos.png"
+    alt="Imagen icono de Atención al Cliente"
+    width={32}
+    height={32}
+    style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}
+    className="mx-auto mb-2"
+  />
+  <h6 className="text-base font-semibold">Atención al Cliente</h6>
+  <p className="text-sm mt-2" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}>
+    Resolvemos tus dudas vía{' '}
+    <Link href="/contacto" className="text-white hover:underline">
+      WhatsApp o llamada
+    </Link>
+  </p>
+</div>
+
           </div>
         </div>
       </div>

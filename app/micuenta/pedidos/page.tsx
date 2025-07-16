@@ -137,18 +137,18 @@ export default function PedidosUsuarioPage() {
             {pedidos.map(pedido => (
               <li key={pedido.id} className="border border-gray-200 rounded-lg p-5 bg-white hover:shadow-md transition-shadow">
                 <div className="flex justify-between items-center mb-3">
-                  <p className="text-lg font-semibold text-gray-900">Pedido #{pedido.id}</p>
+                  <p className="text-lg font-semibold text-gray-900">Pedido </p>
                   <p className={`font-medium ${pedido.estado === 'listo' ? 'text-green-600' : pedido.estado === 'pagado' ? 'text-blue-600' : 'text-gray-600'}`}>
                     {renderEstado(pedido.estado)}
                   </p>
                 </div>
                 
-                <p className="text-sm text-gray-600 mb-2"><strong>Fecha del pedido:</strong> {new Date(pedido.fecha).toLocaleDateString()} a las {new Date(pedido.fecha).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
-                <p className="text-sm text-gray-600 mb-4"><strong>Total pagado:</strong> <span className="font-bold text-gray-900">{pedido.total.toFixed(2)} €</span></p>
+                <p className="text-sm text-gray-600 mb-2" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}><strong>Fecha del pedido:</strong> {new Date(pedido.fecha).toLocaleDateString()} a las {new Date(pedido.fecha).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                <p className="text-sm text-gray-600 mb-4"style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}><strong>Total pagado:</strong> <span className="font-bold text-gray-900">{pedido.total.toFixed(2)} €</span></p>
 
                 <div className="mb-3">
                   <h3 className="text-base font-semibold text-gray-700 mb-2">Artículos:</h3>
-                  <ul className="list-disc list-inside text-sm text-gray-700 space-y-1">
+                  <ul className="list-disc list-inside text-sm text-gray-700 space-y-1" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
                     {pedido.productos && pedido.productos.length > 0 ? (
                       pedido.productos.map((item, index) => (
                         <li key={index}>

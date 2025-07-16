@@ -349,7 +349,9 @@ export default function CheckoutPage() {
                     </label>
                   ))}
                   <label className="flex items-center gap-2 text-xs text-gray-600">
-                    <input type="checkbox" required /> Estoy de acuerdo con los términos del servicio y los acepto sin reservas.
+                    <input type="checkbox" required /> Estoy de acuerdo con los <a href="/informacionlegal/terminos-y-condiciones" className="text-gray-600 hover:underline"target="_blank" rel="noopener noreferrer">
+términos del servicio
+  </a> y los acepto sin reservas.
                   </label>
                   <button type="submit" className="w-full bg-green-700 hover:bg-green-600 text-white py-2 rounded font-bold">
                     Finalizar pedido
