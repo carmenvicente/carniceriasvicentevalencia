@@ -1,7 +1,7 @@
 // app/busqueda/BusquedaClient.tsx
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import Navbar from '@/app/componentes/navbar'
 import Footer from '@/app/componentes/footer'
 import Link from 'next/link'
@@ -23,6 +23,8 @@ export default function BusquedaClient({ initialQuery }: { initialQuery: string 
   const [loading, setLoading] = useState(true)
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
 
+  const [isMobile, setIsMobile] = useState(false);
+
   useEffect(() => {
     async function fetchResults() {
       setLoading(true)
@@ -30,34 +32,42 @@ export default function BusquedaClient({ initialQuery }: { initialQuery: string 
         cache: 'no-store',
       })
       const data: Producto[] = await res.json()
-      console.log("Resultados:", data) // 👈 Esto
+      console.log("Resultados:", data)
       setProductos(data)
       setLoading(false)
     }
     fetchResults()
+
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    handleResize();
+
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
   }, [query])
 
   return (
     <>
       <Navbar />
 
-      {/* Cabecera */}
       <div className="w-full py-3 bg-[rgb(22,22,22)]">
         <div className="max-w-screen-xl mx-auto text-center px-4 mt-30">
           <h1 className="text-xl md:text-2xl font-bold text-white">
             Resultados de “{query}”
           </h1>
           <div className="mt-1 text-white text-sm">
-            <Link href="/" className="hover:text-gray-300">Home</Link>
+            <Link href="/" className="hover:text-gray-300 font-semibold">Home</Link>
             <span className="mx-1">/</span>
-            <span>Búsqueda</span>
+            <span className="font-semibold">Búsqueda</span>
           </div>
         </div>
       </div>
 
       <div className={styles.pageContainer}>
-        {/* Sidebar idéntico al de Ternera */}
-        <aside className={`${styles.sidebar} flex flex-col`}>
+        <aside className={`${styles.sidebar} hidden md:flex flex-col`}>
           <h2 className="text-white text-lg mb-3 pl-4">PRODUCTOS FRESCOS</h2>
           <ul className="space-y-2 pl-4 text-left">
             {['TERNERA', 'CERDO', 'CORDERO', 'AVES Y CONEJOS'].map(cat => (
@@ -98,12 +108,10 @@ export default function BusquedaClient({ initialQuery }: { initialQuery: string 
 
         <div className={styles.divider} />
 
-        {/* Contenedor principal */}
-        <main className={styles.productContainer}>
-          {/* Toolbar: selector grid/list */}
-          <div className="w-full bg-[rgb(22,22,22)] py-3 mb-4">
-            <div className="max-w-screen-xl mx-auto px-4 flex items-center justify-between text-sm">
-              <div className="flex items-center space-x-3">
+        <main className={`${styles.productContainer} w-full md:w-auto`}>
+          <div className="w-full bg-[rgb(22,22,22)] py-3 mb-4 rounded-md">
+            <div className="max-w-screen-xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between space-y-2 md:space-y-0">
+              <div className="flex items-center space-x-3 hidden sm:flex">
                 <Image
                   src="/imagenes/iconos/aplicaciones.png"
                   alt="Grid"
@@ -118,99 +126,99 @@ export default function BusquedaClient({ initialQuery }: { initialQuery: string 
                   className={`cursor-pointer ${viewMode === 'list' ? 'opacity-100' : 'opacity-50'}`}
                   onClick={() => setViewMode('list')}
                 />
-                <span className="ml-3 text-white border-l border-gray-500 pl-3">
-                  {loading ? '...' : `1–${productos.length} de ${productos.length}`}
+                <span className="ml-3 text-white border-l border-gray-500 pl-3 text-xs md:text-sm">
+                  {loading ? 'Cargando...' : `1–${productos.length} de ${productos.length}`}
                 </span>
               </div>
             </div>
           </div>
 
-          {/* Estado loading / no results */}
           {loading ? (
-            <p className="text-white">Cargando…</p>
+            <p className="text-white text-center">Cargando…</p>
           ) : productos.length === 0 ? (
-            <p className="text-white">No se encontraron productos.</p>
-          ) : viewMode === 'grid' ? (
-            /* GRID */
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {productos.map(p => (
-                <Link
-                  key={p.id}
-                  href={`/detalle-productos/${p.id}`}
-                  className={`${styles.productCard} flex flex-col justify-start h-full space-y-4 transition-transform hover:-translate-y-1`}
-                >
-                  <div>
-                    <Image
-                      src={p.imagen.startsWith('http') ? p.imagen : `/imagenes/productos/${p.imagen}`}
-                      alt={p.nombre}
-                      width={320}
-                      height={200}
-                      unoptimized={p.imagen.startsWith('http')} // IMPORTANTE PARA EVITAR PROBLEMAS DE DOMINIO
-                      className={`${styles.productImage} mx-auto rounded`}
-                    />
-
-                    <h2 className="mt-2 font-semibold text-white text-left text-sm">{p.nombre}</h2>
-                    <p className="mt-1 font-bold text-[#990000] text-left text-sm">
-                      {typeof p.precio === 'number' ? p.precio.toFixed(2) : Number(p.precio).toFixed(2)}€
-                    </p>
-                  </div>
-                  <button
-                    disabled={!p.stock}
-                    className={`mt-auto w-full rounded text-sm px-3 py-2 transition ${p.stock
-                        ? 'bg-gray-200 text-gray-800 hover:bg-[#990000] hover:text-white'
-                        : 'bg-gray-400 text-gray-600 cursor-not-allowed'
-                      }`}
-                  >
-                    Añadir a la cesta
-                  </button>
-                </Link>
-              ))}
-            </div>
+            <p className="text-white text-center">No se encontraron productos.</p>
           ) : (
-            /* LIST */
-            <div className="flex flex-col space-y-4">
-              {productos.map(p => (
-                <Link
-                  key={p.id}
-                  href={`/detalle-productos/${p.id}`}
-                  className={`${styles.productCardList} flex items-center justify-between p-4 bg-[rgba(0,0,0,0.8)] rounded-lg shadow-md transition-transform hover:-translate-y-1`}
-                >
-                  <Image
-                    src={p.imagen.startsWith('http') ? p.imagen : `/imagenes/productos/${p.imagen}`}
-                    alt={p.nombre}
-                    width={260}
-                    height={240}
-                    unoptimized={p.imagen.startsWith('http')} // IGUAL QUE ARRIBA
-                    className="rounded object-cover"
-                  />
+            viewMode === 'grid' || isMobile ? (
+              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {productos.map(p => (
+                  <Link
+                    key={p.id}
+                    href={`/detalle-productos/${p.id}`}
+                    className={`${styles.productCard} flex flex-col justify-start h-full space-y-2 sm:space-y-4 transition-transform hover:-translate-y-1`}
+                  >
+                    <div>
+                      <Image
+                        src={p.imagen.startsWith('http') ? p.imagen : `/imagenes/productos/${p.imagen}`}
+                        alt={p.nombre}
+                        width={isMobile ? 400 : 320}
+                        height={isMobile ? 250 : 200}
+                        className={`${styles.productImage} mx-auto rounded w-full h-auto object-cover`}
+                        unoptimized={p.imagen.startsWith('http')}
+                      />
 
-                  <div className="flex-1 px-4 text-left">
-                    <h2 className="font-semibold text-white text-lg">{p.nombre}</h2>
-                    <p className="text-gray-300 text-sm mt-1">{p.descripcion}</p>
-                  </div>
-                  <div className="product-info flex flex-col space-y-5 border-l border-gray-700 pl-4">
-                    <p className="text-[#990000] font-bold text-lg">
-                      {typeof p.precio === 'number' ? p.precio.toFixed(2) : Number(p.precio).toFixed(2)}€
-                    </p>
-                    <p className="text-white font-medium text-sm">
-                      Disponibilidad:{' '}
-                      <span className={p.stock ? 'text-[#00994a]' : 'text-gray-400'}>
-                        {p.stock ? 'En Stock' : 'Sin Stock'}
-                      </span>
-                    </p>
+                      <h2 className="mt-2 font-semibold text-white text-left text-sm sm:text-base">{p.nombre}</h2>
+                      <p className="mt-1 font-bold text-[#990000] text-left text-sm sm:text-base">
+                        {typeof p.precio === 'number' ? p.precio.toFixed(2) : Number(p.precio).toFixed(2)}€
+                      </p>
+                    </div>
                     <button
                       disabled={!p.stock}
-                      className={`w-full rounded text-sm px-3 py-2 transition ${p.stock
+                      className={`mt-auto w-full rounded text-xs sm:text-sm px-2 py-1 sm:px-3 sm:py-2 transition ${p.stock
                           ? 'bg-gray-200 text-gray-800 hover:bg-[#990000] hover:text-white'
                           : 'bg-gray-400 text-gray-600 cursor-not-allowed'
                         }`}
                     >
                       Añadir a la cesta
                     </button>
-                  </div>
-                </Link>
-              ))}
-            </div>
+                  </Link>
+                ))}
+              </div>
+            ) : (
+              /* LIST */
+              <div className="flex flex-col space-y-4">
+                {productos.map(p => (
+                  <Link
+                    key={p.id}
+                    href={`/detalle-productos/${p.id}`}
+                    className={`${styles.productCardList} flex items-center justify-between p-4 bg-[rgba(0,0,0,0.8)] rounded-lg shadow-md transition-transform hover:-translate-y-1`}
+                  >
+                    <Image
+                      src={p.imagen.startsWith('http') ? p.imagen : `/imagenes/productos/${p.imagen}`}
+                      alt={p.nombre}
+                      width={260}
+                      height={240}
+                      unoptimized={p.imagen.startsWith('http')}
+                      className="rounded object-cover"
+                    />
+
+                    <div className="flex-1 px-4 text-left">
+                      <h2 className="font-semibold text-white text-lg">{p.nombre}</h2>
+                      <p className="text-gray-300 text-sm mt-1">{p.descripcion}</p>
+                    </div>
+                    <div className="product-info flex flex-col space-y-5 border-l border-gray-700 pl-4">
+                      <p className="text-[#990000] font-bold text-lg">
+                        {typeof p.precio === 'number' ? p.precio.toFixed(2) : Number(p.precio).toFixed(2)}€
+                      </p>
+                      <p className="text-white font-medium text-sm">
+                        Disponibilidad:{' '}
+                        <span className={p.stock ? 'text-[#00994a]' : 'text-gray-400'}>
+                          {p.stock ? 'En Stock' : 'Sin Stock'}
+                        </span>
+                      </p>
+                      <button
+                        disabled={!p.stock}
+                        className={`w-full rounded text-sm px-3 py-2 transition ${p.stock
+                            ? 'bg-gray-200 text-gray-800 hover:bg-[#990000] hover:text-white'
+                            : 'bg-gray-400 text-gray-600 cursor-not-allowed'
+                          }`}
+                      >
+                        Añadir a la cesta
+                      </button>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )
           )}
         </main>
       </div>

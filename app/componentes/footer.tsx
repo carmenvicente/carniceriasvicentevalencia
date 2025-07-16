@@ -37,7 +37,7 @@ export default function Footer() {
             <ul className="text-sm font-semibold" style={font}>
               <li><Link href="/" className="hover:underline">🏠 Inicio</Link></li>
               <li><Link href="/productos-frescos/ternera" className="hover:underline">🛒 Productos</Link></li>
-              <li><Link href="/pedido" className="hover:underline">📦 Haz tu pedido</Link></li>
+              <li><Link href="/realizar-pedido" className="hover:underline">📦 Haz tu pedido</Link></li>
               <li><Link href="/micuenta" className="hover:underline">👤 Mi cuenta</Link></li>
             </ul>
           </div>
