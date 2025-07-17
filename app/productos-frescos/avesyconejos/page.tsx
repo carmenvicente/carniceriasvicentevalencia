@@ -205,7 +205,7 @@ export default function Avesyconejos() {
                   </Link>
                   <div className="flex flex-col gap-[2px] px-2">
                     <h2 className="font-semibold text-white text-left text-sm sm:text-base">{p.nombre}</h2>
-                    <p className="font-bold text-[#990000] text-left text-sm sm:text-base">{p.precio.toFixed(2)}€</p>
+                    <p className="font-bold text-[#990000] text-left text-sm sm:text-base"> {p.precio.toFixed(2)}€{p.nombre === "Codorniz" ? "/unidad" : "/kg"}</p>
                   </div>
 
                   <button
@@ -249,7 +249,7 @@ export default function Avesyconejos() {
                     </p>
                   </div>
                   <div className="product-info flex flex-col space-y-5 border-l border-gray-700 pl-4">
-                    <p className="text-[#990000] font-bold text-lg">{p.precio.toFixed(2)}€</p>
+                    <p className="text-[#990000] font-bold text-lg"> {p.precio.toFixed(2)}€{p.nombre === "Codorniz" ? "/unidad" : "/kg"}</p>
                     <p
                       className="text-white font-medium text-sm"
                       style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}

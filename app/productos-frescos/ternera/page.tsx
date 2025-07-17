@@ -202,7 +202,7 @@ export default function Ternera() {
                   <div className="flex flex-col gap-[2px]">
                     {/* Ajuste de tamaño de nombre y precio para móvil (más pequeños) */}
                     <h2 className="font-semibold text-white text-left text-sm sm:text-base">{p.nombre}</h2> {/* sm:text-base para desktop */}
-                    <p className="font-bold text-[#990000] text-left text-sm sm:text-base">{p.precio.toFixed(2)}€</p> {/* sm:text-base para desktop */}
+                    <p className="font-bold text-[#990000] text-left text-sm sm:text-base">{p.precio.toFixed(2)}€/kg</p> {/* sm:text-base para desktop */}
                   </div>
 
                   <button
@@ -235,7 +235,7 @@ export default function Ternera() {
                     <p className="text-gray-300 text-sm mt-1" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>{p.descripcion}</p>
                   </div>
                   <div className="product-info flex flex-col space-y-5 border-l border-gray-700 pl-4">
-                    <p className="text-[#990000] font-bold text-lg">{p.precio.toFixed(2)}€</p>
+                    <p className="text-[#990000] font-bold text-lg">{p.precio.toFixed(2)}€/kg</p>
                     <p className="text-white font-medium text-sm" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
                       Disponibilidad:{' '}
                       <span className={p.stock ? 'text-[#00994a]' : 'text-gray-400'}>
