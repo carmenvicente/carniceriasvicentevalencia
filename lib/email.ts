@@ -101,7 +101,7 @@ export async function enviarCorreoConfirmacionPedido({
   tratamiento,
   total,
   productos,
-  metodoPago = 'tienda', // Agrega un valor predeterminado 'tienda'
+  metodoPago = 'tienda',
 }: {
   email: string;
   nombre?: string;
@@ -109,10 +109,12 @@ export async function enviarCorreoConfirmacionPedido({
   tratamiento?: string;
   total: number;
   productos?: ProductoPedido[];
-  metodoPago?: string; // Nuevo parámetro para el método de pago
+  metodoPago?: string;
 }) {
   const saludo = tratamiento === 'Sra.' ? 'Estimada' : 'Estimado';
-  const destinatario = nombre ? `${saludo} ${tratamiento || ''} ${nombre} ${apellidos || ''}` : 'Estimado cliente';
+  const destinatario = nombre
+    ? `${saludo} ${tratamiento || ''} ${nombre} ${apellidos || ''}`
+    : 'Estimado cliente';
 
   let productosHtml = '';
   if (productos && productos.length > 0) {
@@ -128,14 +130,22 @@ export async function enviarCorreoConfirmacionPedido({
           </tr>
         </thead>
         <tbody>
-          ${productos.map(item => `
+          ${productos
+            .map(
+              (item) => `
             <tr>
               <td style="padding: 8px; border: 1px solid #ddd;">${item.nombre}</td>
               <td style="padding: 8px; border: 1px solid #ddd;">${item.cantidad}</td>
-              <td style="padding: 8px; border: 1px solid #ddd; text-align: right;">${item.precio.toFixed(2)} €</td>
-              <td style="padding: 8px; border: 1px solid #ddd; text-align: right;">${(item.cantidad * item.precio).toFixed(2)} €</td>
+              <td style="padding: 8px; border: 1px solid #ddd; text-align: right;">${item.precio.toFixed(
+                2
+              )} €</td>
+              <td style="padding: 8px; border: 1px solid #ddd; text-align: right;">${(
+                item.cantidad * item.precio
+              ).toFixed(2)} €</td>
             </tr>
-          `).join('')}
+          `
+            )
+            .join('')}
         </tbody>
       </table>
     `;
@@ -147,13 +157,14 @@ export async function enviarCorreoConfirmacionPedido({
   let paymentInfo = '';
 
   if (metodoPago === 'tienda') {
-    subject = 'Confirmación de Pedido - ¡Listo para recoger en tienda!';
+    subject = 'Confirmación de Pedido - Pago para recoger en tienda';
     paymentInfo = `
-      <p>Has elegido el método de **pago al recoger en tienda**.</p>
+      <p>Has elegido el método de <strong>pago al recoger en tienda</strong>.</p>
       <p>Tu pedido estará listo en breve para que lo recojas en nuestra tienda física en horario comercial.</p>
       <p style="margin-top: 20px;">Dirección: <strong>Av. de Castilla-la Mancha, N° 27, Bajo, 16003 Cuenca</strong></p>
     `;
   } else {
+    subject = 'Confirmación de Pedido - Pago recibido con éxito';
     paymentInfo = `
       <p>Tu pago se ha procesado con éxito.</p>
       <p>Si tienes alguna pregunta, no dudes en contactarnos.</p>
@@ -181,10 +192,11 @@ export async function enviarCorreoConfirmacionPedido({
 
   await enviarCorreo({
     to: email,
-    subject: subject,
+    subject,
     html,
   });
 }
+
 
 // 📩 Correo cuando el pedido esté listo para recoger (SIN CAMBIOS)
 export async function enviarCorreoPedidoListo({
