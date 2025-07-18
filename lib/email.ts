@@ -1,5 +1,3 @@
-// lib/email.ts
-
 import nodemailer from 'nodemailer';
 
 const transporter = nodemailer.createTransport({
@@ -89,10 +87,9 @@ export async function enviarCorreoCambioDatos(
 }
 
 // 📩 Correo de confirmación de pedido (CAMBIOS AQUÍ)
-// Añadimos el tipo para los productos esperados
 interface ProductoPedido {
-  id?: string; // id del producto, opcional
-  nombre: string; // Nombre del producto
+  id?: string;
+  nombre: string;
   cantidad: number;
   precio: number;
 }
@@ -103,19 +100,20 @@ export async function enviarCorreoConfirmacionPedido({
   apellidos,
   tratamiento,
   total,
-  productos, // ¡NUEVO PARÁMETRO!
+  productos,
+  metodoPago = 'tienda', // Agrega un valor predeterminado 'tienda'
 }: {
   email: string;
   nombre?: string;
   apellidos?: string;
   tratamiento?: string;
   total: number;
-  productos?: ProductoPedido[]; // ¡NUEVO TIPO!
+  productos?: ProductoPedido[];
+  metodoPago?: string; // Nuevo parámetro para el método de pago
 }) {
   const saludo = tratamiento === 'Sra.' ? 'Estimada' : 'Estimado';
   const destinatario = nombre ? `${saludo} ${tratamiento || ''} ${nombre} ${apellidos || ''}` : 'Estimado cliente';
 
-  // Generar la lista de productos para el correo
   let productosHtml = '';
   if (productos && productos.length > 0) {
     productosHtml = `
@@ -145,17 +143,33 @@ export async function enviarCorreoConfirmacionPedido({
     productosHtml = '<p>No se encontraron detalles de productos para este pedido.</p>';
   }
 
+  let subject = 'Confirmación de Pedido - Carnicería Vicente Valencia';
+  let paymentInfo = '';
+
+  if (metodoPago === 'tienda') {
+    subject = 'Confirmación de Pedido - ¡Listo para recoger en tienda!';
+    paymentInfo = `
+      <p>Has elegido el método de **pago al recoger en tienda**.</p>
+      <p>Tu pedido estará listo en breve para que lo recojas en nuestra tienda física en horario comercial.</p>
+      <p style="margin-top: 20px;">Dirección: <strong>Av. de Castilla-la Mancha, N° 27, Bajo, 16003 Cuenca</strong></p>
+    `;
+  } else {
+    paymentInfo = `
+      <p>Tu pago se ha procesado con éxito.</p>
+      <p>Si tienes alguna pregunta, no dudes en contactarnos.</p>
+    `;
+  }
 
   const html = `
     <div style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">
       <h2 style="color: #0056b3;">¡Gracias por tu compra!</h2>
       <p>${destinatario}, hemos recibido tu pedido correctamente y está en preparación.</p>
 
-      ${productosHtml} <p style="font-size: 1.1em; font-weight: bold; margin-top: 20px;">
+      ${productosHtml}
+      <p style="font-size: 1.1em; font-weight: bold; margin-top: 20px;">
         Importe total: <span style="color: #d9534f;">${total.toFixed(2)} €</span>
       </p>
-      <p>Recuerda que podrás recogerlo en nuestra tienda física en horario comercial.</p>
-      <p style="margin-top: 20px;">Dirección: <strong>Av. de Castilla-la Mancha, N° 27, Bajo, 16003 Cuenca</strong></p>
+      ${paymentInfo}
       <br/>
       <p>Un saludo,</p>
       <p><strong>Carnicería Vicente Valencia</strong></p>
@@ -167,7 +181,7 @@ export async function enviarCorreoConfirmacionPedido({
 
   await enviarCorreo({
     to: email,
-    subject: 'Confirmación de pedido - Carnicería Vicente Valencia',
+    subject: subject,
     html,
   });
 }

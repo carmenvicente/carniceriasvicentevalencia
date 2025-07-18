@@ -19,7 +19,7 @@ export default function PopupCarrito({ visible }: { visible: boolean }) {
 
       timerRef.current = setTimeout(() => {
         if (!hoverRef.current) setShow(false)
-      }, 5000)
+      }, 4000)
     }
   }, [visible, carrito])
 

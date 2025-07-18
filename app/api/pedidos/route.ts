@@ -1,8 +1,9 @@
-// app/api/pedidos/route.ts
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { neon } from '@neondatabase/serverless';
-import jwt from 'jsonwebtoken'; // Asegúrate de tener 'jsonwebtoken' instalado: npm install jsonwebtoken
+import jwt from 'jsonwebtoken';
+// import nodemailer from 'nodemailer'; // Elimina esta importación si ya tienes lib/email.ts
+import { enviarCorreoConfirmacionPedido } from '@/lib/email' // Importa la nueva función de envío de correo
 
 // Inicializa la conexión a la base de datos Neon
 const sql = neon(process.env.DATABASE_URL as string);
@@ -13,34 +14,52 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
 });
 
 // ******* VALIDACIÓN CRÍTICA DE JWT_SECRET *******
-// Aseguramos que JWT_SECRET siempre venga del entorno.
-// Si process.env.JWT_SECRET no está definido, lanzamos un error explícito.
 const JWT_SECRET = process.env.JWT_SECRET;
 if (!JWT_SECRET) {
-  // Este error se lanzará al iniciar el servidor si la variable no está configurada.
-  // Es mejor que un error de "invalid signature" en tiempo de ejecución.
   throw new Error('JWT_SECRET no está definido en las variables de entorno. Por favor, configúralo.');
 }
 // *************************************************
 
-// Define una interfaz para el payload de tu JWT
+// ******* Configuración de Nodemailer - Ya no es necesaria aquí si usas lib/email.ts *******
+// const EMAIL_USER = process.env.EMAIL_USER;
+// const EMAIL_PASS = process.env.EMAIL_PASS;
+// const EMAIL_HOST = process.env.EMAIL_HOST || 'smtp.gmail.com';
+// const EMAIL_PORT = process.env.EMAIL_PORT ? parseInt(process.env.EMAIL_PORT) : 587;
+
+// if (!EMAIL_USER || !EMAIL_PASS) {
+//     console.warn('⚠️ EMAIL_USER o EMAIL_PASS no están definidos. Los correos no se enviarán.');
+// }
+
+// const transporter = nodemailer.createTransport({
+//     host: EMAIL_HOST,
+//     port: EMAIL_PORT,
+//     secure: EMAIL_PORT === 465,
+//     auth: {
+//         user: EMAIL_USER,
+//         pass: EMAIL_PASS,
+//     },
+// });
+
+// Función para enviar correo de confirmación - Reemplazada por enviarCorreoConfirmacionPedido de lib/email.ts
+// async function sendConfirmationEmail(toEmail: string, orderDetails: any) {
+// ... (código anterior de sendConfirmationEmail)
+// }
+// *************************************************
+
 interface JwtPayload {
   id: number;
   email: string;
-  role: string; // Añadido role para mayor claridad
-  nombre?: string; // Añadido nombre, apellidos, tratamiento
+  role: string;
+  nombre?: string;
   apellidos?: string;
   tratamiento?: string;
 }
 
-// ******************************************************
-// FUNCIÓN POST: Para crear nuevos pedidos (Stripe Checkout o pago en tienda)
-// ******************************************************
 export async function POST(req: Request) {
   try {
     console.log('API Route: POST request received for /api/pedidos (Creación de pedido)');
 
-    const { productos, email, metodoPago } = await req.json();
+    const { productos, email, metodoPago, nombre, apellidos, tratamiento } = await req.json(); // Añade nombre, apellidos, tratamiento
 
     if (!Array.isArray(productos) || productos.length === 0) {
       console.error('Validation Error: Productos inválidos o vacíos en la solicitud POST.');
@@ -55,9 +74,19 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Método de pago no proporcionado' }, { status: 400 });
     }
 
-    const total = productos.reduce((sum: number, item: any) => sum + item.precio * item.cantidad, 0);
+    function limpiarTexto(texto = '') {
+      return texto.replace(/'/g, "''").replace(/\n/g, ' ').trim();
+    }
 
-    // Si metodoPago es 'tienda', guarda el pedido directamente en la BD sin Stripe
+    const productosLimpios = productos.map((p: any) => ({
+      ...p,
+      nombre: limpiarTexto(p.nombre),
+      descripcion: limpiarTexto(p.descripcion || ''),
+    }));
+
+    const total = productosLimpios.reduce((sum: number, item: any) => sum + item.precio * item.cantidad, 0);
+
+    // Si metodoPago es 'tienda', guarda el pedido directamente en la BD y envía correo
     if (metodoPago === 'tienda') {
       await sql`
         INSERT INTO pedidos (email, metodo_pago, total, estado, creado_en, productos)
@@ -65,22 +94,33 @@ export async function POST(req: Request) {
           ${email},
           ${metodoPago},
           ${total},
-          'pagado_en_tienda', // Estado para pagos en tienda
+          'pagado_en_tienda',
           NOW(),
-          ${JSON.stringify(productos)}
+          ${JSON.stringify(productosLimpios)}
         )
       `;
       console.log('Pedido manual (tienda) guardado exitosamente.');
-      return NextResponse.json({ message: 'Pedido procesado para pago en tienda' });
+
+      // Enviar correo de confirmación para pedidos en tienda usando la función de lib/email.ts
+      await enviarCorreoConfirmacionPedido({
+          email: email,
+          nombre: nombre, // Pasa el nombre del usuario
+          apellidos: apellidos, // Pasa los apellidos del usuario
+          tratamiento: tratamiento, // Pasa el tratamiento del usuario
+          total: total,
+          productos: productosLimpios,
+      });
+
+      return NextResponse.json({ message: 'Pedido procesado para pago en tienda', redirect: '/pedido-confirmado-tienda' }); // Puedes redirigir a una página de confirmación específica
     }
 
     // Para Stripe
-    const line_items = productos.map((item: any) => ({
+    const line_items = productosLimpios.map((item: any) => ({
       price_data: {
         currency: 'eur',
         product_data: {
           name: item.nombre,
-          // images: [item.imagen],
+          // images: [item.imagen], // Asegúrate de que item.imagen sea una URL válida si la descomentas
         },
         unit_amount: Math.round(item.precio * 100),
       },
@@ -108,7 +148,7 @@ export async function POST(req: Request) {
         'pendiente',
         ${session.id},
         NOW(),
-        ${JSON.stringify(productos)}
+        ${JSON.stringify(productosLimpios)}
       )
     `;
 
@@ -139,8 +179,6 @@ export async function GET(req: Request) {
     let decodedToken: JwtPayload;
 
     try {
-      // Usa la constante JWT_SECRET que ya validamos al inicio del archivo
-      // Añadimos '!' para asegurar a TypeScript que no es undefined
       decodedToken = jwt.verify(token, JWT_SECRET!) as JwtPayload;
       console.log('Token verificado exitosamente para email:', decodedToken.email);
     } catch (jwtError: any) {

@@ -1,4 +1,3 @@
-// app/pedido-confirmado/page.tsx
 'use client'
 
 import { useEffect, useState, Suspense } from 'react'
@@ -20,49 +19,70 @@ export default function PedidoConfirmadoPage() {
 function PedidoConfirmadoContent() {
   const searchParams = useSearchParams()
   const sessionId = searchParams.get('session_id')
+  const metodoPagoParam = searchParams.get('metodo') // Nuevo: para detectar pago en tienda
+  const emailParam = searchParams.get('email') // Nuevo: email para pago en tienda
+  const totalParam = searchParams.get('total') // Nuevo: total para pago en tienda
 
   const [cargando, setCargando] = useState(true)
   const [email, setEmail] = useState('')
   const [total, setTotal] = useState<number | null>(null)
-  const [estadoPedido, setEstadoPedido] = useState<string>('') // Nuevo estado para almacenar el estado del pedido
+  const [estadoPedido, setEstadoPedido] = useState<string>('')
   const [error, setError] = useState(false)
 
   useEffect(() => {
-    const fetchPedidoDetails = async () => {
+    const handleConfirmation = async () => {
+      // Si es un pedido de "tienda" (recoger en tienda)
+      if (metodoPagoParam === 'tienda') {
+        console.log('Detectado método de pago: tienda');
+        if (emailParam && totalParam) {
+          setEmail(decodeURIComponent(emailParam));
+          setTotal(parseFloat(totalParam));
+          setEstadoPedido('pagado_en_tienda'); // O el estado que uses para "pago en tienda"
+          setCargando(false);
+          setError(false);
+        } else {
+          console.error('Faltan parámetros para la confirmación de pedido en tienda.');
+          setError(true);
+          setCargando(false);
+        }
+        return; // Salir de la función, ya hemos manejado el caso 'tienda'
+      }
+
+      // Si es un pedido de Stripe (se requiere sessionId)
       if (!sessionId) {
-        setError(true)
-        setCargando(false)
-        return
+        console.error('No se encontró session_id ni metodo=tienda. Error.');
+        setError(true);
+        setCargando(false);
+        return;
       }
 
       try {
-        // Llama a tu endpoint API para obtener los detalles del pedido confirmados por el webhook
         const res = await fetch('/api/pedidos/confirmar', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ sessionId }),
-        })
+        });
 
-        const data = await res.json()
+        const data = await res.json();
 
         if (res.ok) {
-          setEmail(data.email)
-          setTotal(data.total)
-          setEstadoPedido(data.estado) // Almacena el estado recibido del backend
+          setEmail(data.email);
+          setTotal(data.total);
+          setEstadoPedido(data.estado);
         } else {
-          console.error('Error del backend al confirmar pedido:', data.error);
-          setError(true)
+          console.error('Error del backend al confirmar pedido (Stripe):', data.error);
+          setError(true);
         }
       } catch (err) {
-        console.error('Error en el frontend al obtener detalles del pedido:', err)
-        setError(true)
+        console.error('Error en el frontend al obtener detalles del pedido (Stripe):', err);
+        setError(true);
       } finally {
-        setCargando(false)
+        setCargando(false);
       }
-    }
+    };
 
-    fetchPedidoDetails()
-  }, [sessionId]) // Dependencia para que se ejecute cuando el sessionId esté disponible
+    handleConfirmation();
+  }, [sessionId, metodoPagoParam, emailParam, totalParam]); // Añadir las nuevas dependencias
 
   return (
     <>
@@ -83,13 +103,16 @@ function PedidoConfirmadoContent() {
 
             {/* Mensaje condicional basado en el estado del pedido */}
             {estadoPedido === 'pagado' && (
-                <p className="text-green-400 font-semibold text-base" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>El pago se ha procesado con éxito.</p>
+              <p className="text-green-400 font-semibold text-base" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>El pago se ha procesado con éxito.</p>
+            )}
+            {estadoPedido === 'pagado_en_tienda' && ( // Nuevo mensaje para pago en tienda
+              <p className="text-blue-400 font-semibold text-base" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>Tu pedido ha sido registrado para pagar al recoger en tienda.</p>
             )}
             {estadoPedido === 'pendiente' && (
-                <p className="text-yellow-400 font-semibold text-base" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>Tu pedido está pendiente de confirmación de pago. Revisa tu correo.</p>
+              <p className="text-yellow-400 font-semibold text-base" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>Tu pedido está pendiente de confirmación de pago. Revisa tu correo.</p>
             )}
-            {estadoPedido && estadoPedido !== 'pagado' && estadoPedido !== 'pendiente' && (
-                <p className="text-gray-400 font-semibold text-base" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>Estado del pedido: {estadoPedido}</p>
+            {estadoPedido && estadoPedido !== 'pagado' && estadoPedido !== 'pendiente' && estadoPedido !== 'pagado_en_tienda' && (
+              <p className="text-gray-400 font-semibold text-base" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>Estado del pedido: {estadoPedido}</p>
             )}
 
 

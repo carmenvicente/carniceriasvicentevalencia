@@ -1,4 +1,3 @@
-// app/realizar-pedido/page.tsx
 'use client'
 
 import { useEffect, useState } from 'react'
@@ -42,7 +41,7 @@ export default function CheckoutPage() {
       setDatosCompletados(true)
       setSeccionPagoAbierta(true)
       setSeccionDatosAbierta(false)
-      localStorage.removeItem('seccionPedido')
+      localStorage.removeItem('seccionPedido') // Limpiar después de usar
       setTimeout(() => {
         const pago = document.getElementById('seccion-pago')
         if (pago) pago.scrollIntoView({ behavior: 'smooth' })
@@ -69,7 +68,7 @@ export default function CheckoutPage() {
     if (datosGuardados && !userStr) {
       setDatosInvitado(JSON.parse(datosGuardados))
     }
-  }, [])
+  }, [carrito.length, setCarrito])
 
   useEffect(() => {
     if (modoInvitado) {
@@ -83,6 +82,8 @@ export default function CheckoutPage() {
       setDatosCompletados(true)
       setSeccionPagoAbierta(true)
       localStorage.setItem('seccionPedido', 'pago')
+    } else {
+      alert('Por favor, completa todos los campos de tus datos personales.')
     }
   }
 
@@ -99,8 +100,14 @@ export default function CheckoutPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!metodoPago) return alert('Por favor, selecciona un método de pago.')
-    if (!datosCompletados) return alert('Por favor, completa tus datos personales.')
+    if (!metodoPago) {
+      alert('Por favor, selecciona un método de pago.')
+      return
+    }
+    if (!datosCompletados) {
+      alert('Por favor, completa tus datos personales.')
+      return
+    }
 
     const email = usuario?.email || datosInvitado.correo
     const body = JSON.stringify({ productos: carrito, email, metodoPago })
@@ -118,16 +125,18 @@ export default function CheckoutPage() {
       }
       const data = await res.json()
 
-      localStorage.setItem('carrito', JSON.stringify(carrito))
-      if (!usuario) {
-        localStorage.setItem('datosInvitado', JSON.stringify(datosInvitado))
-      }
-      localStorage.setItem('seccionPedido', 'pago')
+      // Limpiar el carrito y datos de invitado después de un pedido exitoso
+      localStorage.removeItem('carrito')
+      setCarrito([]) // Vaciar el carrito en el contexto
+      localStorage.removeItem('datosInvitado')
+      localStorage.removeItem('seccionPedido') // Limpiar cualquier estado de sección guardado
 
       if (data?.url) {
+        // Redirección para Stripe
         window.location.href = data.url
       } else {
-        window.location.href = '/pedido-confirmado'
+        // MODIFICACIÓN CLAVE AQUÍ: Pasar 'metodo=tienda' para que la página de confirmación lo detecte.
+        window.location.href = `/pedido-confirmado?metodo=tienda&email=${encodeURIComponent(email)}&total=${subtotal.toFixed(2)}`
       }
     } catch (err: any) {
       console.error('Error al procesar el pedido:', err)
@@ -152,7 +161,6 @@ export default function CheckoutPage() {
       </div>
 
       {/* CONTENIDO PRINCIPAL */}
-      {/* Ajustado el responsive de las columnas principales: una columna por defecto, dos en pantallas lg */}
       <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-10 bg-[rgb(22,22,22)] px-6 md:px-20 py-10">
         <div className="space-y-6">
 
@@ -375,7 +383,6 @@ export default function CheckoutPage() {
         </div>
 
         {/* RESUMEN DEL PEDIDO */}
-        {/* En móvil, el resumen puede ir abajo del todo o ser menos prominente, pero aquí mantenemos la estructura original con responsive */}
         <div className="bg-white text-black p-6 rounded shadow-md h-fit">
           <h3 className="text-xl font-bold mb-5" >
             RESUMEN DEL PEDIDO

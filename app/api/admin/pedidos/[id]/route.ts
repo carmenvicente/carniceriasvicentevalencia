@@ -12,7 +12,6 @@ export async function PUT(
   context: any // <-- ¡Usamos 'any' aquí para ver si el error de tipo desaparece!
 ) {
   try {
-    // Asegúrate de que context.params.id existe antes de usarlo
     const pedidoId = context.params?.id; // Accedemos a los parámetros a través de 'context.params'
     const { estado } = await req.json();
 
