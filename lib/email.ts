@@ -167,7 +167,9 @@ export async function enviarCorreoConfirmacionPedido({
     subject = 'Confirmación de Pedido - Pago recibido con éxito';
     paymentInfo = `
       <p>Tu pago se ha procesado con éxito.</p>
-      <p>Si tienes alguna pregunta, no dudes en contactarnos.</p>
+    <p>Tu pedido está en preparación y en breve estará listo para que lo recojas en nuestra tienda física en horario comercial.</p>
+    <p style="margin-top: 20px;">Dirección: <strong>Av. de Castilla-la Mancha, N° 27, Bajo, 16003 Cuenca</strong></p>
+    <p>Si tienes alguna pregunta, no dudes en contactarnos.</p>
     `;
   }
 
