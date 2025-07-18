@@ -5,34 +5,34 @@ import Image from 'next/image';
 import { FaWhatsapp } from 'react-icons/fa';
 
 export default function Footer() {
+  // Estilo común para la tipografía
   const font = { fontFamily: "'Inter', sans-serif", fontWeight: 500 };
 
   return (
     <footer className="bg-[#0a0a0a] text-white pt-10 pb-6">
-      {/* Añadido px-4 para padding en móviles, y px-6 para desktop */}
+      {/* Contenedor principal del footer con padding y diseño flexible para móviles y desktop */}
       <div className="max-w-screen-2xl mx-auto px-4 md:px-6 flex flex-col md:flex-row gap-x-20 gap-y-8">
 
-        {/* Logo + Nombre */}
-        {/* En móvil, el logo y el texto ahora estarán al 100% de ancho y centrados */}
+        {/* Logo y texto descriptivo */}
         <div className="w-full md:w-[200px] flex flex-col items-center text-center">
+          {/* Logo con tamaño fijo */}
           <Image
             src="/imagenes/logos/logoblancocolor.png"
             alt="Logo Carnicería"
             width={200}
             height={200}
           />
-          <p className="text-sm text-gray-500 font-semibold mt-2" style={font}> {/* Añadido mt-2 para un pequeño margen entre el logo y el texto */}
+          {/* Texto "Calidad desde 1975" con pequeño margen superior */}
+          <p className="text-sm text-gray-500 font-semibold mt-2" style={font}>
             Calidad desde 1975
           </p>
         </div>
 
-        {/* Secciones del footer */}
-        {/* Cambiado a grid para mejor distribución en móviles, y flex-wrap en desktop */}
-        <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 md:flex md:flex-wrap gap-x-8 gap-y-8 md:gap-x-20"> {/* Ajustado gap-x para móviles, y revertido a gap-x-20 para md */}
+        {/* Secciones del footer con distribución en grid para móviles y flex para desktop */}
+        <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 md:flex md:flex-wrap gap-x-8 gap-y-8 md:gap-x-20">
 
-          {/* Navegación */}
-          {/* w-full para ocupar todo el ancho en móvil, w-[200px] en desktop */}
-          <div className="w-full sm:w-auto"> {/* sm:w-auto permite que ocupe la mitad en sm, y md:w-[200px] en md */}
+          {/* Sección Navegación con enlaces principales */}
+          <div className="w-full sm:w-auto">
             <h4 className="text-lg font-bold mb-2">Navegación</h4>
             <ul className="text-sm font-semibold" style={font}>
               <li><Link href="/" className="hover:underline">🏠 Inicio</Link></li>
@@ -42,8 +42,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Contacto */}
-          {/* w-full para ocupar todo el ancho en móvil, w-[300px] en desktop */}
+          {/* Sección Contacto con dirección, teléfonos y correo */}
           <div className="w-full sm:w-auto">
             <h4 className="text-lg font-bold mb-2">Contacto</h4>
             <ul className="text-sm font-semibold" style={font}>
@@ -63,10 +62,9 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Horario */}
-          {/* w-full para ocupar todo el ancho en móvil, w-[200px] en desktop */}
+          {/* Sección Horario con días y horarios de apertura */}
           <div className="w-full sm:w-auto">
-            <h4 className="text-lg font-bold mb-2">Horario</h4> {/* Eliminado <br /> aquí, no es necesario */}
+            <h4 className="text-lg font-bold mb-2">Horario</h4>
             <ul className="text-sm font-semibold" style={font}>
               <li>⏰ Horario</li>
               <li>Lun–Jue: 9:30–15:00</li>
@@ -75,8 +73,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Información Legal */}
-          {/* w-full para ocupar todo el ancho en móvil, w-[220px] en desktop */}
+          {/* Sección Información Legal con enlaces a documentos legales */}
           <div className="w-full sm:w-auto">
             <h4 className="text-lg font-bold mb-2">Información Legal</h4>
             <ul className="text-sm font-semibold" style={font}>
@@ -89,16 +86,16 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Línea inferior */}
-      {/* Ajustado el padding horizontal y eliminado pl-10 que podía causar un desalineo en móvil */}
+      {/* Línea inferior con copyright y métodos de pago */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mt-8 border-t border-gray-700 pt-4 px-4 md:px-6 text-xs text-gray-400">
-        {/* Texto de copyright y desarrollo, centrado en móvil */}
+        {/* Texto de derechos reservados y créditos */}
         <div className="mb-4 md:mb-0 text-center md:text-left w-full md:w-auto">
           <p style={font}>© {new Date().getFullYear()} Carnicerías Vicente Valencia. Todos los derechos reservados.</p>
           <p className="mt-1" style={font}>Desarrollado por Carmen Vicente Crespo para el Trabajo Fin de Grado en Ingeniería de Tecnologías de Telecomunicación</p>
         </div>
-        {/* Iconos de tarjetas, centrados en móvil */}
-        <div className="flex gap-2 justify-center w-full md:w-auto"> {/* Añadido justify-center para centrar en móvil */}
+
+        {/* Iconos de métodos de pago aceptados, centrados en móvil */}
+        <div className="flex gap-2 justify-center w-full md:w-auto">
           <Image src="/imagenes/iconos/visa.png" alt="Visa" width={35} height={20} />
           <Image src="/imagenes/iconos/mastercard.png" alt="Mastercard" width={35} height={20} />
         </div>

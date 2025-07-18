@@ -9,42 +9,45 @@ import { PerfilMenu } from '@/app/componentes/PerfilMenu';
 import PopupCarrito from '@/app/componentes/PopupCarrito'
 import { useCarrito } from '@/app/contextos/CarritoContexto'
 
-
 export default function Navbar() {
   const router = useRouter()
+
+  // Estado para detectar si se ha hecho scroll > 50px (para cambiar el fondo navbar)
   const [scrolling, setScrolling] = useState(false)
+
+  // Estados para controlar si los menús desplegables de escritorio están abiertos
   const [menuFrescosOpen, setMenuFrescosOpen] = useState(false)
   const [menuElaboradosOpen, setMenuElaboradosOpen] = useState(false)
+
+  // Referencias para temporizadores que controlan la apertura/cierre retardado de los menús
   const frescosTimer = useRef<number | null>(null)
   const elaboradosTimer = useRef<number | null>(null)
 
-  // Estados para el buscador
+  // Estados y funciones para el buscador
+  const [searchOpen, setSearchOpen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [searchResults, setSearchResults] = useState<{ imagen: string; id: number; nombre: string }[]>([])
+  const inputRef = useRef<HTMLInputElement>(null)
+
   const doSearch = () => {
     toggleSearch()
     router.push(`/busqueda?search=${encodeURIComponent(searchQuery)}`)
   }
-  const [searchOpen, setSearchOpen] = useState(false)
-  const [searchQuery, setSearchQuery] = useState('')
-  const [searchResults, setSearchResults] = useState<{
-    imagen: string; id: number; nombre: string
-  }[]>([])
-  const inputRef = useRef<HTMLInputElement>(null)
 
-  // Estados para el menú móvil
+  // Estados para controlar menú móvil (visible/invisible)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  // Las siguientes dos ya no controlan el despliegue en móvil, pero las mantenemos si se usan en otra lógica.
+  // Estos dos ya no controlan despliegue móvil pero se mantienen (posible uso futuro)
   const [mobileFrescosOpen, setMobileFrescosOpen] = useState(false)
   const [mobileElaboradosOpen, setMobileElaboradosOpen] = useState(false)
 
-
-  // Detectar scroll
+  // Detectar scroll para cambiar fondo navbar
   useEffect(() => {
     const onScroll = () => setScrolling(window.scrollY > 50)
     window.addEventListener('scroll', onScroll)
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // Menú Frescos (Escritorio - Hover)
+  // Funciones para abrir/cerrar menú "Productos Frescos" con retardo para evitar cierres bruscos
   const handleFrescosEnter = () => {
     if (frescosTimer.current) clearTimeout(frescosTimer.current)
     setMenuFrescosOpen(true)
@@ -53,7 +56,7 @@ export default function Navbar() {
     frescosTimer.current = window.setTimeout(() => setMenuFrescosOpen(false), 500)
   }
 
-  // Menú Elaborados (Escritorio - Hover)
+  // Funciones para abrir/cerrar menú "Productos Elaborados" con retardo para evitar cierres bruscos
   const handleElaboradosEnter = () => {
     if (elaboradosTimer.current) clearTimeout(elaboradosTimer.current)
     setMenuElaboradosOpen(true)
@@ -62,15 +65,15 @@ export default function Navbar() {
     elaboradosTimer.current = window.setTimeout(() => setMenuElaboradosOpen(false), 500)
   }
 
-  // Abrir/Cerrar buscador
+  // Función para abrir/cerrar buscador
   const toggleSearch = () => setSearchOpen(o => !o)
 
-  // Al abrir el buscador, enfocar el input
+  // Cuando se abre el buscador, enfocar input
   useEffect(() => {
     if (searchOpen) requestAnimationFrame(() => inputRef.current?.focus())
   }, [searchOpen])
 
-  // Live-search
+  // Live search: obtiene resultados desde API al escribir en el input
   useEffect(() => {
     if (!searchQuery) {
       setSearchResults([])
@@ -84,18 +87,18 @@ export default function Navbar() {
       .then((data: { id: number; nombre: string; imagen: string }[]) => {
         setSearchResults(data)
       })
-      .catch(() => { /* cancelado */ })
+      .catch(() => { /* Cancelado o error ignorado */ })
 
     return () => ctl.abort()
   }, [searchQuery])
 
+  // Estado para controlar visibilidad popup carrito al pasar ratón
   const [hoverVisible, setHoverVisible] = useState(false)
   const { carrito } = useCarrito()
 
-
   return (
     <>
-      {/* Overlay de búsqueda (Mantiene su backdrop si searchOpen es true) */}
+      {/* Overlay buscador: aparece fijo arriba con animación de entrada/salida */}
       <div
         className={`
           fixed top-0 left-0 w-full h-24 bg-white z-50 flex overflow-visible items-center justify-center px-4
@@ -103,7 +106,7 @@ export default function Navbar() {
           ${searchOpen ? 'translate-y-0' : '-translate-y-full'}
         `}
       >
-        {/* Botón cerrar overlay */}
+        {/* Botón para cerrar el overlay */}
         <button
           onClick={toggleSearch}
           className="text-2xl font-bold leading-none mr-4 text-black"
@@ -112,7 +115,7 @@ export default function Navbar() {
           ×
         </button>
 
-        {/* Contenedor input + botones */}
+        {/* Contenedor input y botones dentro del overlay */}
         <div className="relative w-2/3 mx-auto">
           <input
             ref={inputRef}
@@ -126,7 +129,7 @@ export default function Navbar() {
             }}
           />
 
-          {/* Botón de borrar texto */}
+          {/* Botón para borrar texto */}
           {searchQuery && (
             <button
               onClick={() => setSearchQuery('')}
@@ -142,7 +145,7 @@ export default function Navbar() {
             href={`/busqueda?search=${encodeURIComponent(searchQuery)}`}
             className="absolute right-2 top-1/2 -translate-y-1/2 bg-[#990000] hover:bg-red-700 text-white p-2 rounded-full"
             aria-label="Buscar"
-            onClick={toggleSearch} // Cerrar el overlay de búsqueda al hacer clic
+            onClick={toggleSearch} // Cierra el overlay al hacer clic en buscar
           >
             <Image
               src="/imagenes/iconos/busqueda.png"
@@ -155,7 +158,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Dropdown de resultados de búsqueda */}
+      {/* Dropdown con resultados de búsqueda */}
       {searchOpen && searchResults.length > 0 && (
         <div className="fixed top-24 left-0 w-full bg-white z-50">
           <div className="w-full max-h-80 overflow-auto">
@@ -185,10 +188,10 @@ export default function Navbar() {
         </div>
       )}
 
-      {/* Backdrop semitransparente (MODIFICADO) */}
-      {searchOpen && ( // Solo muestra el backdrop si el buscador está abierto
+      {/* Backdrop semitransparente para overlay buscador */}
+      {searchOpen && (
         <div
-          onClick={() => toggleSearch()} // Solo cierra el buscador al hacer clic
+          onClick={() => toggleSearch()} // Cierra el buscador al hacer clic en el backdrop
           className="fixed inset-0 bg-black/50 z-40"
         />
       )}
@@ -202,7 +205,7 @@ export default function Navbar() {
         style={{ zIndex: 30 }}
       >
         <div className="flex items-center justify-between w-full px-4 text-xs font-semibold h-20">
-          {/* Icono de menú de hamburguesa (Móvil) */}
+          {/* Icono menú hamburguesa para móvil */}
           <div className="md:hidden flex items-center">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -221,7 +224,7 @@ export default function Navbar() {
             </button>
           </div>
 
-          {/* Logo (Visible en todos los tamaños, pero más pequeño en móvil) */}
+          {/* Logo con enlace al inicio */}
           <Link href="/" className="navbar-link flex items-center">
             <Image
               src="/imagenes/logos/logoblancocolor.png"
@@ -233,11 +236,14 @@ export default function Navbar() {
             />
           </Link>
 
-          {/* Menú central (Escritorio) */}
+          {/* Menú principal escritorio */}
           <ul className="hidden md:flex flex-grow justify-center items-center space-x-6">
+            {/* Inicio */}
             <li>
               <Link href="/" className="navbar-link">INICIO</Link>
             </li>
+
+            {/* Menú Productos Frescos con hover */}
             <li
               className="relative"
               onMouseEnter={handleFrescosEnter}
@@ -270,6 +276,8 @@ export default function Navbar() {
                 </ul>
               )}
             </li>
+
+            {/* Menú Productos Elaborados con hover */}
             <li
               className="relative"
               onMouseEnter={handleElaboradosEnter}
@@ -300,12 +308,15 @@ export default function Navbar() {
                 </ul>
               )}
             </li>
+
+            {/* Enlaces directos Charcutería y Contacto */}
             <li><Link href="/charcuteria" className="navbar-link">CHARCUTERÍA</Link></li>
             <li><Link href="/contacto" className="navbar-link">CONTACTO</Link></li>
           </ul>
 
-          {/* Iconos a la derecha (Visible en todos los tamaños de pantalla) */}
+          {/* Iconos a la derecha: búsqueda, perfil y carrito */}
           <div className="flex items-center space-x-3">
+            {/* Botón abrir buscador */}
             <button
               onClick={toggleSearch}
               className="navbar-link p-1"
@@ -319,8 +330,11 @@ export default function Navbar() {
                 className="navbar-icon h-6 w-6"
               />
             </button>
+
+            {/* Menú perfil usuario */}
             <PerfilMenu />
 
+            {/* Icono carrito con popup */}
             <div
               id="contenedor-carrito"
               className="relative"
@@ -342,7 +356,7 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Menú Móvil (Overlay/Deslizamiento) */}
+        {/* Menú móvil (overlay lateral) */}
         <div
           className={`
             fixed top-0 left-0 w-64 h-full bg-black text-white z-50 transform transition-transform duration-300 ease-in-out py-8
@@ -350,6 +364,7 @@ export default function Navbar() {
             md:hidden
           `}
         >
+          {/* Botón cerrar menú móvil */}
           <div className="flex justify-end pr-4 mb-4">
             <button
               onClick={() => setMobileMenuOpen(false)}
@@ -359,10 +374,14 @@ export default function Navbar() {
               ×
             </button>
           </div>
+
+          {/* Lista menú móvil */}
           <ul className="flex flex-col space-y-4 px-4">
             <li>
               <Link href="/" className="block text-lg hover:text-[#990000]" onClick={() => setMobileMenuOpen(false)}>INICIO</Link>
             </li>
+
+            {/* Submenú Productos Frescos móvil */}
             <li>
               <span className="block text-lg font-semibold mb-2">PRODUCTOS FRESCOS</span>
               <ul className="pl-4 space-y-2">
@@ -372,6 +391,8 @@ export default function Navbar() {
                 <li><Link href="/productos-frescos/avesyconejos" className="block text-base hover:text-[#990000]" onClick={() => setMobileMenuOpen(false)}>AVES Y CONEJOS</Link></li>
               </ul>
             </li>
+
+            {/* Submenú Productos Elaborados móvil */}
             <li>
               <span className="block text-lg font-semibold mt-4 mb-2">PRODUCTOS ELABORADOS</span>
               <ul className="pl-4 space-y-2">
@@ -379,12 +400,10 @@ export default function Navbar() {
                 <li><Link href="/productos-elaborados/elaborados" className="block text-base hover:text-[#990000]" onClick={() => setMobileMenuOpen(false)}>ELABORADOS</Link></li>
               </ul>
             </li>
-            <li>
-              <Link href="/charcuteria" className="block text-lg hover:text-[#990000]" onClick={() => setMobileMenuOpen(false)}>CHARCUTERÍA</Link>
-            </li>
-            <li>
-              <Link href="/contacto" className="block text-lg hover:text-[#990000]" onClick={() => setMobileMenuOpen(false)}>CONTACTO</Link>
-            </li>
+
+            {/* Enlaces Charcutería y Contacto móvil */}
+            <li><Link href="/charcuteria" className="block text-lg hover:text-[#990000]" onClick={() => setMobileMenuOpen(false)}>CHARCUTERÍA</Link></li>
+            <li><Link href="/contacto" className="block text-lg hover:text-[#990000]" onClick={() => setMobileMenuOpen(false)}>CONTACTO</Link></li>
           </ul>
         </div>
       </nav>

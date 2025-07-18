@@ -10,6 +10,7 @@ import { useCarrito } from '@/app/contextos/CarritoContexto'
 import PopupCarrito from '@/app/componentes/PopupCarrito'
 import { createPortal } from 'react-dom'
 
+// Definición de la interfaz Producto
 interface Producto {
   id: number
   nombre: string
@@ -20,27 +21,40 @@ interface Producto {
 }
 
 export default function Cerdo() {
+  // Estado para almacenar los productos obtenidos
   const [productos, setProductos] = useState<Producto[]>([])
+  
+  // Estado para controlar modo de visualización: rejilla o lista
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
+  
+  // Estado para ordenar los productos según criterio seleccionado
   const [sortOrder, setSortOrder] = useState<'Relevancia' | 'Precio ↑' | 'Precio ↓'>('Relevancia')
+  
+  // Estado para mostrar u ocultar el popup del carrito
   const [popupVisible, setPopupVisible] = useState(false)
+  
+  // Estado para almacenar el producto que se muestra en el popup
   const [productoPopup, setProductoPopup] = useState<Producto | null>(null)
-
+  
+  // Función para añadir productos al carrito desde el contexto global
   const { añadirAlCarrito } = useCarrito()
 
-  // Estado para detectar el tamaño de la ventana y ajustar la vista de forma condicional
+  // Estado para detectar si la pantalla es móvil (ancho < 768px)
   const [isMobile, setIsMobile] = useState(false)
 
+  // Efecto para cargar productos y detectar tamaño de pantalla
   useEffect(() => {
+    // Función que obtiene productos desde la API filtrando por categoría y subcategoría
     async function fetchProductos() {
       try {
         const res = await fetch('/api/productos', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ categoria_id: 1, subcategoria_id: 2 }),
+          body: JSON.stringify({ categoria_id: 1, subcategoria_id: 2 }), // Subcategoría Cerdo
         })
         if (!res.ok) throw new Error('Error al obtener productos')
         const data: Producto[] = await res.json()
+        // Aseguramos que precio sea número
         const productosConvertidos = data.map(p => ({
           ...p,
           precio: Number(p.precio),
@@ -52,27 +66,29 @@ export default function Cerdo() {
     }
     fetchProductos()
 
-    // Lógica para detectar el tamaño de la pantalla y establecer isMobile
+    // Detecta si la ventana tiene ancho menor a 768px para definir vista móvil
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768)
     }
 
-    // Establecer el estado inicial
+    // Inicializa estado isMobile
     handleResize()
 
-    // Añadir el event listener
+    // Añade event listener para detectar cambios de tamaño
     window.addEventListener('resize', handleResize)
 
-    // Limpiar el event listener al desmontar el componente
+    // Limpia event listener al desmontar componente
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
+  // Memoiza productos ordenados según criterio seleccionado para evitar cálculos innecesarios
   const sortedProductos = useMemo(() => {
     if (sortOrder === 'Precio ↑') return [...productos].sort((a, b) => a.precio - b.precio)
     if (sortOrder === 'Precio ↓') return [...productos].sort((a, b) => b.precio - a.precio)
     return productos
   }, [productos, sortOrder])
 
+  // Función para añadir un producto al carrito y mostrar popup de confirmación
   const handleAñadir = (producto: Producto) => {
     añadirAlCarrito({
       id: producto.id,
@@ -86,8 +102,10 @@ export default function Cerdo() {
 
   return (
     <>
+      {/* Componente Navbar */}
       <Navbar />
 
+      {/* Cabecera con título y breadcrumb */}
       <div className="w-full py-3 bg-[rgb(22,22,22)]">
         <div className="max-w-screen-xl mx-auto text-center px-4 mt-30">
           <h1 className="text-xl md:text-2xl font-bold text-white">Cerdo</h1>
@@ -110,7 +128,10 @@ export default function Cerdo() {
         </div>
       </div>
 
+      {/* Contenedor principal: sidebar + contenido */}
       <div className={styles.pageContainer}>
+
+        {/* Sidebar con categorías (oculto en móvil, visible en md+) */}
         <aside className={`${styles.sidebar} hidden md:flex flex-col`}>
           <h2 className="text-white text-lg mb-3 pl-4">PRODUCTOS FRESCOS</h2>
           <ul className="space-y-2 pl-4 text-left">
@@ -153,11 +174,16 @@ export default function Cerdo() {
           </ul>
         </aside>
 
+        {/* Separador entre sidebar y contenido */}
         <div className={styles.divider} />
 
+        {/* Contenido principal con listado de productos */}
         <main className={`${styles.productContainer} w-full md:w-auto`}>
+          {/* Barra de opciones para vista y orden */}
           <div className="w-full bg-[rgb(22,22,22)] py-3 mb-4 rounded-md">
             <div className="max-w-screen-xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between space-y-2 md:space-y-0">
+
+              {/* Selector vista (rejilla/lista), visible en sm+ */}
               <div className="flex items-center space-x-3 hidden sm:flex">
                 <Image
                   src="/imagenes/iconos/aplicaciones.png"
@@ -180,6 +206,7 @@ export default function Cerdo() {
                 </span>
               </div>
 
+              {/* Selector para ordenar productos */}
               <div className="flex items-center space-x-4 text-white text-sm w-full sm:w-auto">
                 <label className="flex items-center space-x-1 w-full sm:w-auto">
                   <span>Ordenar:</span>
@@ -197,7 +224,7 @@ export default function Cerdo() {
             </div>
           </div>
 
-          {/* Vista grid, adaptada para móvil */}
+          {/* Vista en rejilla, adaptada para móviles */}
           {(viewMode === 'grid' || isMobile) && (
             <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {sortedProductos.map(p => (
@@ -205,6 +232,7 @@ export default function Cerdo() {
                   key={p.id}
                   className={`${styles.productCard} flex flex-col justify-start h-full space-y-2 sm:space-y-4 transition-transform hover:-translate-y-1`}
                 >
+                  {/* Imagen con enlace a detalle del producto */}
                   <Link href={`/detalle-productos/${p.id}`}>
                     <Image
                       src={p.imagen.startsWith('http') ? p.imagen : `/imagenes/productos/${p.imagen}`}
@@ -215,11 +243,14 @@ export default function Cerdo() {
                       unoptimized={p.imagen.startsWith('http')}
                     />
                   </Link>
+
+                  {/* Nombre y precio */}
                   <div className="flex flex-col gap-[2px] px-2">
                     <h2 className="font-semibold text-white text-left text-sm sm:text-base">{p.nombre}</h2>
                     <p className="font-bold text-[#990000] text-left text-sm sm:text-base">{p.precio.toFixed(2)}€/kg</p>
                   </div>
 
+                  {/* Botón para añadir al carrito */}
                   <button
                     onClick={() => handleAñadir(p)}
                     disabled={!p.stock}
@@ -236,7 +267,7 @@ export default function Cerdo() {
             </div>
           )}
 
-          {/* Vista lista */}
+          {/* Vista en lista solo para escritorio */}
           {viewMode === 'list' && !isMobile && (
             <div className="flex flex-col space-y-4">
               {sortedProductos.map(p => (
@@ -244,6 +275,7 @@ export default function Cerdo() {
                   key={p.id}
                   className={`${styles.productCardList} flex items-center justify-between p-4 bg-[rgba(0,0,0,0.8)] rounded-lg shadow-md transition-transform hover:-translate-y-1`}
                 >
+                  {/* Imagen con enlace a detalle del producto */}
                   <Link href={`/detalle-productos/${p.id}`}>
                     <Image
                       src={p.imagen.startsWith('http') ? p.imagen : `/imagenes/productos/${p.imagen}`}
@@ -254,12 +286,19 @@ export default function Cerdo() {
                       unoptimized={p.imagen.startsWith('http')}
                     />
                   </Link>
+
+                  {/* Nombre y descripción */}
                   <div className="flex-1 px-4 text-left">
                     <h2 className="font-semibold text-white text-lg">{p.nombre}</h2>
-                    <p className="text-gray-300 text-sm mt-1" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
+                    <p
+                      className="text-gray-300 text-sm mt-1"
+                      style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
+                    >
                       {p.descripcion}
                     </p>
                   </div>
+
+                  {/* Información de precio, disponibilidad y botón añadir */}
                   <div className="product-info flex flex-col space-y-5 border-l border-gray-700 pl-4">
                     <p className="text-[#990000] font-bold text-lg">{p.precio.toFixed(2)}€/kg</p>
                     <p className="text-white font-medium text-sm" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
@@ -285,6 +324,7 @@ export default function Cerdo() {
         </main>
       </div>
 
+      {/* Popup carrito renderizado mediante portal para evitar problemas de estilo */}
       {typeof window !== 'undefined' && document.getElementById('contenedor-carrito') &&
         createPortal(
           <PopupCarrito visible={popupVisible} />,
@@ -292,6 +332,7 @@ export default function Cerdo() {
         )
       }
 
+      {/* Componente Footer */}
       <Footer />
     </>
   )

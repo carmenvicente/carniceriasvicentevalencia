@@ -10,6 +10,7 @@ import { useCarrito } from '@/app/contextos/CarritoContexto'
 import PopupCarrito from '@/app/componentes/PopupCarrito'
 import { createPortal } from 'react-dom'
 
+// Definición de la interfaz Producto
 interface Producto {
   id: number
   nombre: string
@@ -20,18 +21,30 @@ interface Producto {
 }
 
 export default function Ternera() {
+  // Estado para almacenar los productos
   const [productos, setProductos] = useState<Producto[]>([])
+  
+  // Estado para controlar modo de visualización (rejilla o lista)
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
+  
+  // Estado para ordenar productos (por relevancia o precio)
   const [sortOrder, setSortOrder] = useState<'Relevancia' | 'Precio ↑' | 'Precio ↓'>('Relevancia')
+  
+  // Estado para mostrar/ocultar popup de producto añadido al carrito
   const [popupVisible, setPopupVisible] = useState(false)
+  
+  // Estado para guardar el producto que se mostrará en el popup
   const [productoPopup, setProductoPopup] = useState<Producto | null>(null)
-
+  
+  // Función para añadir productos al carrito, proporcionada por contexto
   const { añadirAlCarrito } = useCarrito()
 
-  // Estado para detectar el tamaño de la ventana y ajustar la vista de forma condicional
-  const [isMobile, setIsMobile] = useState(false);
+  // Estado para detectar si la pantalla es móvil (ancho < 768px)
+  const [isMobile, setIsMobile] = useState(false)
 
+  // Efecto para obtener productos y detectar tamaño de pantalla
   useEffect(() => {
+    // Función para obtener productos desde API
     async function fetchProductos() {
       try {
         const res = await fetch('/api/productos', {
@@ -41,6 +54,7 @@ export default function Ternera() {
         })
         if (!res.ok) throw new Error('Error al obtener productos')
         const data: Producto[] = await res.json()
+        // Asegura que el precio sea numérico
         const productosConvertidos = data.map(p => ({
           ...p,
           precio: Number(p.precio),
@@ -52,33 +66,33 @@ export default function Ternera() {
     }
     fetchProductos()
 
-    // Lógica para detectar el tamaño de la pantalla y establecer isMobile
+    // Función para detectar ancho de pantalla y actualizar estado isMobile
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
+      setIsMobile(window.innerWidth < 768)
+    }
 
-    // Establecer el estado inicial
-    handleResize();
+    // Establece el valor inicial y añade el listener para cambios de tamaño
+    handleResize()
+    window.addEventListener('resize', handleResize)
 
-    // Añadir el event listener
-    window.addEventListener('resize', handleResize);
-
-    // Limpiar el event listener al desmontar el componente
-    return () => window.removeEventListener('resize', handleResize);
+    // Limpia el listener cuando el componente se desmonta
+    return () => window.removeEventListener('resize', handleResize)
   }, [])
 
+  // Memoriza productos ordenados según la opción seleccionada
   const sortedProductos = useMemo(() => {
     if (sortOrder === 'Precio ↑') return [...productos].sort((a, b) => a.precio - b.precio)
     if (sortOrder === 'Precio ↓') return [...productos].sort((a, b) => b.precio - a.precio)
     return productos
   }, [productos, sortOrder])
 
+  // Función para añadir un producto al carrito y mostrar popup de confirmación
   const handleAñadir = (producto: Producto) => {
     añadirAlCarrito({
       id: producto.id,
       nombre: producto.nombre,
       precio: producto.precio,
-      imagen: producto.imagen
+      imagen: producto.imagen,
     })
     setProductoPopup(producto)
     setPopupVisible(true)
@@ -86,28 +100,36 @@ export default function Ternera() {
 
   return (
     <>
+      {/* Barra de navegación */}
       <Navbar />
 
+      {/* Título y ruta breadcrumb */}
       <div className="w-full py-3 bg-[rgb(22,22,22)]">
         <div className="max-w-screen-xl mx-auto text-center px-4 mt-30">
           <h1 className="text-xl md:text-2xl font-bold text-white">Ternera</h1>
           <div className="mt-1 text-white text-sm">
-            <Link href="/" className="hover:text-gray-300 font-semibold" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>Home</Link>
+            <Link href="/" className="hover:text-gray-300 font-semibold" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
+              Home
+            </Link>
             <span className="mx-1">/</span>
             <span className="font-semibold" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>Ternera</span>
           </div>
         </div>
       </div>
 
+      {/* Contenedor principal con sidebar y contenido */}
       <div className={styles.pageContainer}>
-        {/* Menú lateral: oculto en móvil, visible en md+ */}
+
+        {/* Sidebar lateral con categorías - oculto en móvil, visible en md+ */}
         <aside className={`${styles.sidebar} hidden md:flex flex-col`}>
           <h2 className="text-white text-lg mb-3 pl-4">PRODUCTOS FRESCOS</h2>
           <ul className="space-y-2 pl-4 text-left">
             {['TERNERA', 'CERDO', 'CORDERO', 'AVES Y CONEJOS'].map(cat => (
               <li key={cat}>
-                <Link href={`/productos-frescos/${cat.toLowerCase().replace(/ /g, '')}`}
-                  className="text-sm text-white hover:text-[#990000] transition-colors">
+                <Link
+                  href={`/productos-frescos/${cat.toLowerCase().replace(/ /g, '')}`}
+                  className="text-sm text-white hover:text-[#990000] transition-colors"
+                >
                   {cat}
                 </Link>
               </li>
@@ -118,8 +140,10 @@ export default function Ternera() {
           <ul className="space-y-2 pl-4 text-left">
             {['EMBUTIDOS CASEROS', 'ELABORADOS'].map(cat => (
               <li key={cat}>
-                <Link href={`/productos-elaborados/${cat.toLowerCase().replace(/ /g, '')}`}
-                  className="text-sm text-white hover:text-[#990000] transition-colors">
+                <Link
+                  href={`/productos-elaborados/${cat.toLowerCase().replace(/ /g, '')}`}
+                  className="text-sm text-white hover:text-[#990000] transition-colors"
+                >
                   {cat}
                 </Link>
               </li>
@@ -129,20 +153,26 @@ export default function Ternera() {
           <h2 className="text-white text-lg mb-3 pl-4 mt-15">Charcutería</h2>
           <ul className="space-y-2 pl-4 text-left">
             <li>
-              <Link href="/charcuteria"
-                className="text-sm text-white hover:text-[#990000] transition-colors">
+              <Link
+                href="/charcuteria"
+                className="text-sm text-white hover:text-[#990000] transition-colors"
+              >
                 CHARCUTERIA
               </Link>
             </li>
           </ul>
         </aside>
 
+        {/* Línea divisoria entre sidebar y contenido principal */}
         <div className={styles.divider} />
 
-        {/* Main productos: ocupa todo el ancho en móvil, y el espacio restante en escritorio */}
+        {/* Contenido principal: listado de productos */}
         <main className={`${styles.productContainer} w-full md:w-auto`}>
+          {/* Barra de herramientas para cambiar vista y ordenar */}
           <div className="w-full bg-[rgb(22,22,22)] py-3 mb-4 rounded-md">
             <div className="max-w-screen-xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between space-y-2 md:space-y-0">
+
+              {/* Selector vista: rejilla o lista (oculto en móviles muy pequeños) */}
               <div className="flex items-center space-x-3 hidden sm:flex">
                 <Image
                   src="/imagenes/iconos/aplicaciones.png"
@@ -165,6 +195,7 @@ export default function Ternera() {
                 </span>
               </div>
 
+              {/* Selector de ordenación */}
               <div className="flex items-center space-x-4 text-white text-sm w-full sm:w-auto">
                 <label className="flex items-center space-x-1 w-full sm:w-auto">
                   <span>Ordenar:</span>
@@ -182,34 +213,41 @@ export default function Ternera() {
             </div>
           </div>
 
-          {/* Vista de productos */}
-          {/* Se usa isMobile para asegurar que la vista de rejilla se fuerce en móvil */}
-          {viewMode === 'grid' || isMobile ? (
+          {/* Vista de productos: en rejilla o lista, forzado a rejilla en móvil */}
+          {(viewMode === 'grid' || isMobile) ? (
             <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {sortedProductos.map(p => (
-                <div key={p.id} className={`${styles.productCard} flex flex-col justify-start h-full space-y-2 sm:space-y-4 transition-transform hover:-translate-y-1`}> {/* Ajustado space-y para móvil */}
+                <div
+                  key={p.id}
+                  className={`${styles.productCard} flex flex-col justify-start h-full space-y-2 sm:space-y-4 transition-transform hover:-translate-y-1`}
+                >
+                  {/* Imagen con link a detalle */}
                   <Link href={`/detalle-productos/${p.id}`}>
                     <Image
                       src={p.imagen.startsWith('http') ? p.imagen : `/imagenes/productos/${p.imagen}`}
                       alt={p.nombre}
-                      // Ajuste de tamaño de imagen para móvil (más grande)
-                      width={isMobile ? 400 : 320} // Más grande en móvil
-                      height={isMobile ? 250 : 200} // Más grande en móvil
-                      className={`${styles.productImage} mx-auto rounded w-full h-auto object-cover`} // Añadido w-full h-auto object-cover para responsividad
+                      width={isMobile ? 400 : 320} // Imagen más grande en móvil
+                      height={isMobile ? 250 : 200}
+                      className={`${styles.productImage} mx-auto rounded w-full h-auto object-cover`}
                       unoptimized={p.imagen.startsWith('http')}
                     />
                   </Link>
+
+                  {/* Nombre y precio */}
                   <div className="flex flex-col gap-[2px]">
-                    {/* Ajuste de tamaño de nombre y precio para móvil (más pequeños) */}
-                    <h2 className="font-semibold text-white text-left text-sm sm:text-base">{p.nombre}</h2> {/* sm:text-base para desktop */}
-                    <p className="font-bold text-[#990000] text-left text-sm sm:text-base">{p.precio.toFixed(2)}€/kg</p> {/* sm:text-base para desktop */}
+                    <h2 className="font-semibold text-white text-left text-sm sm:text-base">{p.nombre}</h2>
+                    <p className="font-bold text-[#990000] text-left text-sm sm:text-base">{p.precio.toFixed(2)}€/kg</p>
                   </div>
 
+                  {/* Botón añadir a la cesta */}
                   <button
                     onClick={() => handleAñadir(p)}
                     disabled={!p.stock}
-                    // Ajuste de tamaño de botón para móvil (más pequeño)
-                    className={`mt-auto w-full rounded text-xs sm:text-sm px-2 py-1 sm:px-3 sm:py-2 transition ${p.stock ? 'bg-gray-200 text-gray-800 hover:bg-[#990000] hover:text-white' : 'bg-gray-400 text-gray-600 cursor-not-allowed'}`}
+                    className={`mt-auto w-full rounded text-xs sm:text-sm px-2 py-1 sm:px-3 sm:py-2 transition ${
+                      p.stock
+                        ? 'bg-gray-200 text-gray-800 hover:bg-[#990000] hover:text-white'
+                        : 'bg-gray-400 text-gray-600 cursor-not-allowed'
+                    }`}
                   >
                     Añadir a la cesta
                   </button>
@@ -217,9 +255,14 @@ export default function Ternera() {
               ))}
             </div>
           ) : (
+            /* Vista en lista para escritorio */
             <div className="flex flex-col space-y-4">
               {sortedProductos.map(p => (
-                <div key={p.id} className={`${styles.productCardList} flex items-center justify-between p-4 bg-[rgba(0,0,0,0.8)] rounded-lg shadow-md transition-transform hover:-translate-y-1`}>
+                <div
+                  key={p.id}
+                  className={`${styles.productCardList} flex items-center justify-between p-4 bg-[rgba(0,0,0,0.8)] rounded-lg shadow-md transition-transform hover:-translate-y-1`}
+                >
+                  {/* Imagen con link a detalle */}
                   <Link href={`/detalle-productos/${p.id}`}>
                     <Image
                       src={p.imagen.startsWith('http') ? p.imagen : `/imagenes/productos/${p.imagen}`}
@@ -230,10 +273,16 @@ export default function Ternera() {
                       unoptimized={p.imagen.startsWith('http')}
                     />
                   </Link>
+
+                  {/* Nombre y descripción */}
                   <div className="flex-1 px-4 text-left">
                     <h2 className="font-semibold text-white text-lg">{p.nombre}</h2>
-                    <p className="text-gray-300 text-sm mt-1" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>{p.descripcion}</p>
+                    <p className="text-gray-300 text-sm mt-1" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
+                      {p.descripcion}
+                    </p>
                   </div>
+
+                  {/* Información de precio, stock y añadir a cesta */}
                   <div className="product-info flex flex-col space-y-5 border-l border-gray-700 pl-4">
                     <p className="text-[#990000] font-bold text-lg">{p.precio.toFixed(2)}€/kg</p>
                     <p className="text-white font-medium text-sm" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
@@ -245,7 +294,11 @@ export default function Ternera() {
                     <button
                       onClick={() => handleAñadir(p)}
                       disabled={!p.stock}
-                      className={`w-full rounded text-sm px-3 py-2 transition ${p.stock ? 'bg-gray-200 text-gray-800 hover:bg-[#990000] hover:text-white' : 'bg-gray-400 text-gray-600 cursor-not-allowed'}`}
+                      className={`w-full rounded text-sm px-3 py-2 transition ${
+                        p.stock
+                          ? 'bg-gray-200 text-gray-800 hover:bg-[#990000] hover:text-white'
+                          : 'bg-gray-400 text-gray-600 cursor-not-allowed'
+                      }`}
                     >
                       Añadir a la cesta
                     </button>
@@ -257,12 +310,14 @@ export default function Ternera() {
         </main>
       </div>
 
+      {/* Popup carrito creado con portal para posicionarse fuera del DOM principal */}
       {typeof window !== 'undefined' &&
         createPortal(
           <PopupCarrito visible={popupVisible} />,
           document.getElementById('contenedor-carrito')!
         )}
 
+      {/* Pie de página */}
       <Footer />
     </>
   )

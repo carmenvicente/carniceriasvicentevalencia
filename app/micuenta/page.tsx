@@ -82,29 +82,28 @@ export default function MiCuenta() {
       <div className="max-w-screen-xl mx-auto px-4 py-8 grid grid-cols-1 sm:grid-cols-2 sm:grid-cols-4 gap-6 mb-77" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
         <Tarjeta icono={<FaUser size={24} />} texto="Información" href="/micuenta/informacion" />
         {usuario.role === 'admin' ? (
-  <>
-    <Link
-      href="/micuenta/editar-productos"
-      className="border rounded-md p-6 flex flex-col items-center justify-center bg-[#990000] text-white hover:bg-[#b30000] transition"
-      style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
-    >
-      <FaCalendarAlt size={24} />
-      <span className="mt-2 font-semibold text-center">Editar productos</span>
-    </Link>
+          <>
+            <Link
+              href="/micuenta/editar-productos"
+              className="border rounded-md p-6 flex flex-col items-center justify-center bg-[#990000] text-white hover:bg-[#b30000] transition"
+              style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
+            >
+              <FaCalendarAlt size={24} />
+              <span className="mt-2 font-semibold text-center">Editar productos</span>
+            </Link>
 
-    <Link
-      href="/micuenta/editar-pedidos"
-      className="border rounded-md p-6 flex flex-col items-center justify-center bg-[#004d99] text-white hover:bg-[#0066cc] transition"
-      style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
-    >
-      <FaReceipt size={24} />
-      <span className="mt-2 font-semibold text-center">Gestión de pedidos</span>
-    </Link>
-  </>
-) : (
-  <Tarjeta icono={<FaCalendarAlt size={24} />} texto="Mis pedidos" href="/micuenta/pedidos" />
-)}
-
+            <Link
+              href="/micuenta/editar-pedidos"
+              className="border rounded-md p-6 flex flex-col items-center justify-center bg-[#004d99] text-white hover:bg-[#0066cc] transition"
+              style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
+            >
+              <FaReceipt size={24} />
+              <span className="mt-2 font-semibold text-center">Gestión de pedidos</span>
+            </Link>
+          </>
+        ) : (
+          <Tarjeta icono={<FaCalendarAlt size={24} />} texto="Mis pedidos" href="/micuenta/pedidos" />
+        )}
 
         <Tarjeta icono={<FaInfoCircle size={24} />} texto="Tus ajustes de cookies" href="/micuenta/ajustes-cookies" />
         <div
