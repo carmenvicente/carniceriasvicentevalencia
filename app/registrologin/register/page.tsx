@@ -67,7 +67,7 @@ export default function RegisterPage() {
 
       {/* 40px de altura en negro arriba */}
       <div className="h-22 w-full bg-black" />
-
+      <div className="bg-white">
       {/* Cabecera */}
       <div className="w-full py-3 bg-white">
         <div className="max-w-screen-xl mx-auto text-center px-4 mt-10">
@@ -99,7 +99,7 @@ export default function RegisterPage() {
             <div>
               <label className="block text-gray-800 mb-1">Tratamiento*</label>
               <div className="flex space-x-4">
-                <label className="flex items-center">
+                <label className="flex items-center text-black">
                   <input
                     type="radio"
                     name="tratamiento"
@@ -110,7 +110,7 @@ export default function RegisterPage() {
                   />
                   Sr.
                 </label>
-                <label className="flex items-center">
+                <label className="flex items-center text-black">
                   <input
                     type="radio"
                     name="tratamiento"
@@ -134,7 +134,7 @@ export default function RegisterPage() {
                 type="text"
                 value={nombre}
                 onChange={(e) => setNombre(e.target.value)}
-                className="w-full border border-gray-300 rounded px-3 py-2 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#990000]"
+                className="w-full border border-gray-300 rounded px-3 py-2 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#990000] text-black"
                 style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}
                 required
               />
@@ -150,7 +150,7 @@ export default function RegisterPage() {
                 type="text"
                 value={apellidos}
                 onChange={(e) => setApellidos(e.target.value)}
-                className="w-full border border-gray-300 rounded px-3 py-2 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#990000]"
+                className="w-full border border-gray-300 rounded px-3 py-2 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#990000] text-black"
                 style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}
                 required
               />
@@ -166,7 +166,7 @@ export default function RegisterPage() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full border border-gray-300 rounded px-3 py-2 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#990000]"
+                className="w-full border border-gray-300 rounded px-3 py-2 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#990000] text-black"
                 style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}
                 required
               />
@@ -182,7 +182,7 @@ export default function RegisterPage() {
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full border border-gray-300 rounded px-3 py-2 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#990000]"
+                className="w-full border border-gray-300 rounded px-3 py-2 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#990000] text-black"
                 style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}
                 required
               />
@@ -219,6 +219,7 @@ export default function RegisterPage() {
       {/* Footer más cerca del contenedor */}
       <div className="mt-30">
         <Footer />
+      </div>
       </div>
     </>
   );

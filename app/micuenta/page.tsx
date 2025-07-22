@@ -80,7 +80,7 @@ export default function MiCuenta() {
 
       {/* Tarjetas de opciones */}
       <div className="max-w-screen-xl mx-auto px-4 py-8 grid grid-cols-1 sm:grid-cols-2 sm:grid-cols-4 gap-6 mb-77" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
-        <Tarjeta icono={<FaUser size={24} />} texto="Información" href="/micuenta/informacion" />
+        <Tarjeta icono={<FaUser size={24} color="black" />} texto="Información" href="/micuenta/informacion" className="text-black" />
         {usuario.role === 'admin' ? (
           <>
             <Link
@@ -102,10 +102,10 @@ export default function MiCuenta() {
             </Link>
           </>
         ) : (
-          <Tarjeta icono={<FaCalendarAlt size={24} />} texto="Mis pedidos" href="/micuenta/pedidos" />
+          <Tarjeta icono={<FaCalendarAlt size={24}  color="black" />} texto="Mis pedidos" href="/micuenta/pedidos" className="text-black"/>
         )}
 
-        <Tarjeta icono={<FaInfoCircle size={24} />} texto="Tus ajustes de cookies" href="/micuenta/ajustes-cookies" />
+        <Tarjeta icono={<FaInfoCircle size={24}  color="black" />} texto="Tus ajustes de cookies" href="/micuenta/ajustes-cookies" className="text-black"/>
         <div
           onClick={() => {
             const confirmado = window.confirm('¿Seguro que deseas cerrar sesión?');
@@ -115,10 +115,10 @@ export default function MiCuenta() {
               router.push('/');
             }
           }}
-          className="cursor-pointer border rounded-md p-6 flex flex-col items-center justify-center hover:bg-gray-100 transition"
+          className="cursor-pointer border border-black rounded-md p-6 flex flex-col items-center justify-center hover:bg-gray-100 transition"
         >
-          <FaSmile size={24} />
-          <span className="mt-2 font-semibold text-center">Desconectar</span>
+          <FaSmile size={24}  color="black" />
+          <span className="mt-2 font-semibold text-center text-black">Desconectar</span>
         </div>
       </div>
       <div className="mt-30">
@@ -128,11 +128,15 @@ export default function MiCuenta() {
   );
 }
 
-function Tarjeta({ icono, texto, href }: { icono: React.ReactNode; texto: string; href: string }) {
+function Tarjeta({ icono, texto, href, className }: { icono: React.ReactNode; texto: string; href: string; className?: string; }) {
   return (
-    <Link href={href} className="border rounded-md p-6 flex flex-col items-center justify-center hover:bg-gray-100 transition text-center">
+    <Link
+      href={href}
+      className={`border border-black rounded-md p-6 flex flex-col items-center justify-center hover:bg-gray-100 transition text-center ${className ?? ''}`}
+    >
       {icono}
       <span className="mt-2 font-semibold">{texto}</span>
     </Link>
   );
 }
+

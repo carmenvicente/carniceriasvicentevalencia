@@ -6,7 +6,7 @@ import Image from 'next/image';
 
 export default function Inicio() {
   return (
-    <div className="w-full min-h-screen overflow-y-auto">
+    <div className="bg-white w-full min-h-screen overflow-y-auto">
       {/* Navbar: barra de navegación superior */}
       <Navbar />
 
@@ -93,7 +93,7 @@ export default function Inicio() {
         </div>
 
         {/* Sección de Productos Frescos con grid responsivo */}
-        <div className="mt-30 max-w-screen-xl mx-auto px-4">
+        <div className=" bg-white mt-30 max-w-screen-xl mx-auto px-4">
           <h5 className="text-xl font-semibold mb-6" style={{ color: '#990000' }}>
             Nuestros Productos Frescos
           </h5>
@@ -146,7 +146,7 @@ export default function Inicio() {
         </div>
 
         {/* Sección de Productos Elaborados con grid responsivo */}
-        <div className="mt-30">
+        <div className=" bg-white mt-30">
           <h5 className="text-xl font-semibold" style={{ color: '#990000' }}>
             Nuestros Productos Elaborados
           </h5>

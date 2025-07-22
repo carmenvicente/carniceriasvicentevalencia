@@ -94,50 +94,50 @@ export default function CrearProducto({ volver }: CrearProductoProps) {
         ← Volver a la gestión de productos
       </button>
 
-      <h2 className="text-2xl font-bold mb-4">Crear nuevo producto</h2>
+      <h2 className="text-2xl font-bold mb-4 text-black">Crear nuevo producto</h2>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="flex flex-col">
-          <label className="font-semibold">Nombre:</label>
+          <label className="font-semibold text-black">Nombre:</label>
           <input
             type="text"
             value={nombre}
             onChange={(e) => setNombre(e.target.value)}
-            className="border p-3 rounded bg-gray-100"
+            className="border p-3 rounded bg-gray-100 text-black"
             style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
             required
           />
         </div>
 
         <div className="flex flex-col">
-          <label className="font-semibold">Descripción:</label>
+          <label className="font-semibold text-black">Descripción:</label>
           <textarea
             value={descripcion}
             onChange={(e) => setDescripcion(e.target.value)}
-            className="border p-3 rounded bg-gray-100"
+            className="border p-3 rounded bg-gray-100 text-black"
             style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
             required
           />
         </div>
 
         <div className="flex flex-col">
-          <label className="font-semibold">Precio (€):</label>
+          <label className="font-semibold text-black">Precio (€):</label>
           <input
             type="number"
             value={precio}
             onChange={(e) => setPrecio(Number(e.target.value))}
-            className="border p-3 rounded bg-gray-100"
+            className="border p-3 rounded bg-gray-100 text-black"
             style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
             required
           />
         </div>
 
         <div className="flex flex-col">
-          <label className="font-semibold">Stock:</label>
+          <label className="font-semibold text-black">Stock:</label>
           <select
             value={String(stock)}
             onChange={(e) => setStock(e.target.value === 'true')}
-            className="border p-3 rounded"
+            className="border p-3 rounded text-black"
             style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
           >
             <option value="true">Hay stock</option>
@@ -145,12 +145,12 @@ export default function CrearProducto({ volver }: CrearProductoProps) {
           </select>
         </div>
 
-        <div className="flex flex-col">
-          <label className="font-semibold">Subcategoría:</label>
+        <div className="flex flex-col ">
+          <label className="font-semibold text-black">Subcategoría:</label>
           <select
             value={subcategoria}
             onChange={(e) => setSubcategoria(Number(e.target.value))}
-            className="border p-3 rounded"
+            className="border p-3 rounded text-black"
             style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
           >
             <option value={1}>Ternera</option>
@@ -164,7 +164,7 @@ export default function CrearProducto({ volver }: CrearProductoProps) {
         </div>
 
         <div className="flex flex-col">
-          <label className="font-semibold">Imagen:</label>
+          <label className="font-semibold text-black">Imagen:</label>
           <input
             type="file"
             accept="image/*"

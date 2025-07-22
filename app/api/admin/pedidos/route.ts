@@ -31,9 +31,9 @@ export async function GET() {
 
       return {
         id: pedido.id,
-        email: pedido.email, // Usamos email ya que nombre/apellidos no están en la tabla
+        email: pedido.email,
         total: parseFloat(pedido.total),
-        productos: productosParsed, // Ahora es un objeto/array de JS
+        productos: productosParsed,
         metodo_pago: pedido.metodo_pago,
         estado: pedido.estado,
         stripe_session_id: pedido.stripe_session_id,
@@ -41,9 +41,14 @@ export async function GET() {
       };
     });
 
-    // Categorizar pedidos
-    const pendientes = pedidosProcesados.filter(p => p.estado === 'pendiente' || p.estado === 'pagado');
-    const listos = pedidosProcesados.filter(p => p.estado === 'listo' || p.estado === 'pagado_en_tienda'); // Consideramos 'pagado_en_tienda' como listo para recoger
+    // --- CAMBIO CLAVE AQUÍ: LÓGICA DE FILTRADO MÁS SIMPLE Y CLARA ---
+    // Pendientes: Todos los pedidos que NO están en estado 'listo'.
+    // Esto incluye 'pendiente', 'pagado', y cualquier otro estado que no sea 'listo'.
+    const pendientes = pedidosProcesados.filter(p => p.estado !== 'listo');
+    
+    // Listos: Solo los pedidos que están explícitamente en estado 'listo'.
+    const listos = pedidosProcesados.filter(p => p.estado === 'listo');
+    // --- FIN DEL CAMBIO CLAVE ---
 
     console.log(`API Admin: Encontrados ${pendientes.length} pedidos pendientes y ${listos.length} pedidos listos.`);
     return NextResponse.json({ pendientes, listos });

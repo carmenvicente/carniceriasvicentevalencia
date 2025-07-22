@@ -102,7 +102,7 @@ export default function InformacionUsuario() {
 
       {/* 40px de altura en negro arriba */}
       <div className="h-22 w-full bg-black" />
-
+<div className="bg-white" >
       {/* Cabecera blanca */}
 <div className="w-full py-3 bg-white">
   <div className="max-w-screen-xl mx-auto text-center px-4 mt-10">
@@ -126,8 +126,8 @@ export default function InformacionUsuario() {
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Tratamiento */}
           <div>
-            <label className="block mb-1">Tratamiento*</label>
-            <div className="flex space-x-4">
+            <label className="block mb-1 text-black">Tratamiento*</label>
+            <div className="flex space-x-4 text-black">
               {['Sr.', 'Sra.'].map((op) => (
                 <label key={op} className="flex items-center">
                   <input
@@ -136,7 +136,7 @@ export default function InformacionUsuario() {
                     value={op}
                     checked={formData.tratamiento === op}
                     onChange={() => handleChange('tratamiento', op)}
-                    className="mr-2"
+                    className="mr-2 text-black"
                   />
                   {op}
                 </label>
@@ -146,14 +146,14 @@ export default function InformacionUsuario() {
 
           {/* Nombre */}
           <div>
-            <label className="block mb-1">Nombre*</label>
+            <label className="block mb-1 text-black">Nombre*</label>
             <input
               type="text"
               value={formData.nombre}
               onChange={(e) => handleChange('nombre', e.target.value)}
               placeholder={usuarioOriginal?.nombre}
               style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
-              className={`w-full border rounded px-3 py-2 bg-gray-100 ${campoModificado('nombre') ? 'border-orange-400' : 'border-gray-300'
+              className={`text-black w-full border rounded px-3 py-2 bg-gray-100 ${campoModificado('nombre') ? 'border-orange-400' : 'border-gray-300'
                 }`}
               required
             />
@@ -161,14 +161,14 @@ export default function InformacionUsuario() {
 
           {/* Apellidos */}
           <div>
-            <label className="block mb-1">Apellidos*</label>
+            <label className="block mb-1 text-black">Apellidos*</label>
             <input
               type="text"
               value={formData.apellidos}
               onChange={(e) => handleChange('apellidos', e.target.value)}
               placeholder={usuarioOriginal?.apellidos}
               style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
-              className={`w-full border rounded px-3 py-2 bg-gray-100 ${campoModificado('apellidos') ? 'border-orange-400' : 'border-gray-300'
+              className={`text-black w-full border rounded px-3 py-2 bg-gray-100 ${campoModificado('apellidos') ? 'border-orange-400' : 'border-gray-300'
                 }`}
               required
             />
@@ -176,14 +176,14 @@ export default function InformacionUsuario() {
 
           {/* Email */}
           <div>
-            <label className="block mb-1">Correo electrónico*</label>
+            <label className="block mb-1 text-black">Correo electrónico*</label>
             <input
               type="email"
               value={formData.email}
               onChange={(e) => handleChange('email', e.target.value)}
               placeholder={usuarioOriginal?.email}
               style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
-              className={`w-full border rounded px-3 py-2 bg-gray-100 ${campoModificado('email') ? 'border-orange-400' : 'border-gray-300'
+              className={`text-black w-full border rounded px-3 py-2 bg-gray-100 ${campoModificado('email') ? 'border-orange-400' : 'border-gray-300'
                 }`}
               required
             />
@@ -196,13 +196,13 @@ export default function InformacionUsuario() {
 
           {/* Contraseña actual */}
           <div>
-            <label className="block mb-1">Contraseña actual</label>
+            <label className="block mb-1 text-black">Contraseña actual</label>
             <div className="relative">
               <input
                 type={verActual ? 'text' : 'password'}
                 value={formData.contraseñaActual}
                 onChange={(e) => handleChange('contraseñaActual', e.target.value)}
-                className="w-full border border-gray-300 rounded px-3 py-2 bg-gray-100 pr-10"
+                className="text-black w-full border border-gray-300 rounded px-3 py-2 bg-gray-100 pr-10"
                 placeholder="Introduce tu contraseña actual"
                 style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
               />
@@ -218,13 +218,13 @@ export default function InformacionUsuario() {
 
           {/* Nueva contraseña */}
           <div>
-            <label className="block mb-1">Nueva contraseña</label>
+            <label className="block mb-1 text-black">Nueva contraseña</label>
             <div className="relative">
               <input
                 type={verNueva ? 'text' : 'password'}
                 value={formData.password1}
                 onChange={(e) => handleChange('password1', e.target.value)}
-                className="w-full border border-gray-300 rounded px-3 py-2 bg-gray-100 pr-10"
+                className="text-black w-full border border-gray-300 rounded px-3 py-2 bg-gray-100 pr-10"
                 placeholder="Escribe nueva contraseña"
                 style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
               />
@@ -241,13 +241,13 @@ export default function InformacionUsuario() {
 
           {/* Confirmar nueva contraseña */}
           <div>
-            <label className="block mb-1">Repite la nueva contraseña</label>
+            <label className="block mb-1 text-black">Repite la nueva contraseña</label>
             <div className="relative">
               <input
                 type={verRepetida ? 'text' : 'password'}
                 value={formData.password2}
                 onChange={(e) => handleChange('password2', e.target.value)}
-                className="w-full border border-gray-300 rounded px-3 py-2 bg-gray-100 pr-10"
+                className="text-black w-full border border-gray-300 rounded px-3 py-2 bg-gray-100 pr-10"
                 placeholder="Repite la contraseña"
                 style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
               />
@@ -272,6 +272,7 @@ export default function InformacionUsuario() {
       </main>
 
       <Footer />
+      </div>
     </>
   );
 }

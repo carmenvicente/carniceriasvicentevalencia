@@ -58,7 +58,7 @@ export default function LoginPage() {
     <>
       <Navbar />
       <div className="h-22 w-full bg-black" />
-
+      <div className=" bg-white"> 
       <div className="w-full py-3 bg-white">
         <div className="max-w-screen-xl mx-auto text-center px-4 mt-10">
           <h1 className="text-xl md:text-2xl font-bold text-black" >
@@ -98,7 +98,7 @@ export default function LoginPage() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full border border-gray-300 rounded px-3 py-2 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#990000]"
+                className="w-full border border-gray-300 rounded text-black px-3 py-2 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#990000]"
                 required
                 style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}
               />
@@ -113,7 +113,7 @@ export default function LoginPage() {
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full border border-gray-300 rounded px-3 py-2 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#990000]"
+                className="w-full border text-black border-gray-300 rounded px-3 py-2 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#990000]"
                 required
                 style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}
               />
@@ -147,6 +147,7 @@ export default function LoginPage() {
 
       <div className="mt-30">
         <Footer />
+      </div>
       </div>
     </>
   );

@@ -176,7 +176,7 @@ export default function EditarProductosPage() {
                 )}
               </div>
 
-              {cargando && <p className="text-center">Cargando productos...</p>}
+              {cargando && <p className="text-center text-black">Cargando productos...</p>}
               {error && <p className="text-red-600 text-center">{error}</p>}
 
               {!cargando && !error && (

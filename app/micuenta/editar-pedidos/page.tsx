@@ -68,27 +68,44 @@ export default function GestionPedidos() {
     }
   }
 
-  const renderMetodo = (m: string) => {
-    switch (m) {
-      case 'tarjeta': return 'Tarjeta 💳';
-      case 'apple': return 'Apple Pay 🍎';
-      case 'google': return 'Google Pay 🔵';
-      case 'tienda': return 'Pagar al recoger 🏬';
-      case 'pagado_en_tienda': return 'Pagado en tienda 🏬'; // Nuevo estado
-      case 'pagado': return 'Pagado Online ✅'; // Estado de Stripe
-      case 'pendiente': return 'Pendiente ⏳'; // Estado inicial de Stripe
-      case 'listo': return 'Listo para recoger ✨'; // Estado marcado por admin
-      default: return m;
+  // --- MODIFICACIÓN CLAVE DE renderMetodo ---
+  const renderMetodo = (m: string, isForEstado: boolean = false, pedidoMetodoPago?: string) => {
+    if (isForEstado) { // Si estamos renderizando el estado del pedido
+      if (pedidoMetodoPago === 'tienda') { // Si el método de pago original es 'tienda'
+        if (m === 'listo') {
+          return 'Pagado en tienda 🏬'; // Cuando está listo, si se paga en tienda
+        } else {
+          return 'Pagar en tienda 🏬'; // Cuando está pendiente, si se paga en tienda
+        }
+      } else { // Si el método de pago original NO es 'tienda' (online)
+        switch (m) {
+          case 'pagado': return 'Pagado Online ✅';
+          case 'pendiente': return 'Pendiente ⏳';
+          case 'listo': return 'Listo para recoger ✨'; // Para pedidos pagados online que están listos
+          default: return m;
+        }
+      }
+    } else { // Si estamos renderizando el método de pago (no el estado)
+      switch (m) {
+        case 'tarjeta': return 'Tarjeta 💳';
+        case 'apple': return 'Apple Pay 🍎';
+        case 'google': return 'Google Pay 🔵';
+        case 'tienda': return 'Pagar al recoger 🏬';
+        // 'pagado_en_tienda' no debería usarse como un método de pago, sino como un estado interno
+        default: return m;
+      }
     }
   };
+  // --- FIN DE LA MODIFICACIÓN CLAVE ---
 
+  // Función para renderizar un pedido individual
   const renderPedido = (pedido: Pedido, esPendiente: boolean) => (
     <div key={pedido.id} className="border rounded-md p-4 bg-white shadow">
-      <p className="font-semibold">Cliente: {pedido.email}</p> {/* Usamos email */}
-      <p className="text-sm text-gray-600">Creado: {new Date(pedido.creado_en).toLocaleString()}</p>
+      <p className="font-semibold text-black">Cliente: {pedido.email}</p>
+      <p className="text-sm text-gray-600 text-black">Creado: {new Date(pedido.creado_en).toLocaleString()}</p>
       <div className="mt-2 mb-2">
-        <p className="font-medium">🧾 Productos:</p>
-        <ul className="list-disc list-inside text-sm ml-4">
+        <p className="font-medium text-black">🧾 Productos:</p>
+        <ul className="list-disc list-inside text-sm ml-4 text-black">
           {pedido.productos && pedido.productos.length > 0 ? (
             pedido.productos.map((prod: any, idx: number) => (
               <li key={idx}>{prod.nombre} (x{prod.cantidad}) - {prod.precio.toFixed(2)} €/ud</li>
@@ -98,9 +115,11 @@ export default function GestionPedidos() {
           )}
         </ul>
       </div>
-      <p>💰 Total: {pedido.total.toFixed(2)} €</p>
-      <p>💳 Método de pago: {renderMetodo(pedido.metodo_pago)}</p>
-      <p>📦 Estado: {renderMetodo(pedido.estado)}</p> {/* Renderizamos el estado también */}
+      <p className="text-black">💰 Total: {pedido.total.toFixed(2)} €</p>
+      {/* Pasar el segundo argumento a renderMetodo para el método de pago */}
+      <p className="text-black">💳 Método de pago: {renderMetodo(pedido.metodo_pago, false)}</p>
+      {/* Pasar el segundo y tercer argumento a renderMetodo para el estado */}
+      <p className="text-black">📦 Estado: {renderMetodo(pedido.estado, true, pedido.metodo_pago)}</p>
       {esPendiente && (
         <button
           onClick={() => marcarComoListo(pedido.id)}
