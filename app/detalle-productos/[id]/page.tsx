@@ -129,22 +129,22 @@ export default function DetalleProducto() {
           {/* Detalles */}
           <div className="w-full lg:w-[40%] text-white space-y-4">
             <h2 className="text-3xl font-bold mb-6">{producto.nombre}</h2>
-<p className="text-[#990000] text-2xl font-semibold mb-2">
-  {precio.toFixed(2)} €{producto.nombre === "Codorniz" || producto.nombre === "Zarajos" ? "/unidad" : "/kg"}
-</p>
+            <p className="text-[#990000] text-2xl font-semibold mb-2">
+              {precio.toFixed(2)} €{producto.nombre === "Codorniz" || producto.nombre === "Zarajos" ? "/unidad" : "/kg"}
+            </p>
 
             <p className="text-gray-400 text-sm mb-10" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>Impuestos incluidos</p>
             <p
-  className="text-white mb-6"
-  style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
->
-  {producto.descripcion.split('\n').map((linea, index) => (
-    <span key={index}>
-      {linea}
-      <br />
-    </span>
-  ))}
-</p>
+              className="text-white mb-6"
+              style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
+            >
+              {producto.descripcion.split('\n').map((linea, index) => (
+                <span key={index}>
+                  {linea}
+                  <br />
+                </span>
+              ))}
+            </p>
 
 
             {/* Sumatorio + botón */}

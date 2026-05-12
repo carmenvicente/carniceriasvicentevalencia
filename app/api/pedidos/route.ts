@@ -120,7 +120,6 @@ export async function POST(req: Request) {
         currency: 'eur',
         product_data: {
           name: item.nombre,
-          // images: [item.imagen], // Asegúrate de que item.imagen sea una URL válida si la descomentas
         },
         unit_amount: Math.round(item.precio * 100),
       },
