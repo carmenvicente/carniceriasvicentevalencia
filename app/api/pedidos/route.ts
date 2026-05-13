@@ -2,49 +2,18 @@ import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { neon } from '@neondatabase/serverless';
 import jwt from 'jsonwebtoken';
-// import nodemailer from 'nodemailer'; // Elimina esta importación si ya tienes lib/email.ts
-import { enviarCorreoConfirmacionPedido } from '@/lib/email' // Importa la nueva función de envío de correo
+import { enviarCorreoConfirmacionPedido } from '@/lib/email'
 
-// Inicializa la conexión a la base de datos Neon
 const sql = neon(process.env.DATABASE_URL as string);
 
-// Inicializa Stripe con tu clave secreta y versión de API
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: '2025-06-30.basil',
 });
 
-// ******* VALIDACIÓN CRÍTICA DE JWT_SECRET *******
 const JWT_SECRET = process.env.JWT_SECRET;
 if (!JWT_SECRET) {
   throw new Error('JWT_SECRET no está definido en las variables de entorno. Por favor, configúralo.');
 }
-// *************************************************
-
-// ******* Configuración de Nodemailer - Ya no es necesaria aquí si usas lib/email.ts *******
-// const EMAIL_USER = process.env.EMAIL_USER;
-// const EMAIL_PASS = process.env.EMAIL_PASS;
-// const EMAIL_HOST = process.env.EMAIL_HOST || 'smtp.gmail.com';
-// const EMAIL_PORT = process.env.EMAIL_PORT ? parseInt(process.env.EMAIL_PORT) : 587;
-
-// if (!EMAIL_USER || !EMAIL_PASS) {
-//     console.warn('⚠️ EMAIL_USER o EMAIL_PASS no están definidos. Los correos no se enviarán.');
-// }
-
-// const transporter = nodemailer.createTransport({
-//     host: EMAIL_HOST,
-//     port: EMAIL_PORT,
-//     secure: EMAIL_PORT === 465,
-//     auth: {
-//         user: EMAIL_USER,
-//         pass: EMAIL_PASS,
-//     },
-// });
-
-// Función para enviar correo de confirmación - Reemplazada por enviarCorreoConfirmacionPedido de lib/email.ts
-// async function sendConfirmationEmail(toEmail: string, orderDetails: any) {
-// ... (código anterior de sendConfirmationEmail)
-// }
-// *************************************************
 
 interface JwtPayload {
   id: number;
