@@ -24,6 +24,7 @@ export default function Inicio() {
         <div
           className="
             absolute top-1/2 left-4 sm:left-8 md:left-10
+            max-w-[calc(100%-2rem)] sm:max-w-[calc(100%-4rem)]
             transform -translate-y-1/2
             text-white text-left
             fade-in-right
