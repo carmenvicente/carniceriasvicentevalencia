@@ -222,7 +222,7 @@ export default function Navbar() {
           </div>
 
           {/* Logo con enlace al inicio */}
-          <Link href="/" className="navbar-link flex items-center">
+          <Link href="/" className="navbar-link flex items-center shrink-0">
             <Image
               src="/imagenes/logos/logoblancocolor.png"
               alt="Logo"
@@ -235,7 +235,7 @@ export default function Navbar() {
           </Link>
 
           {/* Menú principal escritorio */}
-          <ul className="hidden md:flex flex-grow justify-center items-center space-x-4 lg:space-x-6">
+          <ul className="hidden md:flex flex-grow justify-evenly items-center">
             {/* Inicio */}
             <li>
               <Link href="/" className="navbar-link">INICIO</Link>
@@ -313,7 +313,7 @@ export default function Navbar() {
           </ul>
 
           {/* Iconos a la derecha: búsqueda, perfil y carrito */}
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-3 shrink-0">
             {/* Botón abrir buscador */}
             <button
               onClick={toggleSearch}
