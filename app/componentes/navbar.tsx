@@ -36,9 +36,6 @@ export default function Navbar() {
 
   // Estados para controlar menú móvil (visible/invisible)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  // Estos dos ya no controlan despliegue móvil pero se mantienen (posible uso futuro)
-  const [mobileFrescosOpen, setMobileFrescosOpen] = useState(false)
-  const [mobileElaboradosOpen, setMobileElaboradosOpen] = useState(false)
 
   // Detectar scroll para cambiar fondo navbar
   useEffect(() => {
