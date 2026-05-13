@@ -201,7 +201,7 @@ export default function Navbar() {
         `}
         style={{ zIndex: 30 }}
       >
-        <div className="flex items-center justify-between w-full px-4 text-xs font-semibold h-20">
+        <div className="flex items-center justify-between w-full px-4 text-xs font-semibold h-16 md:h-20">
           {/* Icono menú hamburguesa para móvil */}
           <div className="md:hidden flex items-center">
             <button
@@ -228,13 +228,13 @@ export default function Navbar() {
               alt="Logo"
               width={190}
               height={200}
-              className="h-10 w-auto object-contain md:h-20"
+              className="h-10 w-auto object-contain md:h-14 lg:h-20"
               priority
             />
           </Link>
 
           {/* Menú principal escritorio */}
-          <ul className="hidden md:flex flex-grow justify-center items-center space-x-6">
+          <ul className="hidden md:flex flex-grow justify-center items-center space-x-4 lg:space-x-6">
             {/* Inicio */}
             <li>
               <Link href="/" className="navbar-link">INICIO</Link>
@@ -353,10 +353,18 @@ export default function Navbar() {
           </div>
         </div>
 
+        {/* Backdrop menú móvil */}
+        {mobileMenuOpen && (
+          <div
+            className="fixed inset-0 bg-black/50 z-40 md:hidden"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+        )}
+
         {/* Menú móvil (overlay lateral) */}
         <div
           className={`
-            fixed top-0 left-0 w-64 h-full bg-black text-white z-50 transform transition-transform duration-300 ease-in-out py-8
+            fixed top-0 left-0 w-72 sm:w-80 h-full bg-black text-white z-50 transform transition-transform duration-300 ease-in-out py-8
             ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
             md:hidden
           `}

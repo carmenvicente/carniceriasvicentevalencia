@@ -11,10 +11,10 @@ export default function Footer() {
   return (
     <footer className="bg-[#0a0a0a] text-white pt-10 pb-6">
       {/* Contenedor principal del footer con padding y diseño flexible para móviles y desktop */}
-      <div className="max-w-screen-2xl mx-auto px-4 md:px-6 flex flex-col md:flex-row gap-x-20 gap-y-8">
+      <div className="max-w-screen-2xl mx-auto px-4 md:px-6 flex flex-col md:flex-row gap-x-8 lg:gap-x-16 xl:gap-x-20 gap-y-8">
 
         {/* Logo y texto descriptivo */}
-        <div className="w-full md:w-[200px] flex flex-col items-center text-center">
+        <div className="w-full md:w-[160px] lg:w-[200px] flex flex-col items-center text-center">
           {/* Logo con tamaño fijo */}
           <Image
             src="/imagenes/logos/logoblancocolor.png"
@@ -29,7 +29,7 @@ export default function Footer() {
         </div>
 
         {/* Secciones del footer con distribución en grid para móviles y flex para desktop */}
-        <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 md:flex md:flex-wrap gap-x-8 gap-y-8 md:gap-x-20">
+        <div className="flex-1 grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-8 lg:gap-x-10">
 
           {/* Sección Navegación con enlaces principales */}
           <div className="w-full sm:w-auto">
@@ -87,9 +87,9 @@ export default function Footer() {
       </div>
 
       {/* Línea inferior con copyright y métodos de pago */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mt-8 border-t border-gray-700 pt-4 px-4 md:px-6 text-xs text-gray-400">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-8 border-t border-gray-700 pt-4 px-4 md:px-6 text-xs text-gray-400">
         {/* Texto de derechos reservados y créditos */}
-        <div className="mb-4 md:mb-0 text-center md:text-left w-full md:w-auto">
+        <div className="mb-4 sm:mb-0 text-center sm:text-left w-full sm:w-auto">
           <p style={font}>© {new Date().getFullYear()} Carnicerías Vicente Valencia. Todos los derechos reservados.</p>
           <p className="mt-1" style={font}>Desarrollado por Carmen Vicente Crespo para el Trabajo Fin de Grado en Ingeniería de Tecnologías de Telecomunicación</p>
         </div>
