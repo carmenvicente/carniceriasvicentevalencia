@@ -175,7 +175,7 @@ export default function Avesyconejos() {
           <div className="w-full bg-[rgb(22,22,22)] py-3 mb-4 rounded-md">
             <div className="max-w-screen-xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between space-y-2 md:space-y-0">
               {/* Selector modo vista (rejilla/lista), oculto en móvil */}
-              <div className="flex items-center space-x-3 hidden sm:flex">
+              <div className="hidden sm:flex items-center space-x-3">
                 <Image
                   src="/imagenes/iconos/aplicaciones.png"
                   alt="Ver en rejilla"

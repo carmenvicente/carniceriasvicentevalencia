@@ -11,7 +11,7 @@ export default function Inicio() {
       <Navbar />
 
       {/* Imagen de fondo a pantalla completa con posicionamiento relativo */}
-      <div className="relative w-full h-screen">
+      <div className="relative w-full h-[70vh] sm:h-[80vh] md:h-screen">
         <Image
           src="/imagenes/otros/fondo33.JPG"
           alt="Imagen de fondo Carnicería J Vicente Valencia"
@@ -23,25 +23,25 @@ export default function Inicio() {
         {/* Contenedor del texto con animación y posicionamiento absoluto */}
         <div
           className="
-            absolute top-1/2 left-10
+            absolute top-1/2 left-4 sm:left-8 md:left-10
             transform -translate-y-1/2
             text-white text-left
             fade-in-right
           "
         >
           {/* Título principal, tamaño responsivo y negrita */}
-          <h1 className="font-bold text-4xl sm:text-5xl md:text-6xl leading-tight">
+          <h1 className="font-bold text-2xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight">
             TRADICIÓN Y CALIDAD
           </h1>
-          <h1 className="font-bold text-4xl sm:text-5xl md:text-6xl leading-tight">
+          <h1 className="font-bold text-2xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight">
             EN CADA CORTE
           </h1>
 
           {/* Botón que redirige a la sección de productos frescos */}
-          <div className="mt-6">
+          <div className="mt-4 md:mt-6">
             <Link
               href="/productos-frescos/ternera"
-              className="bg-red-700 text-white px-6 py-3 rounded-xl text-lg font-semibold hover:bg-red-800 transition"
+              className="bg-red-700 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-xl text-sm sm:text-base md:text-lg font-semibold hover:bg-red-800 transition"
               color="#990000"
             >
               Ver productos
@@ -59,7 +59,7 @@ export default function Inicio() {
             <p className="text-red-600 uppercase font-semibold mb-2">
               quiénes somos
             </p>
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Carnicería Vicente Valencia
             </h2>
             <p
@@ -109,14 +109,14 @@ export default function Inicio() {
         </div>
 
         {/* Sección de Productos Frescos con grid responsivo */}
-        <div className=" bg-white mt-30 max-w-screen-xl mx-auto px-4">
+        <div className="bg-white mt-16 md:mt-30 max-w-screen-xl mx-auto px-4">
           <h5
             className="text-xl font-semibold mb-6"
             style={{ color: "#990000" }}
           >
             Nuestros Productos Frescos
           </h5>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 justify-items-center items-center">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 justify-items-center items-center">
             {/* Producto Ternera */}
             <Link
               href="/productos-frescos/ternera"
@@ -177,7 +177,7 @@ export default function Inicio() {
         </div>
 
         {/* Sección de Productos Elaborados con grid responsivo */}
-        <div className=" bg-white mt-30">
+        <div className="bg-white mt-12 md:mt-30">
           <h5 className="text-xl font-semibold" style={{ color: "#990000" }}>
             Nuestros Productos Elaborados
           </h5>
@@ -215,7 +215,7 @@ export default function Inicio() {
       </div>
 
       {/* Bloque informativo en fondo negro con iconos y texto */}
-      <div className="w-full flex justify-center px-4 mt-30">
+      <div className="w-full flex justify-center px-4 mt-12 md:mt-30">
         <div className="bg-black text-white rounded-2xl px-8 py-10 max-w-screen-xl w-full shadow-lg">
           <div className="grid gap-9 grid-cols-1 md:grid-cols-3 text-center">
             {/* Pago Seguro */}
@@ -280,10 +280,10 @@ export default function Inicio() {
       </div>
 
       {/* Sección de Nuestros Valores con fondo de imagen y overlay oscuro */}
-      <div className="relative w-full mt-30 bg-white overflow-visible">
+      <div className="relative w-full mt-12 md:mt-30 bg-white overflow-visible">
         {/* Fondo de la sección */}
         <div
-          className="w-full h-[200px] md:h-[400px] bg-cover bg-center"
+          className="w-full h-[180px] sm:h-[240px] md:h-[400px] bg-cover bg-center"
           style={{ backgroundImage: "url('/imagenes/otros/valores.JPG')" }}
         />
         {/* Overlay negro semitransparente para mejorar contraste */}
@@ -291,7 +291,7 @@ export default function Inicio() {
 
         {/* Contenedor centralizado con flexbox para iconos */}
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
-          <div className="flex justify-center space-x-6 md:space-x-12 max-w-2xl w-full">
+          <div className="flex justify-center space-x-8 sm:space-x-10 md:space-x-12 max-w-2xl w-full">
             {/* Iconos representativos de valores */}
             {[
               { src: "/imagenes/iconos/cuchillo.png", label: "Comida Casera" },
@@ -305,11 +305,11 @@ export default function Inicio() {
                 <Image
                   src={val.src}
                   alt={val.label}
-                  width={i === 0 ? 60 : 60}
-                  height={i === 0 ? 60 : 60}
-                  className="mb-4"
+                  width={40}
+                  height={40}
+                  className="mb-2 md:mb-4 md:w-[60px] md:h-[60px]"
                 />
-                <span className="text-white text-sm md:text-lg font-medium">
+                <span className="text-white text-xs sm:text-sm md:text-lg font-medium">
                   {val.label}
                 </span>
               </div>
@@ -319,9 +319,9 @@ export default function Inicio() {
       </div>
 
       {/* Tarjeta roja con estadísticas, centrada y debajo de la sección valores */}
-      <div className="mt-2 bg-[#990000] rounded-lg shadow-lg overflow-hidden w-52 md:w-72 mx-auto">
-        <div className="flex flex-col md:flex-row">
-          <div className="flex-1 p-4 border-b md:border-b-0 md:border-r border-red-500">
+      <div className="mt-2 bg-[#990000] rounded-lg shadow-lg overflow-hidden w-full max-w-[280px] sm:max-w-xs md:max-w-sm mx-auto">
+        <div className="flex flex-row">
+          <div className="flex-1 p-4 border-r border-red-500">
             <h2 className="text-2xl md:text-3xl font-bold text-white">+1000</h2>
             <p className="text-xs md:text-sm text-red-200">clientes al mes</p>
           </div>
@@ -333,18 +333,18 @@ export default function Inicio() {
       </div>
 
       {/* Sección noticia destacada con imágenes superpuestas y texto */}
-      <div className="relative w-full mt-40 bg-white overflow-visible">
+      <div className="relative w-full mt-12 md:mt-20 lg:mt-40 bg-white overflow-visible">
         {/* Contenedor central que limita el ancho máximo */}
         <div className="relative z-10 mx-auto max-w-screen-xl flex flex-col md:flex-row items-start">
           {/* Columna izquierda con imagen principal y superpuesta */}
-          <div className="w-full md:w-1/2 relative p-6 flex justify-center">
+          <div className="w-full md:w-1/2 relative p-4 md:p-6 flex justify-center">
             <Image
               src="/imagenes/otros/jesuschorizos.JPG"
               alt="Imagen chorizos Carnicería J Vicente Valencia"
               width={800}
               height={400}
               style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}
-              className="w-80 md:w-96 lg:w-[500px] h-auto rounded-lg shadow-md object-cover ml-4 md:ml-8 lg:ml-12"
+              className="w-full sm:w-80 md:w-96 lg:w-[500px] h-auto rounded-lg shadow-md object-cover ml-0 md:ml-8 lg:ml-12"
             />
             <Image
               src="/imagenes/otros/noticia.png"
@@ -397,7 +397,7 @@ export default function Inicio() {
           </h3>
 
           {/* Grid responsivo para tarjetas de reseñas */}
-          <div className="grid gap-6 grid-cols-1 md:grid-cols-3">
+          <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
             {/* Reseña 1 */}
             <div className="bg-white shadow-md rounded-lg p-6 flex flex-col items-start text-left border border-gray-200">
               <Image

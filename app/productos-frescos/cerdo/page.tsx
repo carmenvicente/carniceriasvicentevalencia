@@ -184,7 +184,7 @@ export default function Cerdo() {
             <div className="max-w-screen-xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between space-y-2 md:space-y-0">
 
               {/* Selector vista (rejilla/lista), visible en sm+ */}
-              <div className="flex items-center space-x-3 hidden sm:flex">
+              <div className="hidden sm:flex items-center space-x-3">
                 <Image
                   src="/imagenes/iconos/aplicaciones.png"
                   alt="Ver en rejilla"

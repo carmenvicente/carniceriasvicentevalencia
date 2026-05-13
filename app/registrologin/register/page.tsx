@@ -173,27 +173,28 @@ export default function RegisterPage() {
             </div>
 
             {/* Contraseña con toggle de visibilidad */}
-            <div className="relative">
+            <div>
               <label htmlFor="password" className="block text-gray-800 mb-1">
                 Contraseña*
               </label>
-              <input
-                id="password"
-                type={showPassword ? 'text' : 'password'}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full border border-gray-300 rounded px-3 py-2 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#990000] text-black"
-                style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}
-                required
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword((prev) => !prev)}
-                className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-600"
-              >
-                {showPassword ? <FaEye /> : <FaEyeSlash />}
-              </button>
-
+              <div className="relative">
+                <input
+                  id="password"
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full border border-gray-300 rounded px-3 py-2 pr-10 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#990000] text-black"
+                  style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-600"
+                >
+                  {showPassword ? <FaEye /> : <FaEyeSlash />}
+                </button>
+              </div>
             </div>
 
             {/* Botón de registro */}
