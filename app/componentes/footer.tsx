@@ -22,6 +22,7 @@ export default function Footer() {
             width={200}
             height={200}
             className="w-full max-w-[160px] lg:max-w-[200px] h-auto"
+            priority
           />
           {/* Texto "Calidad desde 1975" con pequeño margen superior */}
           <p className="text-sm text-gray-500 font-semibold mt-2" style={font}>
@@ -97,8 +98,8 @@ export default function Footer() {
 
         {/* Iconos de métodos de pago aceptados, centrados en móvil */}
         <div className="flex gap-2 justify-center w-full md:w-auto">
-          <Image src="/imagenes/iconos/visa.png" alt="Visa" width={35} height={20} style={{ height: 'auto' }} />
-          <Image src="/imagenes/iconos/mastercard.png" alt="Mastercard" width={35} height={20} style={{ height: 'auto' }} />
+          <Image src="/imagenes/iconos/visa.png" alt="Visa" width={35} height={20} className="h-5 w-auto" />
+          <Image src="/imagenes/iconos/mastercard.png" alt="Mastercard" width={35} height={20} className="h-5 w-auto" />
         </div>
       </div>
     </footer>
