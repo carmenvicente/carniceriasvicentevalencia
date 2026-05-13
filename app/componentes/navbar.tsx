@@ -235,7 +235,7 @@ export default function Navbar() {
           </Link>
 
           {/* Menú principal escritorio */}
-          <ul className="hidden md:flex flex-grow justify-evenly items-center">
+          <ul className="hidden md:flex flex-grow md:justify-evenly lg:justify-center lg:gap-x-4 xl:gap-x-6 items-center text-center">
             {/* Inicio */}
             <li>
               <Link href="/" className="navbar-link">INICIO</Link>
@@ -248,7 +248,7 @@ export default function Navbar() {
               onMouseLeave={handleFrescosLeave}
             >
               <span className="navbar-link cursor-pointer">
-                PRODUCTOS FRESCOS ▼
+                PRODUCTOS<br className="lg:hidden" /> FRESCOS ▼
               </span>
               {menuFrescosOpen && (
                 <ul className="absolute left-0 mt-1 bg-white text-black rounded-lg shadow-lg min-w-[200px]">
@@ -282,7 +282,7 @@ export default function Navbar() {
               onMouseLeave={handleElaboradosLeave}
             >
               <span className="navbar-link cursor-pointer">
-                PRODUCTOS ELABORADOS ▼
+                PRODUCTOS<br className="lg:hidden" /> ELABORADOS ▼
               </span>
               {menuElaboradosOpen && (
                 <ul className="absolute left-0 mt-1 bg-white text-black rounded-lg shadow-lg min-w-[230px]">
