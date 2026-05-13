@@ -5,7 +5,10 @@ import jwt from 'jsonwebtoken';
 import { enviarCorreoCambioDatos } from '@/lib/email';
 
 const sql = neon(`${process.env.DATABASE_URL}?options=--client_encoding=UTF8`);
-const JWT_SECRET = process.env.JWT_SECRET || 'CAMBIA_ESTA_CLAVE_POR_ALGO_MUY_SEGURO';
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  throw new Error('JWT_SECRET no está definido en las variables de entorno.');
+}
 
 export async function PUT(request: Request) {
   try {
@@ -95,7 +98,7 @@ export async function PUT(request: Request) {
         tratamiento: nuevoUsuario.tratamiento,
         role: nuevoUsuario.role,
       },
-      JWT_SECRET,
+      JWT_SECRET!,
       { expiresIn: '7d' }
     );
 
