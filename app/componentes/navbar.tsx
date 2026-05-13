@@ -251,7 +251,7 @@ export default function Navbar() {
                 PRODUCTOS<br className="lg:hidden" /> FRESCOS ▼
               </span>
               {menuFrescosOpen && (
-                <ul className="absolute left-0 mt-1 bg-white text-black rounded-lg shadow-lg min-w-[200px]">
+                <ul className="absolute left-1/2 -translate-x-1/2 mt-1 bg-white text-black rounded-lg shadow-lg min-w-[200px]">
                   {[
                     ['TERNERA', '/productos-frescos/ternera'],
                     ['CERDO', '/productos-frescos/cerdo'],
@@ -262,7 +262,7 @@ export default function Navbar() {
                       <Link
                         href={href}
                         className={`
-                          block w-full text-base pl-4 py-2 transition hover:text-[#990000]
+                          block w-full text-base px-4 py-2 text-center transition hover:text-[#990000]
                           ${i === 0 ? 'rounded-tl-lg rounded-tr-lg' : ''}
                           ${i === arr.length - 1 ? 'rounded-bl-lg rounded-br-lg' : ''}
                         `}
@@ -285,7 +285,7 @@ export default function Navbar() {
                 PRODUCTOS<br className="lg:hidden" /> ELABORADOS ▼
               </span>
               {menuElaboradosOpen && (
-                <ul className="absolute left-0 mt-1 bg-white text-black rounded-lg shadow-lg min-w-[230px]">
+                <ul className="absolute left-1/2 -translate-x-1/2 mt-1 bg-white text-black rounded-lg shadow-lg min-w-[230px]">
                   {[
                     ['EMBUTIDOS CASEROS', '/productos-elaborados/embutidoscaseros'],
                     ['ELABORADOS', '/productos-elaborados/elaborados'],
@@ -294,7 +294,7 @@ export default function Navbar() {
                       <Link
                         href={href}
                         className={`
-                          block w-full text-base pl-4 py-2 transition hover:text-[#990000]
+                          block w-full text-base px-4 py-2 text-center transition hover:text-[#990000]
                           ${i === 0 ? 'rounded-tl-lg rounded-tr-lg' : ''}
                           ${i === arr.length - 1 ? 'rounded-bl-lg rounded-br-lg' : ''}
                         `}
