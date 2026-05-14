@@ -57,6 +57,15 @@ export default function FavoritosPage() {
           </div>
         </div>
       </div>
+      <div className="max-w-screen-xl mx-auto px-4 pt-3 pb-0">
+        <Link href="/micuenta" className="inline-flex items-center gap-1.5 text-sm font-semibold text-gray-500 hover:text-black transition">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+          Mi Cuenta
+        </Link>
+      </div>
+
 
       <main className="max-w-screen-xl mx-auto px-4 py-10 min-h-[50vh]">
         {cargando ? (
