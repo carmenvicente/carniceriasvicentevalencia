@@ -207,10 +207,10 @@ export default function Embutidoscaseros() {
           {(viewMode === 'grid' || isMobile) ? (
             <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {sortedProductos.map(p => (
-                <div key={p.id} className="relative">
+                <div key={p.id} className="relative transition-transform hover:-translate-y-1">
                 <Link
                   href={`/detalle-productos/${p.id}`}
-                  className={`${styles.productCard} flex flex-col justify-start h-full space-y-2 sm:space-y-4 transition-transform hover:-translate-y-1`}
+                  className={`${styles.productCard} flex flex-col justify-start h-full space-y-2 sm:space-y-4`}
                 >
                   {/* Imagen con enlace a detalle */}
                     <Image

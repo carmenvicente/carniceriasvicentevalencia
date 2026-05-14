@@ -63,7 +63,7 @@ export default function FavoritosPage() {
         ) : favoritosVisibles.length === 0 ? (
           <div className="text-center mt-20">
             <p className="text-gray-500 text-lg mb-4">No tienes productos favoritos aún.</p>
-            <Link href="/" className="text-[#990000] hover:underline font-semibold">
+            <Link href="/productos-frescos/ternera" className="text-[#990000] hover:underline font-semibold">
               Explorar productos
             </Link>
           </div>
@@ -86,7 +86,7 @@ export default function FavoritosPage() {
                   </div>
                 </Link>
                 <div className="absolute bottom-2 right-2 z-10">
-                  <BotonFavorito productoId={f.producto_id} />
+                  <BotonFavorito productoId={f.producto_id} sinFondo />
                 </div>
               </div>
             ))}
