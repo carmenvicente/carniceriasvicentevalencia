@@ -84,7 +84,7 @@ export default function Footer() {
             <ul className="text-sm font-semibold" style={font}>
               <li><Link href="/informacionlegal/aviso-legal" className="hover:underline">Aviso Legal</Link></li>
               <li><Link href="/informacionlegal/politica-de-privacidad" className="hover:underline">Política de Privacidad</Link></li>
-              <li><Link href="/informacionlegal/terminos-y-condiciones" className="hover:underline">Términos y Condiciones</Link></li>
+              {/* <li><Link href="/informacionlegal/terminos-y-condiciones" className="hover:underline">Términos y Condiciones</Link></li> */}
             </ul>
           </div>
 
