@@ -101,11 +101,9 @@ export default function MiCuenta() {
               <span className="mt-2 font-semibold text-center">Gestión de pedidos</span>
             </Link>
           </>
-        ) : (
-          {/* COMENTADO - sección mis pedidos del cliente
-          <Tarjeta icono={<FaCalendarAlt size={24}  color="black" />} texto="Mis pedidos" href="/micuenta/pedidos" className="text-black"/>
-          */}
-        )}
+        ) : null /* COMENTADO - sección mis pedidos del cliente:
+          <Tarjeta icono={<FaCalendarAlt size={24} color="black" />} texto="Mis pedidos" href="/micuenta/pedidos" className="text-black"/>
+        */}
 
         <Tarjeta icono={<FaInfoCircle size={24}  color="black" />} texto="Tus ajustes de cookies" href="/micuenta/ajustes-cookies" className="text-black"/>
         <div
