@@ -53,7 +53,7 @@ export default function MiCuenta() {
 
       {/* Cabecera blanca */}
       <div className="w-full py-3 bg-white">
-        <div className="max-w-screen-xl mx-auto text-center px-4 mt-10">
+        <div className="max-w-screen-xl mx-auto text-center px-4 mt-4 md:mt-10">
           <h1 className="text-xl md:text-2xl font-bold text-black">MI CUENTA</h1>
           <div className="mt-1 text-black text-sm">
             <Link
@@ -72,7 +72,7 @@ export default function MiCuenta() {
       </div>
 
       <p
-        className="text-center mt-20 text-lg text-black mb-8"
+        className="text-center mt-4 md:mt-10 text-base md:text-lg text-black mb-3 md:mb-6"
         style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
       >
         Te damos la bienvenida, {usuario?.tratamiento ? `${usuario.tratamiento} ${usuario.nombre}` : usuario?.nombre || 'usuario'}
@@ -82,7 +82,7 @@ export default function MiCuenta() {
 
 
       {/* Tarjetas de opciones */}
-      <div className="max-w-screen-xl mx-auto px-4 py-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-20 md:mb-32" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
+      <div className="max-w-screen-xl mx-auto px-4 py-3 md:py-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-4 md:mb-16" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
         <Tarjeta icono={<FaUser size={24} color="black" />} texto="Información" href="/micuenta/informacion" className="text-black" />
         <Tarjeta icono={<FaHeart size={24} color="black" />} texto="Favoritos" href="/micuenta/favoritos" className="text-black" />
         {usuario.role === 'admin' ? (
