@@ -57,6 +57,7 @@ export const PerfilMenu = () => {
     const confirmado = window.confirm('¿Seguro que deseas cerrar sesión?');
     if (confirmado) {
       localStorage.removeItem('token');
+      document.cookie = 'token=; path=/; max-age=0';
       setUsuario(null);
       router.push('/');
     }
