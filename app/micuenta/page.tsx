@@ -15,6 +15,7 @@ type Usuario = {
 
 export default function MiCuenta() {
   const [usuario, setUsuario] = useState<Usuario | null>(null);
+  const [confirmandoLogout, setConfirmandoLogout] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -110,21 +111,40 @@ export default function MiCuenta() {
         */}
 
         <Tarjeta icono={<FaInfoCircle size={24}  color="black" />} texto="Tus ajustes de cookies" href="/micuenta/ajustes-cookies" className="text-black"/>
-        <div
-          onClick={() => {
-            const confirmado = window.confirm('¿Seguro que deseas cerrar sesión?');
-            if (confirmado) {
-              localStorage.removeItem('token');
-              localStorage.removeItem('usuario');
-              document.cookie = 'token=; path=/; max-age=0';
-              setUsuario(null);
-              router.push('/');
-            }
-          }}
-          className="cursor-pointer border border-black rounded-md p-6 flex flex-col items-center justify-center hover:bg-gray-100 transition"
-        >
-          <FaSmile size={24}  color="black" />
-          <span className="mt-2 font-semibold text-center text-black">Desconectar</span>
+        <div className="border border-black rounded-md p-6 flex flex-col items-center justify-center transition min-h-[100px]">
+          {!confirmandoLogout ? (
+            <button
+              onClick={() => setConfirmandoLogout(true)}
+              className="flex flex-col items-center w-full hover:opacity-70 transition"
+            >
+              <FaSmile size={24} color="black" />
+              <span className="mt-2 font-semibold text-center text-black">Desconectar</span>
+            </button>
+          ) : (
+            <div className="flex flex-col items-center gap-3 w-full">
+              <p className="text-sm text-gray-600 text-center">¿Seguro que quieres salir?</p>
+              <div className="flex gap-2 w-full">
+                <button
+                  onClick={() => {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('usuario');
+                    document.cookie = 'token=; path=/; max-age=0';
+                    setUsuario(null);
+                    router.push('/');
+                  }}
+                  className="flex-1 bg-[#990000] text-white rounded py-1.5 text-xs font-semibold hover:bg-[#b30000] transition"
+                >
+                  Sí, salir
+                </button>
+                <button
+                  onClick={() => setConfirmandoLogout(false)}
+                  className="flex-1 bg-gray-100 text-gray-700 rounded py-1.5 text-xs font-semibold hover:bg-gray-200 transition"
+                >
+                  Cancelar
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
       </div>

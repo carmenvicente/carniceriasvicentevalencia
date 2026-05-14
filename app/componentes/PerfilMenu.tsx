@@ -13,6 +13,7 @@ type Usuario = {
 export const PerfilMenu = () => {
   const [usuario, setUsuario] = useState<Usuario | null>(null);
   const [open, setOpen] = useState(false);
+  const [confirmando, setConfirmando] = useState(false);
   const router = useRouter();
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -52,15 +53,12 @@ export const PerfilMenu = () => {
     };
   }, [open]);
 
-  // Cerrar sesión con confirmación
   const logout = () => {
-    const confirmado = window.confirm('¿Seguro que deseas cerrar sesión?');
-    if (confirmado) {
-      localStorage.removeItem('token');
-      document.cookie = 'token=; path=/; max-age=0';
-      setUsuario(null);
-      router.push('/');
-    }
+    localStorage.removeItem('token');
+    document.cookie = 'token=; path=/; max-age=0';
+    setUsuario(null);
+    setOpen(false);
+    router.push('/');
   };
 
   // Si no hay sesión, muestra solo el icono
@@ -81,7 +79,7 @@ export const PerfilMenu = () => {
   // Si hay sesión, muestra menú controlado por clic
   return (
     <div className="relative" ref={menuRef}>
-      <button onClick={() => setOpen(o => !o)} className="navbar-link">
+      <button onClick={() => { setOpen(o => !o); setConfirmando(false); }} className="navbar-link">
         <Image
           src="/imagenes/iconos/usuario.png"
           alt="Usuario"
@@ -96,12 +94,32 @@ export const PerfilMenu = () => {
           <Link href="/micuenta" className="block px-4 py-2 text-sm hover:bg-gray-100 transition">
             Mi cuenta
           </Link>
-          <button
-            onClick={logout}
-            className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 transition"
-          >
-            Desconectarse
-          </button>
+          {!confirmando ? (
+            <button
+              onClick={() => setConfirmando(true)}
+              className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 transition"
+            >
+              Desconectarse
+            </button>
+          ) : (
+            <div className="px-4 py-3">
+              <p className="text-sm text-gray-600 mb-2">¿Seguro que quieres salir?</p>
+              <div className="flex gap-2">
+                <button
+                  onClick={logout}
+                  className="flex-1 bg-[#990000] text-white rounded py-1.5 text-xs font-semibold hover:bg-[#b30000] transition"
+                >
+                  Sí, salir
+                </button>
+                <button
+                  onClick={() => setConfirmando(false)}
+                  className="flex-1 bg-gray-100 text-gray-700 rounded py-1.5 text-xs font-semibold hover:bg-gray-200 transition"
+                >
+                  Cancelar
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
