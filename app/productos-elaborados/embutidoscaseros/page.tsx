@@ -35,7 +35,6 @@ export default function Embutidoscaseros() {
   const [popupVisible, setPopupVisible] = useState(false)
 
   // Producto seleccionado para popup (no usado explícitamente en render actual)
-  const [productoPopup, setProductoPopup] = useState<Producto | null>(null)
 
   // Función para añadir productos al carrito global
   const { añadirAlCarrito } = useCarrito()

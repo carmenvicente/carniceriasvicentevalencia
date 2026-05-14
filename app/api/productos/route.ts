@@ -173,8 +173,8 @@ export async function PUT(request: Request) {
     `;
     return NextResponse.json({ message: 'Producto actualizado correctamente' });
   } catch (error: any) {
-  console.error('Error al crear producto:', error);
-  return NextResponse.json({ message: 'Error al crear el producto', error: error.message }, { status: 500 });
+  console.error('Error al actualizar producto:', error);
+  return NextResponse.json({ message: 'Error al actualizar el producto', error: error.message }, { status: 500 });
 }
 
 }

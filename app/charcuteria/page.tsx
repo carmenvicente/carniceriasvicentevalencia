@@ -35,7 +35,6 @@ export default function Charcuteria() {
   const [popupVisible, setPopupVisible] = useState(false)
 
   // Estado para el producto que aparece en popup (no usado directamente en render)
-  const [productoPopup, setProductoPopup] = useState<Producto | null>(null)
 
   // Función para añadir producto al carrito
   const { añadirAlCarrito } = useCarrito()

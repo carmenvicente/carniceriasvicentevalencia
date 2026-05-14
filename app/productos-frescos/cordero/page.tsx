@@ -35,7 +35,6 @@ export default function Cordero() {
   const [popupVisible, setPopupVisible] = useState(false)
   
   // Estado para guardar el producto que se mostrará en el popup
-  const [productoPopup, setProductoPopup] = useState<Producto | null>(null)
   
   // Función para añadir productos al carrito, proporcionada por contexto
   const { añadirAlCarrito } = useCarrito()

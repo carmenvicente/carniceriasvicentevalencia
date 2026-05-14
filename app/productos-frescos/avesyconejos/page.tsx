@@ -35,7 +35,6 @@ export default function Avesyconejos() {
   const [popupVisible, setPopupVisible] = useState(false)
 
   // Estado para almacenar el producto que se muestra en el popup
-  const [productoPopup, setProductoPopup] = useState<Producto | null>(null)
 
   // Función para añadir productos al carrito
   const { añadirAlCarrito } = useCarrito()

@@ -35,7 +35,6 @@ export default function Elaborados() {
   const [popupVisible, setPopupVisible] = useState(false)
 
   // Producto seleccionado para mostrar en el popup (aunque no se usa directamente en render)
-  const [productoPopup, setProductoPopup] = useState<Producto | null>(null)
 
   // Función para añadir un producto al carrito global
   const { añadirAlCarrito } = useCarrito()

@@ -35,7 +35,6 @@ export default function Cerdo() {
   const [popupVisible, setPopupVisible] = useState(false)
   
   // Estado para almacenar el producto que se muestra en el popup
-  const [productoPopup, setProductoPopup] = useState<Producto | null>(null)
   
   // Función para añadir productos al carrito desde el contexto global
   const { añadirAlCarrito } = useCarrito()
