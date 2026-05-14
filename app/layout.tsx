@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import AvisoCookies from '@/app/componentes/Cookies/AvisoCookies';
+import ScrollToTop from '@/app/componentes/ScrollToTop';
 import { Providers } from './providers'; // <-- AÑADIDO
 
 const geistSans = Geist({
@@ -43,6 +44,7 @@ export default function RootLayout({
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Providers>
+          <ScrollToTop />
           {children}
           <AvisoCookies />
           <div id="contenedor-carrito" />
