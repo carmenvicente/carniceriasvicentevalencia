@@ -67,14 +67,26 @@ export default function Contacto() {
 <div className="flex flex-col md:flex-row gap-12 mt-10 w-full md:w-3/4 mx-auto px-4 mb-20">
   {/* Contacto */}
   <div className="flex-1">
-    <h2 className="text-2xl font-semibold text-gray-800 mb-4" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
+    <h2 className="text-2xl font-semibold text-gray-800 mb-2" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
       Contacto
     </h2>
-    <p className="text-gray-700 text-base leading-relaxed" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}>
-      📞 969 221 018<br />
-      📞 +34 646 982 666<br />
-      ✉️ carniceriavicentevalencia@gmail.com
+    <p className="text-gray-500 text-sm mb-4" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}>
+      Si tienes alguna consulta o quieres hacer un encargo, no dudes en contactarnos.
     </p>
+    <div className="flex flex-col gap-3 text-base" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}>
+      <a href="tel:+34969221018" className="flex items-center gap-2 text-gray-700 hover:text-[#990000] transition">
+        <span>📞</span>
+        <span>969 221 018</span>
+      </a>
+      <a href="tel:+34646982666" className="flex items-center gap-2 text-gray-700 hover:text-[#990000] transition">
+        <span>📞</span>
+        <span>+34 646 982 666</span>
+      </a>
+      <a href="mailto:carniceriavicentevalencia@gmail.com" className="flex items-center gap-2 text-gray-700 hover:text-[#990000] transition break-all">
+        <span>✉️</span>
+        <span>carniceriavicentevalencia@gmail.com</span>
+      </a>
+    </div>
   </div>
 
   {/* Horario */}

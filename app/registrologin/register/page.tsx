@@ -19,6 +19,7 @@ export default function RegisterPage() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   // Enviar formulario de registro
@@ -47,8 +48,8 @@ export default function RegisterPage() {
       });
 
       if (res.status === 201) {
-        // Registro exitoso: redirige al login
-        router.push('/registrologin/login');
+        setSuccessMsg('Cuenta creada correctamente. Redirigiendo al inicio de sesión...');
+        setTimeout(() => router.push('/registrologin/login'), 2500);
       } else {
         const data = await res.json();
         setErrorMsg(data.message || 'Error al registrar. Inténtalo de nuevo.');
@@ -86,7 +87,11 @@ export default function RegisterPage() {
       <div className="bg-white px-4 mt-10">
         {/* Contenedor más ancho: ocupa hasta 2/3 en md, 1/2 en lg */}
         <div className="mx-auto w-full md:w-2/3 lg:w-1/2 bg-white rounded-lg shadow-lg p-6">
-          {/* Mensaje de error, si lo hay */}
+          {successMsg && (
+            <div className="mb-4 p-2 bg-green-100 text-green-700 rounded">
+              {successMsg}
+            </div>
+          )}
           {errorMsg && (
             <div className="mb-4 p-2 bg-red-100 text-red-700 rounded">
               {errorMsg}
