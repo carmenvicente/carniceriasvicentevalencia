@@ -111,6 +111,8 @@ export default function MiCuenta() {
             const confirmado = window.confirm('¿Seguro que deseas cerrar sesión?');
             if (confirmado) {
               localStorage.removeItem('token');
+              localStorage.removeItem('usuario');
+              document.cookie = 'token=; path=/; max-age=0';
               setUsuario(null);
               router.push('/');
             }

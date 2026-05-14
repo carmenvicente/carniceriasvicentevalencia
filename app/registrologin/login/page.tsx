@@ -38,13 +38,21 @@ export default function LoginPage() {
 
         localStorage.setItem('token', token);
         localStorage.setItem('usuario', JSON.stringify(user));
+        // Cookie para que el middleware pueda verificar la sesión
+        document.cookie = `token=${token}; path=/; max-age=604800; SameSite=Strict`;
 
         setTimeout(() => {
           router.push('/micuenta');
         }, 100);
       } else {
-        const data = await res.json();
-        setErrorMsg(data.message || 'Credenciales inválidas.');
+        let errorMessage = 'Credenciales inválidas.';
+        try {
+          const data = await res.json();
+          errorMessage = data.message || errorMessage;
+        } catch {
+          errorMessage = 'Error del servidor. Inténtalo de nuevo.';
+        }
+        setErrorMsg(errorMessage);
       }
     } catch (err) {
       console.error(err);
