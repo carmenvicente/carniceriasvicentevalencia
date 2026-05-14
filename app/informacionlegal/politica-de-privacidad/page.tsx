@@ -130,7 +130,7 @@ export default function PoliticaPrivacidad() {
           Este sitio web utiliza únicamente cookies técnicas necesarias para su correcto funcionamiento, como la gestión de sesiones de usuario
           autenticado. No se utilizan cookies de seguimiento, publicitarias ni de perfiles sin el consentimiento expreso del usuario.
           El usuario puede consultar y gestionar sus preferencias en cualquier momento desde la sección{' '}
-          <Link href="/micuenta" className="text-blue-600 hover:underline font-semibold">Mi Cuenta</Link>.
+          <Link href="/micuenta/ajustes-cookies" className="text-blue-600 hover:underline font-semibold">Ajustes de Cookies</Link>.
         </p>
 
         <h2 className="text-lg font-semibold mb-4">10. Modificaciones de la política de privacidad</h2>

@@ -94,7 +94,7 @@ export default function AvisoLegal() {
           No se emplean cookies analíticas, publicitarias ni de perfiles de terceros sin el consentimiento expreso del usuario. El usuario puede
           consultar y modificar sus preferencias sobre el uso de cookies en cualquier momento desde el panel de gestión disponible en la
           sección{' '}
-          <Link href="/micuenta" className="text-blue-600 hover:underline font-semibold">Mi Cuenta</Link>.
+          <Link href="/micuenta/ajustes-cookies" className="text-blue-600 hover:underline font-semibold">Ajustes de Cookies</Link>.
           Para más información, consúltese la{' '}
           <Link href="/informacionlegal/politica-de-privacidad" className="text-blue-600 hover:underline font-semibold">Política de Privacidad</Link>.
         </p>
