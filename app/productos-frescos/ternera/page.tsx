@@ -8,6 +8,7 @@ import Footer from '@/app/componentes/footer'
 import styles from '@/app/styles/productos.module.css'
 import { useCarrito } from '@/app/contextos/CarritoContexto'
 import PopupCarrito from '@/app/componentes/PopupCarrito'
+import BotonFavorito from '@/app/componentes/BotonFavorito'
 import { createPortal } from 'react-dom'
 
 // Definición de la interfaz Producto
@@ -217,8 +218,8 @@ export default function Ternera() {
           {(viewMode === 'grid' || isMobile) ? (
             <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {sortedProductos.map((p, index) => (
+                <div key={p.id} className="relative">
                 <Link
-                  key={p.id}
                   href={`/detalle-productos/${p.id}`}
                   className={`${styles.productCard} flex flex-col justify-start h-full space-y-2 sm:space-y-4 transition-transform hover:-translate-y-1`}
                 >
@@ -254,6 +255,10 @@ export default function Ternera() {
                   </button>
                   */}
                 </Link>
+                <div className="absolute bottom-2 right-2 z-10">
+                  <BotonFavorito productoId={p.id} />
+                </div>
+                </div>
               ))}
             </div>
           ) : (

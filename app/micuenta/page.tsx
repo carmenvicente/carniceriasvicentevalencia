@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Navbar from '@/app/componentes/navbar';
 import Footer from '@/app/componentes/footer';
-import { FaUser, FaMapMarkerAlt, FaCalendarAlt, FaReceipt, FaTags, FaFileAlt, FaInfoCircle, FaSmile } from 'react-icons/fa';
+import { FaUser, FaMapMarkerAlt, FaCalendarAlt, FaReceipt, FaTags, FaFileAlt, FaInfoCircle, FaSmile, FaHeart } from 'react-icons/fa';
 
 type Usuario = {
   nombre: string;
@@ -83,6 +83,7 @@ export default function MiCuenta() {
       {/* Tarjetas de opciones */}
       <div className="max-w-screen-xl mx-auto px-4 py-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-20 md:mb-32" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
         <Tarjeta icono={<FaUser size={24} color="black" />} texto="Información" href="/micuenta/informacion" className="text-black" />
+        <Tarjeta icono={<FaHeart size={24} color="black" />} texto="Favoritos" href="/micuenta/favoritos" className="text-black" />
         {usuario.role === 'admin' ? (
           <>
             <Link
