@@ -100,12 +100,12 @@ export default function InformacionUsuario() {
 
   return (
     <>
+      <div className="min-h-screen bg-white">
       {/* Navbar y cabecera */}
       <Navbar />
 
       {/* 40px de altura en negro arriba */}
       <div className="h-22 w-full bg-black" />
-<div className="bg-white" >
       {/* Cabecera blanca */}
 <div className="w-full py-3 bg-white">
   <div className="max-w-screen-xl mx-auto text-center px-4 mt-10">
@@ -284,9 +284,9 @@ export default function InformacionUsuario() {
           </button>
         </form>
       </main>
+      </div>
 
       <Footer />
-      </div>
     </>
   );
 }

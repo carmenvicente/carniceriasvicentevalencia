@@ -41,6 +41,7 @@ export default function FavoritosPage() {
 
   return (
     <>
+      <div className="min-h-screen">
       <Navbar />
       <div className="h-22 w-full bg-black" />
 
@@ -93,6 +94,7 @@ export default function FavoritosPage() {
           </div>
         )}
       </main>
+      </div>
 
       <Footer />
     </>
