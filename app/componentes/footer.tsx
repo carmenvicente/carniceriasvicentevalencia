@@ -63,7 +63,7 @@ export default function Footer() {
               </li>
               <li className="mt-2">📞 <a href="tel:969221018" className="hover:underline">969 221 018</a></li>
               <li>📞 <a href="tel:+34646982666" className="hover:underline">+34 646 982 666</a></li>
-              <li className="mt-2">✉️ <a>carniceriavicentevalencia@gmail.com</a></li>
+              <li className="mt-2 break-all">✉️ <a href="mailto:carniceriavicentevalencia@gmail.com" className="hover:underline">carniceriavicentevalencia@gmail.com</a></li>
             </ul>
           </div>
 

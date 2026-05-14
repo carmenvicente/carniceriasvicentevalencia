@@ -11,7 +11,7 @@ export default function Inicio() {
       <Navbar />
 
       {/* Imagen de fondo a pantalla completa con posicionamiento relativo */}
-      <div className="relative w-full h-[70vh] sm:h-[80vh] md:h-screen">
+      <div className="relative w-full h-screen">
         <Image
           src="/imagenes/otros/fondo33.JPG"
           alt="Imagen de fondo Carnicería J Vicente Valencia"
@@ -48,6 +48,13 @@ export default function Inicio() {
               Ver productos
             </Link>
           </div>
+        </div>
+
+        {/* Indicador de scroll */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center text-white animate-bounce">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 drop-shadow-lg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
         </div>
       </div>
 
@@ -123,7 +130,7 @@ export default function Inicio() {
               href="/productos-frescos/ternera"
               className="flex flex-col items-center text-gray-700 hover:text-red-700"
             >
-              <div className="w-[180px] h-[180px] flex items-center justify-center mb-3 transition-transform duration-300 hover:scale-105">
+              <div className="w-[120px] h-[120px] sm:w-[150px] sm:h-[150px] md:w-[180px] md:h-[180px] flex items-center justify-center mb-3 transition-transform duration-300 hover:scale-105">
                 <Image
                   src="/imagenes/dibujos/terneradibujo.png"
                   alt="Imagen dibujo de Ternera"
@@ -139,7 +146,7 @@ export default function Inicio() {
               href="/productos-frescos/cerdo"
               className="flex flex-col items-center text-gray-700 hover:text-red-700"
             >
-              <div className="w-[180px] h-[180px] flex items-center justify-center mb-3 transition-transform duration-300 hover:scale-105">
+              <div className="w-[120px] h-[120px] sm:w-[150px] sm:h-[150px] md:w-[180px] md:h-[180px] flex items-center justify-center mb-3 transition-transform duration-300 hover:scale-105">
                 <Image
                   src="/imagenes/dibujos/cerdodibujo.png"
                   alt="Imagen dibujo de Cerdo"
@@ -155,7 +162,7 @@ export default function Inicio() {
               href="/productos-frescos/cordero"
               className="flex flex-col items-center text-gray-700 hover:text-red-700"
             >
-              <div className="w-[180px] h-[180px] flex items-center justify-center mb-3 transition-transform duration-300 hover:scale-105">
+              <div className="w-[120px] h-[120px] sm:w-[150px] sm:h-[150px] md:w-[180px] md:h-[180px] flex items-center justify-center mb-3 transition-transform duration-300 hover:scale-105">
                 <Image
                   src="/imagenes/dibujos/corderodibujo.png"
                   alt="Imagen dibujo de Cordero"
@@ -171,7 +178,7 @@ export default function Inicio() {
               href="/productos-frescos/avesyconejos"
               className="flex flex-col items-center text-gray-700 hover:text-red-700"
             >
-              <div className="w-[180px] h-[180px] flex items-center justify-center mb-3 transition-transform duration-300 hover:scale-105">
+              <div className="w-[120px] h-[120px] sm:w-[150px] sm:h-[150px] md:w-[180px] md:h-[180px] flex items-center justify-center mb-3 transition-transform duration-300 hover:scale-105">
                 <Image
                   src="/imagenes/dibujos/avesyconejosdibujo.png"
                   alt="Imagen dibujo de Aves y Conejos"
@@ -196,7 +203,7 @@ export default function Inicio() {
               href="/productos-elaborados/embutidoscaseros"
               className="flex flex-col items-center text-gray-700 hover:text-red-700"
             >
-              <div className="w-[180px] h-[180px] flex items-center justify-center mb-2 transition-transform duration-300 hover:scale-105">
+              <div className="w-[120px] h-[120px] sm:w-[150px] sm:h-[150px] md:w-[180px] md:h-[180px] flex items-center justify-center mb-2 transition-transform duration-300 hover:scale-105">
                 <Image
                   src="/imagenes/dibujos/embutidoscaserosdibujo.png"
                   alt="Imagen dibujo de Embutidos caseros"
@@ -212,7 +219,7 @@ export default function Inicio() {
               href="/productos-elaborados/elaborados"
               className="flex flex-col items-center text-gray-700 hover:text-red-700"
             >
-              <div className="w-[180px] h-[180px] flex items-center justify-center mb-2 transition-transform duration-300 hover:scale-105">
+              <div className="w-[120px] h-[120px] sm:w-[150px] sm:h-[150px] md:w-[180px] md:h-[180px] flex items-center justify-center mb-2 transition-transform duration-300 hover:scale-105">
                 <Image
                   src="/imagenes/dibujos/elaboradosdibujo.png"
                   alt="Imagen dibujo de Elaborados"
@@ -421,7 +428,7 @@ export default function Inicio() {
                 className="mb-4"
               />
               <p
-                className="text-gray-700 mb-4"
+                className="text-gray-700 text-sm md:text-base mb-4"
                 style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
               >
                 Es el lugar que nos recomendaron —con todo acierto— para
@@ -464,7 +471,7 @@ export default function Inicio() {
                 className="mb-4"
               />
               <p
-                className="text-gray-700 mb-4"
+                className="text-gray-700 text-sm md:text-base mb-4"
                 style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
               >
                 Para mí, la mejor carnicería de Cuenca. Conservan todo el sabor
@@ -511,7 +518,7 @@ export default function Inicio() {
                 className="mb-4"
               />
               <p
-                className="text-gray-700 mb-4"
+                className="text-gray-700 text-sm md:text-base mb-4"
                 style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
               >
                 Siempre que necesito buen género acudo a esta carnicería. No
