@@ -23,6 +23,8 @@ export default function InformacionUsuario() {
   const [verActual, setVerActual] = useState(false);
   const [verNueva, setVerNueva] = useState(false);
   const [verRepetida, setVerRepetida] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -34,7 +36,6 @@ export default function InformacionUsuario() {
     const json = decodeURIComponent(escape(atob(base64)));
     const payload = JSON.parse(json);
 
-    console.log(payload);
     setUsuarioOriginal(payload);
     setFormData((prev) => ({
       ...prev,
@@ -54,14 +55,16 @@ export default function InformacionUsuario() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMsg(null);
+    setSuccessMsg(null);
 
     if ((formData.password1 || formData.password2) && !formData.contraseñaActual) {
-      alert('Para cambiar la contraseña, primero debes introducir tu contraseña actual.');
+      setErrorMsg('Para cambiar la contraseña, primero debes introducir tu contraseña actual.');
       return;
     }
 
     if (formData.password1 !== formData.password2) {
-      alert('Las contraseñas no coinciden.');
+      setErrorMsg('Las contraseñas no coinciden.');
       return;
     }
 
@@ -83,15 +86,15 @@ export default function InformacionUsuario() {
       const data = await res.json();
 
       if (res.ok) {
-        alert('Datos actualizados correctamente.');
+        setSuccessMsg('Datos actualizados correctamente.');
         localStorage.setItem('token', data.token);
-        router.push('/micuenta');
+        setTimeout(() => router.push('/micuenta'), 1500);
       } else {
-        alert(data.message || 'Error al actualizar.');
+        setErrorMsg(data.message || 'Error al actualizar.');
       }
     } catch (error) {
       console.error('Error al actualizar:', error);
-      alert('Error inesperado.');
+      setErrorMsg('Error inesperado. Inténtalo de nuevo.');
     }
   };
 
@@ -261,6 +264,17 @@ export default function InformacionUsuario() {
             </div>
           </div>
 
+
+          {successMsg && (
+            <div className="p-2 bg-green-100 text-green-700 rounded">
+              {successMsg}
+            </div>
+          )}
+          {errorMsg && (
+            <div className="p-2 bg-red-100 text-red-700 rounded">
+              {errorMsg}
+            </div>
+          )}
 
           <button
             type="submit"
