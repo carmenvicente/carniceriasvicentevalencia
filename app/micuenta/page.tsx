@@ -43,7 +43,8 @@ export default function MiCuenta() {
   if (!usuario) return null;
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="bg-white">
+      <div className="min-h-screen flex flex-col">
       {/* Navbar y cabecera */}
       <Navbar />
 
@@ -126,9 +127,8 @@ export default function MiCuenta() {
           <span className="mt-2 font-semibold text-center text-black">Desconectar</span>
         </div>
       </div>
-      <div className="mt-30">
-        <Footer />
       </div>
+      <Footer />
     </main>
   );
 }

@@ -32,7 +32,7 @@ export default function Footer() {
         </div>
 
         {/* Secciones del footer con distribución en grid para móviles y flex para desktop */}
-        <div className="flex-1 grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-8 lg:gap-x-10">
+        <div className="flex-1 grid grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-8">
 
           {/* Sección Navegación con enlaces principales */}
           <div className="w-full sm:w-auto">

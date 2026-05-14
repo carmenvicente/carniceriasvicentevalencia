@@ -4,7 +4,8 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  reactStrictMode: true, // opcional pero recomendable
+  devIndicators: false,
+  reactStrictMode: true,
   images: {
     domains: [
       'eixv30h8jqr5avph.public.blob.vercel-storage.com',
