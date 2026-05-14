@@ -149,6 +149,7 @@ export default function DetalleProducto() {
 
             {/* Sumatorio + botón */}
             <div className="pt-4 border-t border-gray-700 mt-6 space-y-4">
+              {/* COMENTADO - total y contador de unidades
               <p className="text-xl text-white font-bold">Total: {(precio * cantidad).toFixed(2)} €</p>
 
               <div className="flex items-center gap-4">
@@ -157,7 +158,9 @@ export default function DetalleProducto() {
                   <div className="px-3 md:px-4 py-1 text-white bg-[rgb(22,22,22)]">{cantidad}</div>
                   <button onClick={incrementar} className="px-2 md:px-3 py-1 text-base md:text-xl text-white bg-[rgb(22,22,22)] hover:bg-gray-700">+</button>
                 </div>
+              */}
 
+                {/* COMENTADO - botón añadir a la cesta
                 <button
                   onClick={añadirVariasVeces}
                   disabled={!producto.stock}
@@ -168,7 +171,7 @@ export default function DetalleProducto() {
                 >
                   Añadir a la cesta
                 </button>
-              </div>
+                */}
             </div>
           </div>
         </div>

@@ -138,7 +138,13 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <p className="mt-4 text-center text-sm text-gray-600" >
+          <p className="mt-4 text-center text-sm text-gray-600">
+            <Link href="/registrologin/recuperar-contrasena" className="text-[#990000] hover:underline">
+              ¿Olvidaste tu contraseña?
+            </Link>
+          </p>
+
+          <p className="mt-2 text-center text-sm text-gray-600" >
             ¿Aún no tienes cuenta?{' '}
             <Link href="/registrologin/register" className="text-[#990000] hover:underline">
               Regístrate

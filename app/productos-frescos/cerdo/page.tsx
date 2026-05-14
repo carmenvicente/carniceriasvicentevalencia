@@ -228,12 +228,12 @@ export default function Cerdo() {
           {(viewMode === 'grid' || isMobile) && (
             <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {sortedProductos.map(p => (
-                <div
+                <Link
                   key={p.id}
+                  href={`/detalle-productos/${p.id}`}
                   className={`${styles.productCard} flex flex-col justify-start h-full space-y-2 sm:space-y-4 transition-transform hover:-translate-y-1`}
                 >
                   {/* Imagen con enlace a detalle del producto */}
-                  <Link href={`/detalle-productos/${p.id}`}>
                     <Image
                       src={p.imagen.startsWith('http') ? p.imagen : `/imagenes/productos/${p.imagen}`}
                       alt={p.nombre}
@@ -242,19 +242,19 @@ export default function Cerdo() {
                       className={`${styles.productImage} mx-auto rounded w-full h-auto object-cover`}
                       unoptimized={p.imagen.startsWith('http')}
                     />
-                  </Link>
 
                   {/* Nombre y precio */}
                   <div className="flex flex-col gap-[2px] px-2">
-                    <h2 className="font-semibold text-white text-left text-sm sm:text-base">{p.nombre}</h2>
-                    <p className="font-bold text-[#990000] text-left text-sm sm:text-base">{p.precio.toFixed(2)}€/kg</p>
+                    <h2 className="font-semibold text-white text-left text-xs lg:text-base">{p.nombre}</h2>
+                    <p className="font-bold text-[#990000] text-left text-xs lg:text-base">{p.precio.toFixed(2)}€/kg</p>
                   </div>
 
                   {/* Botón para añadir al carrito */}
+                  {/* COMENTADO - botón añadir a la cesta
                   <button
                     onClick={() => handleAñadir(p)}
                     disabled={!p.stock}
-                    className={`mt-auto w-full rounded text-xs sm:text-sm px-2 py-1 sm:px-3 sm:py-2 transition ${
+                    className={`mt-auto w-full rounded text-xs lg:text-sm px-2 py-1 lg:px-3 lg:py-2 transition ${
                       p.stock
                         ? 'bg-gray-200 text-gray-800 hover:bg-[#990000] hover:text-white'
                         : 'bg-gray-400 text-gray-600 cursor-not-allowed'
@@ -262,7 +262,8 @@ export default function Cerdo() {
                   >
                     Añadir a la cesta
                   </button>
-                </div>
+                  */}
+                </Link>
               ))}
             </div>
           )}
@@ -271,12 +272,12 @@ export default function Cerdo() {
           {viewMode === 'list' && !isMobile && (
             <div className="flex flex-col space-y-4">
               {sortedProductos.map(p => (
-                <div
+                <Link
                   key={p.id}
+                  href={`/detalle-productos/${p.id}`}
                   className={`${styles.productCardList} flex items-center justify-between p-4 bg-[rgba(0,0,0,0.8)] rounded-lg shadow-md transition-transform hover:-translate-y-1`}
                 >
                   {/* Imagen con enlace a detalle del producto */}
-                  <Link href={`/detalle-productos/${p.id}`}>
                     <Image
                       src={p.imagen.startsWith('http') ? p.imagen : `/imagenes/productos/${p.imagen}`}
                       alt={p.nombre}
@@ -285,7 +286,6 @@ export default function Cerdo() {
                       className="rounded object-cover"
                       unoptimized={p.imagen.startsWith('http')}
                     />
-                  </Link>
 
                   {/* Nombre y descripción */}
                   <div className="flex-1 px-4 text-left">
@@ -301,12 +301,15 @@ export default function Cerdo() {
                   {/* Información de precio, disponibilidad y botón añadir */}
                   <div className="product-info flex flex-col space-y-5 border-l border-gray-700 pl-4">
                     <p className="text-[#990000] font-bold text-lg">{p.precio.toFixed(2)}€/kg</p>
-                    <p className="text-white font-medium text-sm" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
+                    {/* COMENTADO - disponibilidad stock
+<p className="text-white font-medium text-sm" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
                       Disponibilidad:{' '}
                       <span className={p.stock ? 'text-[#00994a]' : 'text-gray-400'}>
                         {p.stock ? 'En Stock' : 'Sin Stock'}
                       </span>
                     </p>
+*/}
+                    {/* COMENTADO - botón añadir a la cesta
                     <button
                       onClick={() => handleAñadir(p)}
                       disabled={!p.stock}
@@ -316,8 +319,9 @@ export default function Cerdo() {
                     >
                       Añadir a la cesta
                     </button>
+                    */}
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           )}

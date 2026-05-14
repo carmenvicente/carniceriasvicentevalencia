@@ -332,7 +332,7 @@ export default function Navbar() {
             {/* Menú perfil usuario */}
             <PerfilMenu />
 
-            {/* Icono carrito con popup */}
+            {/* COMENTADO - icono carrito con popup
             <div
               id="contenedor-carrito"
               className="relative"
@@ -351,6 +351,7 @@ export default function Navbar() {
 
               <PopupCarrito visible={hoverVisible} />
             </div>
+            */}
           </div>
         </div>
 

@@ -138,6 +138,7 @@ export default function PaginaCarrito() {
                 </p>
               </div>
 
+              {/* COMENTADO - botón realizar el pedido
               <Link href="/realizar-pedido">
                 <button
                   disabled={carrito.length === 0}
@@ -150,6 +151,7 @@ export default function PaginaCarrito() {
                   Realizar el pedido
                 </button>
               </Link>
+              */}
 
               <button
                 onClick={vaciarCarrito}

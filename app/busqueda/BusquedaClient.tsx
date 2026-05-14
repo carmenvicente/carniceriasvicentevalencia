@@ -156,20 +156,22 @@ export default function BusquedaClient({ initialQuery }: { initialQuery: string 
                         unoptimized={p.imagen.startsWith('http')}
                       />
 
-                      <h2 className="mt-2 font-semibold text-white text-left text-sm sm:text-base">{p.nombre}</h2>
-                      <p className="mt-1 font-bold text-[#990000] text-left text-sm sm:text-base">
+                      <h2 className="mt-2 font-semibold text-white text-left text-xs lg:text-base">{p.nombre}</h2>
+                      <p className="mt-1 font-bold text-[#990000] text-left text-xs lg:text-base">
                         {typeof p.precio === 'number' ? p.precio.toFixed(2) : Number(p.precio).toFixed(2)}€
                       </p>
                     </div>
+                    {/* COMENTADO - botón añadir a la cesta
                     <button
                       disabled={!p.stock}
-                      className={`mt-auto w-full rounded text-xs sm:text-sm px-2 py-1 sm:px-3 sm:py-2 transition ${p.stock
+                      className={`mt-auto w-full rounded text-xs lg:text-sm px-2 py-1 lg:px-3 lg:py-2 transition ${p.stock
                           ? 'bg-gray-200 text-gray-800 hover:bg-[#990000] hover:text-white'
                           : 'bg-gray-400 text-gray-600 cursor-not-allowed'
                         }`}
                     >
                       Añadir a la cesta
                     </button>
+                    */}
                   </Link>
                 ))}
               </div>
@@ -199,12 +201,15 @@ export default function BusquedaClient({ initialQuery }: { initialQuery: string 
                       <p className="text-[#990000] font-bold text-lg">
                         {typeof p.precio === 'number' ? p.precio.toFixed(2) : Number(p.precio).toFixed(2)}€
                       </p>
-                      <p className="text-white font-medium text-sm">
+                      {/* COMENTADO - disponibilidad stock
+<p className="text-white font-medium text-sm">
                         Disponibilidad:{' '}
                         <span className={p.stock ? 'text-[#00994a]' : 'text-gray-400'}>
                           {p.stock ? 'En Stock' : 'Sin Stock'}
                         </span>
                       </p>
+*/}
+                      {/* COMENTADO - botón añadir a la cesta
                       <button
                         disabled={!p.stock}
                         className={`w-full rounded text-sm px-3 py-2 transition ${p.stock
@@ -214,6 +219,7 @@ export default function BusquedaClient({ initialQuery }: { initialQuery: string 
                       >
                         Añadir a la cesta
                       </button>
+                      */}
                     </div>
                   </Link>
                 ))}
