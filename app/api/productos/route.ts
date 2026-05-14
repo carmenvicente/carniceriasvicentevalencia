@@ -1,11 +1,13 @@
 // app/api/productos/route.ts
 
+export const dynamic = 'force-dynamic';
+
 import { NextResponse } from 'next/server';
 import { neon } from '@neondatabase/serverless';
 import { writeFile } from 'fs/promises';
 import path from 'path';
 
-const sql = neon(process.env.DATABASE_URL as string);
+const getSQL = () => neon(process.env.DATABASE_URL as string);
 
 interface PostRequestBody {
   subcategoria_id?: number;
@@ -28,6 +30,8 @@ interface PutRequestBody {
 
 // Obtener productos o realizar búsqueda
 export async function GET(request: Request) {
+  const sql = getSQL();
+
   const url = new URL(request.url);
   const search = url.searchParams.get('search')?.trim();
 
@@ -64,6 +68,8 @@ export async function GET(request: Request) {
 
 // Crear producto o filtrar por subcategoría
 export async function POST(request: Request) {
+  const sql = getSQL();
+
   const contentType = request.headers.get('content-type') || '';
 
   // 🔹 Si es JSON (filtro o creación sin imagen)
@@ -144,6 +150,8 @@ if (buffer.length > 4 * 1024 * 1024) {
 
 // Actualizar producto existente
 export async function PUT(request: Request) {
+  const sql = getSQL();
+
   const body: PutRequestBody = await request.json();
   const { id, nombre, descripcion, precio, stock, imagen, subcategoria_id } = body;
 

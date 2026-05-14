@@ -1,14 +1,13 @@
+export const dynamic = 'force-dynamic';
+
 import { NextResponse } from 'next/server';
 import { neon } from '@neondatabase/serverless';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { enviarCorreoBienvenida } from '@/lib/email'; 
 
-const sql = neon(`${process.env.DATABASE_URL}?options=--client_encoding=UTF8`);
+const getSQL = () => neon(`${process.env.DATABASE_URL}?options=--client_encoding=UTF8`);
 const JWT_SECRET = process.env.JWT_SECRET;
-if (!JWT_SECRET) {
-  throw new Error('JWT_SECRET no está definido en las variables de entorno.');
-}
 
 interface Body {
   email: string;
@@ -19,6 +18,7 @@ interface Body {
 }
 
 export async function POST(request: Request) {
+  const sql = getSQL();
   try {
     // ✅ 1) Asegurarse de que los campos vienen como texto plano
     const rawBody: Body = await request.json();

@@ -1,14 +1,18 @@
+export const dynamic = 'force-dynamic';
+
 import { NextResponse } from 'next/server'
 import { neon } from '@neondatabase/serverless'
 import postgres from 'postgres'
 import path from 'path'
 import { writeFile } from 'fs/promises'
 
-const sql = neon(process.env.DATABASE_URL as string)  // para consultas estáticas
-const psql = postgres(process.env.DATABASE_URL as string) // para consultas dinámicas con .unsafe
+const getSQL = () => neon(process.env.DATABASE_URL as string)
+const getPSQL = () => postgres(process.env.DATABASE_URL as string)
 
 // Obtener producto por ID
 export async function GET(request: Request) {
+  const sql = getSQL()
+  const psql = getPSQL()
   const url = new URL(request.url)
   const id = url.pathname.split('/').pop()
 
@@ -47,6 +51,8 @@ export async function GET(request: Request) {
 
 // Actualizar producto por ID
 export async function PUT(request: Request) {
+  const sql = getSQL()
+  const psql = getPSQL()
   const url = new URL(request.url)
   const id = url.pathname.split('/').pop()
 
@@ -103,6 +109,7 @@ export async function PUT(request: Request) {
 
 // Eliminar producto por ID
 export async function DELETE(request: Request) {
+  const sql = getSQL()
   const url = new URL(request.url)
   const id = url.pathname.split('/').pop()
 

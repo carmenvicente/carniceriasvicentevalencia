@@ -1,17 +1,15 @@
 // app/api/auth/login/route.ts
+
+export const dynamic = 'force-dynamic';
+
 import { NextResponse } from 'next/server';
 import { neon } from '@neondatabase/serverless';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-const sql = neon(process.env.DATABASE_URL as string);
+const getSQL = () => neon(process.env.DATABASE_URL as string);
 
-// ******* VALIDACIÓN CRÍTICA DE JWT_SECRET *******
-const JWT_SECRET = process.env.JWT_SECRET;
-if (!JWT_SECRET) {
-  throw new Error('JWT_SECRET no está definido en las variables de entorno. Por favor, configúralo en .env.local y en Vercel.');
-}
-// *************************************************
+const JWT_SECRET = process.env.JWT_SECRET as string;
 
 interface Body {
   email: string;
@@ -19,6 +17,8 @@ interface Body {
 }
 
 export async function POST(request: Request) {
+  const sql = getSQL();
+
   try {
     const { email, password }: Body = await request.json();
 

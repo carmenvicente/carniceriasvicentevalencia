@@ -1,13 +1,17 @@
 // app/api/admin/pedidos/route.ts
 
+export const dynamic = 'force-dynamic';
+
 import { NextResponse, NextRequest } from 'next/server';
 import { neon } from '@neondatabase/serverless';
 import jwt from 'jsonwebtoken';
 
-const sql = neon(process.env.DATABASE_URL as string);
+const getSQL = () => neon(process.env.DATABASE_URL as string);
 const JWT_SECRET = process.env.JWT_SECRET as string;
 
 export async function GET(req: NextRequest) {
+  const sql = getSQL();
+
   // Verificar token y rol admin
   const auth = req.headers.get('Authorization');
   const token = auth?.startsWith('Bearer ') ? auth.slice(7) : null;

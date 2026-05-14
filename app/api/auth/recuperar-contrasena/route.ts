@@ -3,10 +3,10 @@ import { neon } from '@neondatabase/serverless'
 import nodemailer from 'nodemailer'
 import jwt from 'jsonwebtoken'
 
-const sql = neon(process.env.DATABASE_URL as string)
 const JWT_SECRET = process.env.JWT_SECRET as string
 
 export async function POST(request: Request) {
+  const sql = neon(process.env.DATABASE_URL as string)
   try {
     const { email } = await request.json()
 
