@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { jwtVerify } from 'jose'
-
-const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET)
+import { decodeJwt } from 'jose'
 
 const RUTAS_PROTEGIDAS = ['/micuenta']
 const RUTAS_SOLO_INVITADOS = ['/registrologin/login', '/registrologin/register']
@@ -17,8 +15,9 @@ export async function middleware(req: NextRequest) {
 
   if (token) {
     try {
-      await jwtVerify(token, JWT_SECRET)
-      usuarioValido = true
+      const payload = decodeJwt(token)
+      const ahora = Math.floor(Date.now() / 1000)
+      usuarioValido = !payload.exp || payload.exp > ahora
     } catch {
       usuarioValido = false
     }
