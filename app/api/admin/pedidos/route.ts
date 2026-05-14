@@ -1,11 +1,32 @@
 // app/api/admin/pedidos/route.ts
 
-import { NextResponse } from 'next/server';
+export const dynamic = 'force-dynamic';
+
+import { NextResponse, NextRequest } from 'next/server';
 import { neon } from '@neondatabase/serverless';
+import jwt from 'jsonwebtoken';
 
-const sql = neon(process.env.DATABASE_URL as string);
+const getSQL = () => neon(process.env.DATABASE_URL as string);
+const JWT_SECRET = process.env.JWT_SECRET as string;
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const sql = getSQL();
+
+  // Verificar token y rol admin
+  const auth = req.headers.get('Authorization');
+  const token = auth?.startsWith('Bearer ') ? auth.slice(7) : null;
+  if (!token) {
+    return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+  }
+  try {
+    const payload = jwt.verify(token, JWT_SECRET) as { role: string };
+    if (payload.role !== 'admin') {
+      return NextResponse.json({ error: 'Acceso denegado' }, { status: 403 });
+    }
+  } catch {
+    return NextResponse.json({ error: 'Token inválido' }, { status: 401 });
+  }
+
   try {
     console.log('API Admin: Recibida petición GET para /api/admin/pedidos');
 

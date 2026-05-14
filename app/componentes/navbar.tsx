@@ -201,7 +201,7 @@ export default function Navbar() {
         `}
         style={{ zIndex: 30 }}
       >
-        <div className="flex items-center justify-between w-full px-4 text-xs font-semibold h-20">
+        <div className="flex items-center justify-between w-full px-4 text-xs font-semibold h-16 md:h-20">
           {/* Icono menú hamburguesa para móvil */}
           <div className="md:hidden flex items-center">
             <button
@@ -222,19 +222,20 @@ export default function Navbar() {
           </div>
 
           {/* Logo con enlace al inicio */}
-          <Link href="/" className="navbar-link flex items-center">
+          <Link href="/" className="navbar-link flex items-center shrink-0">
             <Image
               src="/imagenes/logos/logoblancocolor.png"
               alt="Logo"
               width={190}
               height={200}
-              className="h-10 w-auto object-contain md:h-20"
+              className="h-10 w-auto object-contain md:h-14 lg:h-20"
+              style={{ width: 'auto' }}
               priority
             />
           </Link>
 
           {/* Menú principal escritorio */}
-          <ul className="hidden md:flex flex-grow justify-center items-center space-x-6">
+          <ul className="hidden md:flex flex-grow md:justify-evenly lg:justify-center lg:gap-x-4 xl:gap-x-6 items-center text-center">
             {/* Inicio */}
             <li>
               <Link href="/" className="navbar-link">INICIO</Link>
@@ -247,10 +248,10 @@ export default function Navbar() {
               onMouseLeave={handleFrescosLeave}
             >
               <span className="navbar-link cursor-pointer">
-                PRODUCTOS FRESCOS ▼
+                PRODUCTOS<br className="lg:hidden" /> FRESCOS ▼
               </span>
               {menuFrescosOpen && (
-                <ul className="absolute left-0 mt-1 bg-white text-black rounded-lg shadow-lg min-w-[200px]">
+                <ul className="absolute left-1/2 -translate-x-1/2 mt-1 bg-white text-black rounded-lg shadow-lg min-w-[200px]">
                   {[
                     ['TERNERA', '/productos-frescos/ternera'],
                     ['CERDO', '/productos-frescos/cerdo'],
@@ -261,7 +262,7 @@ export default function Navbar() {
                       <Link
                         href={href}
                         className={`
-                          block w-full text-base pl-4 py-2 transition hover:text-[#990000]
+                          block w-full text-base px-4 py-2 text-center transition hover:text-[#990000]
                           ${i === 0 ? 'rounded-tl-lg rounded-tr-lg' : ''}
                           ${i === arr.length - 1 ? 'rounded-bl-lg rounded-br-lg' : ''}
                         `}
@@ -281,10 +282,10 @@ export default function Navbar() {
               onMouseLeave={handleElaboradosLeave}
             >
               <span className="navbar-link cursor-pointer">
-                PRODUCTOS ELABORADOS ▼
+                PRODUCTOS<br className="lg:hidden" /> ELABORADOS ▼
               </span>
               {menuElaboradosOpen && (
-                <ul className="absolute left-0 mt-1 bg-white text-black rounded-lg shadow-lg min-w-[230px]">
+                <ul className="absolute left-1/2 -translate-x-1/2 mt-1 bg-white text-black rounded-lg shadow-lg min-w-[230px]">
                   {[
                     ['EMBUTIDOS CASEROS', '/productos-elaborados/embutidoscaseros'],
                     ['ELABORADOS', '/productos-elaborados/elaborados'],
@@ -293,7 +294,7 @@ export default function Navbar() {
                       <Link
                         href={href}
                         className={`
-                          block w-full text-base pl-4 py-2 transition hover:text-[#990000]
+                          block w-full text-base px-4 py-2 text-center transition hover:text-[#990000]
                           ${i === 0 ? 'rounded-tl-lg rounded-tr-lg' : ''}
                           ${i === arr.length - 1 ? 'rounded-bl-lg rounded-br-lg' : ''}
                         `}
@@ -312,7 +313,7 @@ export default function Navbar() {
           </ul>
 
           {/* Iconos a la derecha: búsqueda, perfil y carrito */}
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-3 shrink-0">
             {/* Botón abrir buscador */}
             <button
               onClick={toggleSearch}
@@ -331,7 +332,7 @@ export default function Navbar() {
             {/* Menú perfil usuario */}
             <PerfilMenu />
 
-            {/* Icono carrito con popup */}
+            {/* COMENTADO - icono carrito con popup
             <div
               id="contenedor-carrito"
               className="relative"
@@ -350,13 +351,22 @@ export default function Navbar() {
 
               <PopupCarrito visible={hoverVisible} />
             </div>
+            */}
           </div>
         </div>
+
+        {/* Backdrop menú móvil */}
+        {mobileMenuOpen && (
+          <div
+            className="fixed inset-0 bg-black/50 z-40 md:hidden"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+        )}
 
         {/* Menú móvil (overlay lateral) */}
         <div
           className={`
-            fixed top-0 left-0 w-64 h-full bg-black text-white z-50 transform transition-transform duration-300 ease-in-out py-8
+            fixed top-0 left-0 w-72 sm:w-80 h-full bg-black text-white z-50 transform transition-transform duration-300 ease-in-out py-8
             ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
             md:hidden
           `}

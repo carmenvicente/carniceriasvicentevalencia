@@ -96,6 +96,7 @@ export default function PopupCarrito({ visible }: { visible: boolean }) {
           <span>Subtotal</span>
           <span>{subtotal.toFixed(2)}€</span>
         </div>
+        {/* COMENTADO - botones ver cesta y finalizar compra
         <div className="mt-3 flex flex-col gap-2">
           <Link
             href="/carrito"
@@ -110,6 +111,7 @@ export default function PopupCarrito({ visible }: { visible: boolean }) {
             Finalizar compra
           </Link>
         </div>
+        */}
       </div>
     </div>
   )

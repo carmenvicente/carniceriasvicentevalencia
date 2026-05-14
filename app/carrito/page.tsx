@@ -51,7 +51,7 @@ export default function PaginaCarrito() {
         {carrito.length === 0 ? (
           <p className="text-center text-gray-400" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>Tu carrito está vacío.</p>
         ) : (
-          <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12 px-6">
+          <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-8 md:gap-12 px-4 md:px-6">
             {/* Lista de productos */}
             <div className="flex-1 space-y-6">
               {/* Encabezados de la tabla (ocultos en móvil, visibles en sm+) */}
@@ -121,7 +121,7 @@ export default function PaginaCarrito() {
             </div>
 
             {/* Resumen del pedido */}
-            <div className="w-full lg:w-1/3 bg-black/20 text-white p-6 rounded shadow-md h-fit">
+            <div className="w-full md:w-1/3 bg-black/20 text-white p-6 rounded shadow-md h-fit">
               <p className="text-sm text-gray-400 mb-2" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
                 🛒 Total artículos: <span className="text-gray-400 font-semibold">{totalArticulos}</span>
               </p>
@@ -138,6 +138,7 @@ export default function PaginaCarrito() {
                 </p>
               </div>
 
+              {/* COMENTADO - botón realizar el pedido
               <Link href="/realizar-pedido">
                 <button
                   disabled={carrito.length === 0}
@@ -150,6 +151,7 @@ export default function PaginaCarrito() {
                   Realizar el pedido
                 </button>
               </Link>
+              */}
 
               <button
                 onClick={vaciarCarrito}

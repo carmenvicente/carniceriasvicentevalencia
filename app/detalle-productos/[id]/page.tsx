@@ -111,10 +111,10 @@ export default function DetalleProducto() {
       </div>
 
       {/* Contenido principal */}
-      <div className="w-full bg-[rgb(22,22,22)] py-20 px-6 flex justify-center pb-32">
-        <div className="max-w-7xl w-full flex flex-col lg:flex-row gap-12">
+      <div className="w-full bg-[rgb(22,22,22)] py-10 md:py-20 px-4 md:px-6 flex justify-center pb-16 md:pb-32">
+        <div className="max-w-7xl w-full flex flex-col md:flex-row gap-8 md:gap-12">
           {/* Imagen */}
-          <div className="w-full lg:w-[60%] flex justify-center items-start">
+          <div className="w-full md:w-[60%] flex justify-center items-start">
             <Image
               src={producto.imagen.startsWith('http') ? producto.imagen : `/imagenes/productos/${producto.imagen}`}
               alt={producto.nombre}
@@ -127,9 +127,9 @@ export default function DetalleProducto() {
           </div>
 
           {/* Detalles */}
-          <div className="w-full lg:w-[40%] text-white space-y-4">
-            <h2 className="text-3xl font-bold mb-6">{producto.nombre}</h2>
-            <p className="text-[#990000] text-2xl font-semibold mb-2">
+          <div className="w-full md:w-[40%] text-white space-y-4">
+            <h2 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6">{producto.nombre}</h2>
+            <p className="text-[#990000] text-xl md:text-2xl font-semibold mb-2">
               {precio.toFixed(2)} €{producto.nombre === "Codorniz" || producto.nombre === "Zarajos" ? "/unidad" : "/kg"}
             </p>
 
@@ -149,15 +149,18 @@ export default function DetalleProducto() {
 
             {/* Sumatorio + botón */}
             <div className="pt-4 border-t border-gray-700 mt-6 space-y-4">
+              {/* COMENTADO - total y contador de unidades
               <p className="text-xl text-white font-bold">Total: {(precio * cantidad).toFixed(2)} €</p>
 
               <div className="flex items-center gap-4">
                 <div className="flex border border-gray-500 rounded overflow-hidden">
-                  <button onClick={decrementar} className="px-3 py-1 text-xl text-white bg-[rgb(22,22,22)] hover:bg-gray-700">−</button>
-                  <div className="px-4 py-1 text-white bg-[rgb(22,22,22)]">{cantidad}</div>
-                  <button onClick={incrementar} className="px-3 py-1 text-xl text-white bg-[rgb(22,22,22)] hover:bg-gray-700">+</button>
+                  <button onClick={decrementar} className="px-2 md:px-3 py-1 text-base md:text-xl text-white bg-[rgb(22,22,22)] hover:bg-gray-700">−</button>
+                  <div className="px-3 md:px-4 py-1 text-white bg-[rgb(22,22,22)]">{cantidad}</div>
+                  <button onClick={incrementar} className="px-2 md:px-3 py-1 text-base md:text-xl text-white bg-[rgb(22,22,22)] hover:bg-gray-700">+</button>
                 </div>
+              */}
 
+                {/* COMENTADO - botón añadir a la cesta
                 <button
                   onClick={añadirVariasVeces}
                   disabled={!producto.stock}
@@ -168,7 +171,7 @@ export default function DetalleProducto() {
                 >
                   Añadir a la cesta
                 </button>
-              </div>
+                */}
             </div>
           </div>
         </div>

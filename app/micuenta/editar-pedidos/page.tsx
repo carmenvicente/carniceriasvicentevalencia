@@ -27,7 +27,10 @@ export default function GestionPedidos() {
     setCargando(true);
     setErrorCarga(false);
     try {
-      const res = await fetch('/api/admin/pedidos');
+      const token = localStorage.getItem('token');
+      const res = await fetch('/api/admin/pedidos', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
       if (!res.ok) {
         throw new Error(`HTTP error! status: ${res.status}`);
       }
@@ -48,9 +51,13 @@ export default function GestionPedidos() {
 
   const marcarComoListo = async (id: number) => {
     try {
+      const token = localStorage.getItem('token');
       const res = await fetch(`/api/admin/pedidos/${id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify({ estado: 'listo' })
       })
 

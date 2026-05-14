@@ -1,17 +1,22 @@
 // app/api/stripe-webhook/route.ts
 
+export const dynamic = 'force-dynamic';
+
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { neon } from '@neondatabase/serverless';
 import { enviarCorreoConfirmacionPedido } from '@/lib/email'; // Asumiendo que esta es la ruta correcta
 
-const sql = neon(process.env.DATABASE_URL as string);
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
+const getSQL = () => neon(process.env.DATABASE_URL as string);
+const getStripe = () => new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: '2025-06-30.basil',
 });
 
 // Este es el endpoint que Stripe llamará directamente.
 export async function POST(req: Request) {
+  const sql = getSQL();
+  const stripe = getStripe();
+
   const buf = await req.text();
   const signature = req.headers.get('stripe-signature');
 

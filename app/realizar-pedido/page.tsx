@@ -161,7 +161,7 @@ export default function CheckoutPage() {
       </div>
 
       {/* CONTENIDO PRINCIPAL */}
-      <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-10 bg-[rgb(22,22,22)] px-6 md:px-20 py-10">
+      <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-8 md:gap-10 bg-[rgb(22,22,22)] px-4 md:px-10 lg:px-20 py-10">
         <div className="space-y-6">
 
           {/* DATOS PERSONALES */}

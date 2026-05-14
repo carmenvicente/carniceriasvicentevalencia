@@ -1,19 +1,18 @@
+export const dynamic = 'force-dynamic';
+
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { neon } from '@neondatabase/serverless';
 import jwt from 'jsonwebtoken';
 import { enviarCorreoConfirmacionPedido } from '@/lib/email'
 
-const sql = neon(process.env.DATABASE_URL as string);
+const getSQL = () => neon(process.env.DATABASE_URL as string);
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
+const getStripe = () => new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: '2025-06-30.basil',
 });
 
-const JWT_SECRET = process.env.JWT_SECRET;
-if (!JWT_SECRET) {
-  throw new Error('JWT_SECRET no está definido en las variables de entorno. Por favor, configúralo.');
-}
+const JWT_SECRET = process.env.JWT_SECRET as string;
 
 interface JwtPayload {
   id: number;
@@ -25,6 +24,9 @@ interface JwtPayload {
 }
 
 export async function POST(req: Request) {
+  const sql = getSQL();
+  const stripe = getStripe();
+
   try {
     console.log('API Route: POST request received for /api/pedidos (Creación de pedido)');
 
@@ -134,6 +136,8 @@ export async function POST(req: Request) {
 // FUNCIÓN GET: Para obtener los pedidos de un usuario autenticado
 // ******************************************************
 export async function GET(req: Request) {
+  const sql = getSQL();
+
   try {
     console.log('API Route: GET request received for /api/pedidos (Obtención de pedidos de usuario)');
 

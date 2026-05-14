@@ -1,16 +1,15 @@
+export const dynamic = 'force-dynamic';
+
 import { NextResponse } from 'next/server';
 import { neon } from '@neondatabase/serverless';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { enviarCorreoCambioDatos } from '@/lib/email';
 
-const sql = neon(`${process.env.DATABASE_URL}?options=--client_encoding=UTF8`);
 const JWT_SECRET = process.env.JWT_SECRET;
-if (!JWT_SECRET) {
-  throw new Error('JWT_SECRET no está definido en las variables de entorno.');
-}
 
 export async function PUT(request: Request) {
+  const sql = neon(`${process.env.DATABASE_URL}?options=--client_encoding=UTF8`);
   try {
     const {
       id,

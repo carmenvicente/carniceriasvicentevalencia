@@ -79,7 +79,7 @@ export default function MiCuenta() {
 
 
       {/* Tarjetas de opciones */}
-      <div className="max-w-screen-xl mx-auto px-4 py-8 grid grid-cols-1 sm:grid-cols-2 sm:grid-cols-4 gap-6 mb-77" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
+      <div className="max-w-screen-xl mx-auto px-4 py-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-20 md:mb-32" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
         <Tarjeta icono={<FaUser size={24} color="black" />} texto="Información" href="/micuenta/informacion" className="text-black" />
         {usuario.role === 'admin' ? (
           <>
@@ -101,9 +101,9 @@ export default function MiCuenta() {
               <span className="mt-2 font-semibold text-center">Gestión de pedidos</span>
             </Link>
           </>
-        ) : (
-          <Tarjeta icono={<FaCalendarAlt size={24}  color="black" />} texto="Mis pedidos" href="/micuenta/pedidos" className="text-black"/>
-        )}
+        ) : null /* COMENTADO - sección mis pedidos del cliente:
+          <Tarjeta icono={<FaCalendarAlt size={24} color="black" />} texto="Mis pedidos" href="/micuenta/pedidos" className="text-black"/>
+        */}
 
         <Tarjeta icono={<FaInfoCircle size={24}  color="black" />} texto="Tus ajustes de cookies" href="/micuenta/ajustes-cookies" className="text-black"/>
         <div
