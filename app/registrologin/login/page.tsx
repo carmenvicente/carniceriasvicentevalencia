@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
+import { useState, useEffect, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Navbar from '@/app/componentes/navbar';
@@ -15,6 +15,21 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        const exp = payload.exp;
+        if (!exp || exp > Math.floor(Date.now() / 1000)) {
+          router.replace('/micuenta');
+        }
+      } catch {
+        localStorage.removeItem('token');
+      }
+    }
+  }, [router]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
