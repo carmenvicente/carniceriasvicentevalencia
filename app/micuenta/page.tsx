@@ -30,10 +30,12 @@ export default function MiCuenta() {
           tratamiento: payload.tratamiento,
         });
       } else {
+        document.cookie = 'token=; path=/; max-age=0';
         router.push('/registrologin/login');
       }
     } catch (error) {
       console.error('Error al leer token', error);
+      document.cookie = 'token=; path=/; max-age=0';
       router.push('/registrologin/login');
     }
   }, [router]);
