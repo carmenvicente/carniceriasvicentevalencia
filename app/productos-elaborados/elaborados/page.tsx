@@ -197,6 +197,32 @@ export default function Elaborados() {
           <div className="w-full bg-[rgb(22,22,22)] py-3 mb-4 rounded-md">
             <div className="max-w-screen-xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
               {/* Selector vista (rejilla/lista) */}
+              {/* Selector columnas para móvil */}
+              <div className="flex sm:hidden items-center space-x-2">
+                <button
+                  onClick={() => setMobileColumns(2)}
+                  className={`p-1 transition ${mobileColumns === 2 ? 'opacity-100' : 'opacity-40'}`}
+                  aria-label="2 columnas"
+                >
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="white" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="0" y="0" width="8" height="8" rx="1.5"/>
+                    <rect x="12" y="0" width="8" height="8" rx="1.5"/>
+                    <rect x="0" y="12" width="8" height="8" rx="1.5"/>
+                    <rect x="12" y="12" width="8" height="8" rx="1.5"/>
+                  </svg>
+                </button>
+                <button
+                  onClick={() => setMobileColumns(1)}
+                  className={`p-1 transition ${mobileColumns === 1 ? 'opacity-100' : 'opacity-40'}`}
+                  aria-label="1 columna"
+                >
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="white" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="0" y="0" width="20" height="8" rx="1.5"/>
+                    <rect x="0" y="12" width="20" height="8" rx="1.5"/>
+                  </svg>
+                </button>
+              </div>
+
               <div className="hidden sm:flex items-center space-x-3">
                 <Image
                   src="/imagenes/iconos/aplicaciones.png"
