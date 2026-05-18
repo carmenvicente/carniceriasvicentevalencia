@@ -12,14 +12,17 @@ export default function SkeletonProductos({ columnas = 2, isMobile = false, cant
   return (
     <div className={`grid gap-4 ${gridClass}`}>
       {Array.from({ length: cantidad }).map((_, i) => (
-        <div key={i} className="bg-[rgb(30,30,30)] rounded overflow-hidden animate-pulse">
-          {/* Imagen */}
-          <div className="w-full aspect-square bg-[rgb(45,45,45)]" />
-          {/* Texto */}
-          <div className="p-3 space-y-2">
+        <div
+          key={i}
+          className="bg-[rgba(0,0,0,0.9)] rounded-lg p-3 sm:p-4 flex flex-col space-y-2 sm:space-y-4 animate-pulse"
+        >
+          {/* Imagen — mismo ratio que las fotos de producto (8:5) */}
+          <div className="w-full aspect-[8/5] bg-[rgb(45,45,45)] rounded" />
+          {/* Nombre */}
+          <div className="flex flex-col gap-1">
             <div className="h-3 bg-[rgb(45,45,45)] rounded w-3/4" />
-            <div className="h-3 bg-[rgb(45,45,45)] rounded w-1/2" />
-            <div className="h-4 bg-[rgb(55,20,20)] rounded w-1/3 mt-1" />
+            {/* Precio */}
+            <div className="h-3 bg-[rgb(60,20,20)] rounded w-1/3" />
           </div>
         </div>
       ))}
