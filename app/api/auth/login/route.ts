@@ -6,6 +6,7 @@ import { NextResponse } from 'next/server';
 import { neon } from '@neondatabase/serverless';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
 
 const getSQL = () => neon(process.env.DATABASE_URL as string);
 
@@ -17,6 +18,15 @@ interface Body {
 }
 
 export async function POST(request: Request) {
+  const ip = getClientIp(request);
+  const { allowed, retryAfterSec } = checkRateLimit(`login:${ip}`, 10, 15 * 60 * 1000);
+  if (!allowed) {
+    return NextResponse.json(
+      { message: `Demasiados intentos. Inténtalo de nuevo en ${Math.ceil(retryAfterSec / 60)} minutos.` },
+      { status: 429 }
+    );
+  }
+
   const sql = getSQL();
 
   try {
@@ -26,7 +36,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: 'Faltan email o contraseña' }, { status: 400 });
     }
 
-    // 1) Buscar el usuario por email
     const rows = await sql`
       SELECT id, email, password_hash, role, nombre, apellidos, tratamiento
       FROM usuarios
@@ -39,7 +48,6 @@ export async function POST(request: Request) {
 
     const user = rows[0];
 
-    // 2) Función para limpiar posibles errores de codificación
     function limpiarTexto(texto: any) {
       return texto ? texto.toString() : '';
     }
@@ -48,36 +56,19 @@ export async function POST(request: Request) {
     const apellidos = limpiarTexto(user.apellidos);
     const tratamiento = limpiarTexto(user.tratamiento);
 
-    // 3) Comparar la contraseña con el hash
     const passwordMatch = await bcrypt.compare(password, user.password_hash);
     if (!passwordMatch) {
       return NextResponse.json({ message: 'Credenciales inválidas' }, { status: 401 });
     }
 
-    // 4) Crear token JWT con los datos del usuario
     const token = jwt.sign(
-      {
-        id: user.id,
-        email: user.email,
-        nombre,
-        apellidos,
-        tratamiento,
-        role: user.role,
-      },
-      JWT_SECRET!, // <--- ¡CAMBIO AQUÍ! Añadimos '!' para asegurar a TypeScript que no es undefined
+      { id: user.id, email: user.email, nombre, apellidos, tratamiento, role: user.role },
+      JWT_SECRET,
       { expiresIn: '7d' }
     );
 
-    // 5) Devolver usuario y token
     return NextResponse.json({
-      user: {
-        id: user.id,
-        email: user.email,
-        role: user.role,
-        nombre,
-        apellidos,
-        tratamiento,
-      },
+      user: { id: user.id, email: user.email, role: user.role, nombre, apellidos, tratamiento },
       token,
     });
 

@@ -112,10 +112,14 @@ export default function CheckoutPage() {
     const email = usuario?.email || datosInvitado.correo
     const body = JSON.stringify({ productos: carrito, email, metodoPago })
 
+    const token = localStorage.getItem('token')
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+    if (token) headers['Authorization'] = `Bearer ${token}`
+
     try {
       const res = await fetch('/api/pedidos', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body,
       })
 

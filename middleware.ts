@@ -1,28 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { decodeJwt } from 'jose'
+import { jwtVerify } from 'jose'
+
+const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET)
 
 export async function middleware(req: NextRequest) {
   const token = req.cookies.get('token')?.value
 
-  let usuarioValido = false
-
   if (token) {
     try {
-      const payload = decodeJwt(token)
-      const ahora = Math.floor(Date.now() / 1000)
-      usuarioValido = !payload.exp || payload.exp > ahora
+      await jwtVerify(token, JWT_SECRET)
+      return NextResponse.next()
     } catch {
-      usuarioValido = false
+      // Token inválido o expirado — redirigir a login
     }
   }
 
-  if (!usuarioValido) {
-    const url = req.nextUrl.clone()
-    url.pathname = '/registrologin/login'
-    return NextResponse.redirect(url)
-  }
-
-  return NextResponse.next()
+  const url = req.nextUrl.clone()
+  url.pathname = '/registrologin/login'
+  return NextResponse.redirect(url)
 }
 
 export const config = {

@@ -1,16 +1,32 @@
 export const dynamic = 'force-dynamic';
 
-import { NextResponse } from 'next/server'
+import { NextResponse, NextRequest } from 'next/server'
 import { neon } from '@neondatabase/serverless'
 import postgres from 'postgres'
 import path from 'path'
 import { writeFile } from 'fs/promises'
+import jwt from 'jsonwebtoken'
+
+const JWT_SECRET = process.env.JWT_SECRET as string
+
+function checkAdminAuth(request: NextRequest): NextResponse | null {
+  const auth = request.headers.get('Authorization')
+  const token = auth?.startsWith('Bearer ') ? auth.slice(7) : null
+  if (!token) return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+  try {
+    const payload = jwt.verify(token, JWT_SECRET) as { role: string }
+    if (payload.role !== 'admin') return NextResponse.json({ error: 'Acceso denegado' }, { status: 403 })
+    return null
+  } catch {
+    return NextResponse.json({ error: 'Token inválido' }, { status: 401 })
+  }
+}
 
 const getSQL = () => neon(process.env.DATABASE_URL as string)
 const getPSQL = () => postgres(process.env.DATABASE_URL as string)
 
 // Obtener producto por ID
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   const sql = getSQL()
   const psql = getPSQL()
   const url = new URL(request.url)
@@ -50,7 +66,10 @@ export async function GET(request: Request) {
 }
 
 // Actualizar producto por ID
-export async function PUT(request: Request) {
+export async function PUT(request: NextRequest) {
+  const authError = checkAdminAuth(request)
+  if (authError) return authError
+
   const sql = getSQL()
   const psql = getPSQL()
   const url = new URL(request.url)
@@ -103,12 +122,15 @@ export async function PUT(request: Request) {
     return NextResponse.json({ message: 'Producto actualizado correctamente' })
   } catch (error: any) {
     console.error('❌ Error al actualizar producto:', error)
-    return NextResponse.json({ message: 'Error al actualizar producto', error: error.message }, { status: 500 })
+    return NextResponse.json({ message: 'Error al actualizar producto' }, { status: 500 })
   }
 }
 
 // Eliminar producto por ID
-export async function DELETE(request: Request) {
+export async function DELETE(request: NextRequest) {
+  const authError = checkAdminAuth(request)
+  if (authError) return authError
+
   const sql = getSQL()
   const url = new URL(request.url)
   const id = url.pathname.split('/').pop()
@@ -123,7 +145,7 @@ export async function DELETE(request: Request) {
   } catch (error: any) {
     console.error('❌ Error al eliminar producto:', error)
     return NextResponse.json(
-      { message: 'Error al eliminar producto', error: error.message },
+      { message: 'Error al eliminar producto' },
       { status: 500 }
     )
   }

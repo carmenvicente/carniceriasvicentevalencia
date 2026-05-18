@@ -17,24 +17,10 @@ function getUsuario(req: Request) {
   }
 }
 
-async function ensureTable(sql: ReturnType<typeof getSQL>) {
-  await sql`
-    CREATE TABLE IF NOT EXISTS favoritos (
-      id SERIAL PRIMARY KEY,
-      usuario_id INTEGER NOT NULL,
-      producto_id INTEGER NOT NULL,
-      creado_en TIMESTAMP DEFAULT NOW(),
-      UNIQUE(usuario_id, producto_id)
-    )
-  `;
-}
-
 export async function GET(req: Request) {
   const sql = getSQL();
   const usuario = getUsuario(req);
   if (!usuario) return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
-
-  await ensureTable(sql);
 
   const rows = await sql`
     SELECT f.producto_id, p.nombre, p.precio, p.imagen
@@ -53,7 +39,6 @@ export async function POST(req: Request) {
   if (!usuario) return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
 
   const { productoId } = await req.json();
-  await ensureTable(sql);
 
   await sql`
     INSERT INTO favoritos (usuario_id, producto_id)
@@ -70,7 +55,6 @@ export async function DELETE(req: Request) {
   if (!usuario) return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
 
   const { productoId } = await req.json();
-  await ensureTable(sql);
 
   await sql`
     DELETE FROM favoritos

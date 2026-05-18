@@ -40,6 +40,6 @@ export async function POST(req: Request) {
 
   } catch (error: any) {
     console.error('❌ Error al procesar la confirmación del frontend (api/pedidos/confirmar):', error);
-    return NextResponse.json({ error: `Error al obtener detalles del pedido: ${error.message || 'Error desconocido'}` }, { status: 500 });
+    return NextResponse.json({ error: 'Error al obtener detalles del pedido' }, { status: 500 });
   }
 }
