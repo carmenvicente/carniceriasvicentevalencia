@@ -69,7 +69,7 @@ export default function Elaborados() {
     fetchProductos()
 
     // Detectar ancho de ventana para responsive
-    const handleResize = () => setIsMobile(window.innerWidth < 768)
+    const handleResize = () => setIsMobile(window.innerWidth < 1024)
     handleResize()
     window.addEventListener('resize', handleResize)
 
@@ -198,7 +198,7 @@ export default function Elaborados() {
             <div className="max-w-screen-xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
               {/* Selector vista (rejilla/lista) */}
               {/* Selector columnas para móvil */}
-              <div className="flex sm:hidden items-center space-x-2">
+              <div className="flex lg:hidden items-center space-x-2">
                 <button
                   onClick={() => setMobileColumns(2)}
                   className={`p-1 transition ${mobileColumns === 2 ? 'opacity-100' : 'opacity-40'}`}
@@ -223,7 +223,7 @@ export default function Elaborados() {
                 </button>
               </div>
 
-              <div className="hidden sm:flex items-center space-x-3">
+              <div className="hidden lg:flex items-center space-x-3">
                 <Image
                   src="/imagenes/iconos/aplicaciones.png"
                   alt="Ver en rejilla"
@@ -240,9 +240,6 @@ export default function Elaborados() {
                   className={`cursor-pointer ${viewMode === 'list' ? 'opacity-100' : 'opacity-50'}`}
                   onClick={() => setViewMode('list')}
                 />
-                <span className="ml-3 text-white border-l border-gray-500 pl-3 text-xs md:text-sm">
-                  Mostrando 1–{sortedProductos.length} de {sortedProductos.length}
-                </span>
               </div>
 
               {/* Selector de orden */}
@@ -265,7 +262,7 @@ export default function Elaborados() {
 
           {/* Vista rejilla o móvil */}
           {(viewMode === 'grid' || isMobile) ? (
-            <div className={`grid gap-4 ${isMobile ? (mobileColumns === 1 ? 'grid-cols-1' : 'grid-cols-2') : 'grid-cols-2 sm:grid-cols-2 lg:grid-cols-3'}`}>
+            <div className={`grid gap-4 ${isMobile ? (mobileColumns === 1 ? 'grid-cols-1' : 'grid-cols-2') : 'grid-cols-2 lg:grid-cols-3'}`}>
               {sortedProductos.map(p => (
                 <div key={p.id} className="relative transition-transform hover:-translate-y-1">
                 <Link
