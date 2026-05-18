@@ -251,21 +251,17 @@ export default function Navbar() {
                 PRODUCTOS<br className="lg:hidden" /> FRESCOS ▼
               </span>
               {menuFrescosOpen && (
-                <ul className="absolute left-1/2 -translate-x-1/2 mt-1 bg-white text-black rounded-lg shadow-lg min-w-[200px]">
+                <ul className="absolute left-1/2 -translate-x-1/2 mt-2 bg-gray-50 rounded-lg shadow-lg min-w-[200px] overflow-hidden">
                   {[
-                    ['TERNERA', '/productos-frescos/ternera'],
-                    ['CERDO', '/productos-frescos/cerdo'],
-                    ['CORDERO', '/productos-frescos/cordero'],
-                    ['AVES Y CONEJOS', '/productos-frescos/avesyconejos'],
-                  ].map(([label, href], i, arr) => (
+                    ['Ternera', '/productos-frescos/ternera'],
+                    ['Cerdo', '/productos-frescos/cerdo'],
+                    ['Cordero', '/productos-frescos/cordero'],
+                    ['Aves y Conejos', '/productos-frescos/avesyconejos'],
+                  ].map(([label, href]) => (
                     <li key={href}>
                       <Link
                         href={href}
-                        className={`
-                          block w-full text-base px-4 py-2 text-center transition hover:text-[#990000]
-                          ${i === 0 ? 'rounded-tl-lg rounded-tr-lg' : ''}
-                          ${i === arr.length - 1 ? 'rounded-bl-lg rounded-br-lg' : ''}
-                        `}
+                        className="block w-full text-sm px-4 py-2.5 text-left text-gray-700 border-l-2 border-transparent transition-all hover:border-[#990000] hover:text-[#990000] hover:bg-white"
                       >
                         {label}
                       </Link>
@@ -285,19 +281,15 @@ export default function Navbar() {
                 PRODUCTOS<br className="lg:hidden" /> ELABORADOS ▼
               </span>
               {menuElaboradosOpen && (
-                <ul className="absolute left-1/2 -translate-x-1/2 mt-1 bg-white text-black rounded-lg shadow-lg min-w-[230px]">
+                <ul className="absolute left-1/2 -translate-x-1/2 mt-2 bg-gray-50 rounded-lg shadow-lg min-w-[230px] overflow-hidden">
                   {[
-                    ['EMBUTIDOS CASEROS', '/productos-elaborados/embutidoscaseros'],
-                    ['ELABORADOS', '/productos-elaborados/elaborados'],
-                  ].map(([label, href], i, arr) => (
+                    ['Embutidos Caseros', '/productos-elaborados/embutidoscaseros'],
+                    ['Elaborados', '/productos-elaborados/elaborados'],
+                  ].map(([label, href]) => (
                     <li key={href}>
                       <Link
                         href={href}
-                        className={`
-                          block w-full text-base px-4 py-2 text-center transition hover:text-[#990000]
-                          ${i === 0 ? 'rounded-tl-lg rounded-tr-lg' : ''}
-                          ${i === arr.length - 1 ? 'rounded-bl-lg rounded-br-lg' : ''}
-                        `}
+                        className="block w-full text-sm px-4 py-2.5 text-left text-gray-700 border-l-2 border-transparent transition-all hover:border-[#990000] hover:text-[#990000] hover:bg-white"
                       >
                         {label}
                       </Link>
