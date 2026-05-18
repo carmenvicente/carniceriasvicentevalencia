@@ -43,6 +43,7 @@ export default function Avesyconejos() {
 
   // Estado para detectar si la pantalla es móvil (ancho menor a 768px)
   const [isMobile, setIsMobile] = useState(false)
+  const [mobileColumns, setMobileColumns] = useState<1 | 2>(2)
 
   // Efecto para cargar productos y detectar tamaño de pantalla
   useEffect(() => {
@@ -244,7 +245,7 @@ export default function Avesyconejos() {
 
           {/* Vista en rejilla o móvil */}
           {(viewMode === 'grid' || isMobile) ? (
-            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className={`grid gap-4 ${isMobile ? (mobileColumns === 1 ? 'grid-cols-1' : 'grid-cols-2') : 'grid-cols-2 sm:grid-cols-2 lg:grid-cols-3'}`}>
               {sortedProductos.map(p => (
                 <div key={p.id} className="relative transition-transform hover:-translate-y-1">
                 <Link

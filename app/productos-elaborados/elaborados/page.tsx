@@ -43,6 +43,7 @@ export default function Elaborados() {
 
   // Estado para detectar si la ventana es móvil (<768px)
   const [isMobile, setIsMobile] = useState(false)
+  const [mobileColumns, setMobileColumns] = useState<1 | 2>(2)
 
   useEffect(() => {
     // Función para obtener productos desde la API, filtrados por categoría y subcategoría
@@ -238,7 +239,7 @@ export default function Elaborados() {
 
           {/* Vista rejilla o móvil */}
           {(viewMode === 'grid' || isMobile) ? (
-            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className={`grid gap-4 ${isMobile ? (mobileColumns === 1 ? 'grid-cols-1' : 'grid-cols-2') : 'grid-cols-2 sm:grid-cols-2 lg:grid-cols-3'}`}>
               {sortedProductos.map(p => (
                 <div key={p.id} className="relative transition-transform hover:-translate-y-1">
                 <Link
