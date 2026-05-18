@@ -95,7 +95,6 @@ export default function Avesyconejos() {
       precio: producto.precio,
       imagen: producto.imagen,
     })
-    setProductoPopup(producto)
     setPopupVisible(true)
   }
 

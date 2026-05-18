@@ -93,7 +93,6 @@ export default function Charcuteria() {
       precio: producto.precio,
       imagen: producto.imagen,
     })
-    setProductoPopup(producto)
     setPopupVisible(true)
   }
 

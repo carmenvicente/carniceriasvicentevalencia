@@ -95,7 +95,6 @@ export default function Cordero() {
       precio: producto.precio,
       imagen: producto.imagen,
     })
-    setProductoPopup(producto)
     setPopupVisible(true)
   }
 

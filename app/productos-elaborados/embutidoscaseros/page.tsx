@@ -92,7 +92,6 @@ export default function Embutidoscaseros() {
       precio: producto.precio,
       imagen: producto.imagen
     })
-    setProductoPopup(producto)
     setPopupVisible(true)
   }
 

@@ -92,7 +92,6 @@ export default function Elaborados() {
       precio: producto.precio,
       imagen: producto.imagen
     })
-    setProductoPopup(producto)
     setPopupVisible(true)
   }
 

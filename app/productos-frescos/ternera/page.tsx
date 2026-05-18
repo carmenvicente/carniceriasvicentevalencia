@@ -97,7 +97,6 @@ export default function Ternera() {
       precio: producto.precio,
       imagen: producto.imagen,
     })
-    setProductoPopup(producto)
     setPopupVisible(true)
   }
 

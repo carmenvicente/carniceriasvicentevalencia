@@ -99,7 +99,6 @@ export default function Cerdo() {
       precio: producto.precio,
       imagen: producto.imagen,
     })
-    setProductoPopup(producto)
     setPopupVisible(true)
   }
 
