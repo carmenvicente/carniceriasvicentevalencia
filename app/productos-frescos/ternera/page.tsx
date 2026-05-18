@@ -198,7 +198,7 @@ export default function Ternera() {
         <main className={`${styles.productContainer} w-full md:w-auto`}>
           {/* Barra de herramientas para cambiar vista y ordenar */}
           <div className="w-full bg-[rgb(22,22,22)] py-3 mb-4 rounded-md">
-            <div className="max-w-screen-xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between space-y-2 md:space-y-0">
+            <div className="max-w-screen-xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
 
               {/* Selector columnas para móvil */}
               <div className="flex sm:hidden items-center space-x-2">

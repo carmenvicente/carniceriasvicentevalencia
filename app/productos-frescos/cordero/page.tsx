@@ -205,7 +205,7 @@ export default function Cordero() {
         <main className={`${styles.productContainer} w-full md:w-auto`}>
           {/* Barra de opciones para vista y orden */}
           <div className="w-full bg-[rgb(22,22,22)] py-3 mb-4 rounded-md">
-            <div className="max-w-screen-xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between space-y-2 md:space-y-0">
+            <div className="max-w-screen-xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
 
               {/* Selector vista (grid/lista) visible en sm+ */}
               <div className="hidden sm:flex items-center space-x-3">

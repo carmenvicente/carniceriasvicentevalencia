@@ -201,7 +201,7 @@ export default function Avesyconejos() {
         <main className={`${styles.productContainer} w-full md:w-auto`}>
           {/* Barra para seleccionar vista y orden */}
           <div className="w-full bg-[rgb(22,22,22)] py-3 mb-4 rounded-md">
-            <div className="max-w-screen-xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between space-y-2 md:space-y-0">
+            <div className="max-w-screen-xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
               {/* Selector modo vista (rejilla/lista), oculto en móvil */}
               <div className="hidden sm:flex items-center space-x-3">
                 <Image
