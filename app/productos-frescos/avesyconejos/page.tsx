@@ -11,6 +11,7 @@ import { useCarrito } from '@/app/contextos/CarritoContexto'
 import PopupCarrito from '@/app/componentes/PopupCarrito'
 import BotonFavorito from '@/app/componentes/BotonFavorito'
 import { createPortal } from 'react-dom'
+import SkeletonProductos from '@/app/componentes/SkeletonProductos'
 
 // Definición del tipo Producto
 interface Producto {
@@ -26,6 +27,7 @@ export default function Avesyconejos() {
   // Estado que contiene el listado de productos
   const pathname = usePathname()
   const [productos, setProductos] = useState<Producto[]>([])
+  const [loading, setLoading] = useState(true)
 
   // Estado para controlar modo de visualización: rejilla o lista
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
@@ -63,8 +65,10 @@ export default function Avesyconejos() {
           precio: Number(p.precio),
         }))
         setProductos(productosConvertidos)
+        setLoading(false)
       } catch (err) {
         console.error(err)
+        setLoading(false)
       }
     }
     fetchProductos()
@@ -264,6 +268,11 @@ export default function Avesyconejos() {
               </div>
             </div>
           </div>
+
+          {/* Skeleton mientras carga */}
+          {loading && (
+            <SkeletonProductos isMobile={isMobile} columnas={mobileColumns} />
+          )}
 
           {/* Vista en rejilla o móvil */}
           {(viewMode === 'grid' || isMobile) ? (

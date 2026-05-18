@@ -7,6 +7,7 @@ import Footer from '@/app/componentes/footer'
 import Link from 'next/link'
 import Image from 'next/image'
 import styles from '@/app/styles/productos.module.css'
+import SkeletonProductos from '@/app/componentes/SkeletonProductos'
 
 interface Producto {
   id: number
@@ -134,7 +135,7 @@ export default function BusquedaClient({ initialQuery }: { initialQuery: string 
           </div>
 
           {loading ? (
-            <p className="text-white text-center">Cargando…</p>
+            <SkeletonProductos isMobile={isMobile} cantidad={4} />
           ) : productos.length === 0 ? (
             <p className="text-white text-center">No se encontraron productos.</p>
           ) : (
