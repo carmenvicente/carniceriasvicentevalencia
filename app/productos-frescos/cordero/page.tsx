@@ -11,6 +11,7 @@ import { useCarrito } from '@/app/contextos/CarritoContexto'
 import PopupCarrito from '@/app/componentes/PopupCarrito'
 import BotonFavorito from '@/app/componentes/BotonFavorito'
 import { createPortal } from 'react-dom'
+import SkeletonProductos from '@/app/componentes/SkeletonProductos'
 
 // Definición de la interfaz Producto
 interface Producto {
@@ -26,6 +27,7 @@ export default function Cordero() {
   // Estado para almacenar los productos
   const pathname = usePathname()
   const [productos, setProductos] = useState<Producto[]>([])
+  const [loading, setLoading] = useState(true)
   
   // Estado para controlar modo de visualización (rejilla o lista)
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
@@ -63,8 +65,10 @@ export default function Cordero() {
           precio: Number(p.precio),
         }))
         setProductos(productosConvertidos)
+        setLoading(false)
       } catch (err) {
         console.error(err)
+        setLoading(false)
       }
     }
     fetchProductos()
@@ -270,8 +274,13 @@ export default function Cordero() {
             </div>
           </div>
 
+          {/* Skeleton mientras carga */}
+          {loading && (
+            <SkeletonProductos isMobile={isMobile} columnas={mobileColumns} />
+          )}
+
           {/* Vista grid adaptada a móvil */}
-          {(viewMode === 'grid' || isMobile) && (
+          {!loading && (viewMode === 'grid' || isMobile) && (
             <div className={`grid gap-4 ${isMobile ? (mobileColumns === 1 ? 'grid-cols-1' : 'grid-cols-2') : 'grid-cols-2 lg:grid-cols-3'}`}>
               {sortedProductos.map(p => (
                 <div key={p.id} className="relative transition-transform hover:-translate-y-1">
@@ -319,7 +328,7 @@ export default function Cordero() {
           )}
 
           {/* Vista lista solo escritorio */}
-          {viewMode === 'list' && !isMobile && (
+          {!loading && viewMode === 'list' && !isMobile && (
             <div className="flex flex-col space-y-4">
               {sortedProductos.map(p => (
                 <div key={p.id} className="relative">
