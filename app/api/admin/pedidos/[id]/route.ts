@@ -78,6 +78,6 @@ export async function PUT(
 
   } catch (error: any) {
     console.error('❌ Error en /api/admin/pedidos/[id] (PUT):', error);
-    return NextResponse.json({ error: `Error al actualizar pedido: ${error.message || 'Error desconocido'}` }, { status: 500 });
+    return NextResponse.json({ error: 'Error al actualizar pedido' }, { status: 500 });
   }
 }

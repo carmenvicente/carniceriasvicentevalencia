@@ -2,11 +2,14 @@
 'use client'
 
 import { CarritoProvider } from './contextos/CarritoContexto'
+import { FavoritosProvider } from './contextos/FavoritosContexto'
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <CarritoProvider>
-      {children}
+      <FavoritosProvider>
+        {children}
+      </FavoritosProvider>
     </CarritoProvider>
   )
 }

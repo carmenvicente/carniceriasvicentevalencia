@@ -1,18 +1,30 @@
 export const dynamic = 'force-dynamic';
 
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
 import { neon } from '@neondatabase/serverless';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { enviarCorreoCambioDatos } from '@/lib/email';
 
-const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_SECRET = process.env.JWT_SECRET as string;
 
-export async function PUT(request: Request) {
+export async function PUT(request: NextRequest) {
+  // Extraer ID del token — nunca del body (previene IDOR)
+  const auth = request.headers.get('Authorization');
+  const token = auth?.startsWith('Bearer ') ? auth.slice(7) : null;
+  if (!token) return NextResponse.json({ message: 'No autorizado.' }, { status: 401 });
+
+  let tokenId: number;
+  try {
+    const payload = jwt.verify(token, JWT_SECRET) as { id: number };
+    tokenId = payload.id;
+  } catch {
+    return NextResponse.json({ message: 'Token inválido.' }, { status: 401 });
+  }
+
   const sql = neon(`${process.env.DATABASE_URL}?options=--client_encoding=UTF8`);
   try {
     const {
-      id,
       tratamiento,
       nombre,
       apellidos,
@@ -20,6 +32,8 @@ export async function PUT(request: Request) {
       contraseñaActual,
       nuevaPassword,
     } = await request.json();
+
+    const id = tokenId;
 
     // 1) Obtener usuario por ID
     const rows = await sql`SELECT password_hash FROM usuarios WHERE id = ${id}`;

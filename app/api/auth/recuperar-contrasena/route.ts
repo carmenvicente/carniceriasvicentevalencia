@@ -2,10 +2,20 @@ import { NextResponse } from 'next/server'
 import { neon } from '@neondatabase/serverless'
 import nodemailer from 'nodemailer'
 import jwt from 'jsonwebtoken'
+import { checkRateLimit, getClientIp } from '@/lib/rateLimit'
 
 const JWT_SECRET = process.env.JWT_SECRET as string
 
 export async function POST(request: Request) {
+  const ip = getClientIp(request)
+  const { allowed, retryAfterSec } = checkRateLimit(`reset:${ip}`, 5, 60 * 60 * 1000)
+  if (!allowed) {
+    return NextResponse.json(
+      { message: `Demasiados intentos. Inténtalo de nuevo en ${Math.ceil(retryAfterSec / 60)} minutos.` },
+      { status: 429 }
+    )
+  }
+
   const sql = neon(process.env.DATABASE_URL as string)
   try {
     const { email } = await request.json()

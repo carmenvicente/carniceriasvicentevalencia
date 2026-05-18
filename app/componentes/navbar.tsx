@@ -251,21 +251,17 @@ export default function Navbar() {
                 PRODUCTOS<br className="lg:hidden" /> FRESCOS ▼
               </span>
               {menuFrescosOpen && (
-                <ul className="absolute left-1/2 -translate-x-1/2 mt-1 bg-white text-black rounded-lg shadow-lg min-w-[200px]">
+                <ul className="absolute left-1/2 -translate-x-1/2 mt-2 bg-gray-50 rounded-lg shadow-lg min-w-[200px] overflow-hidden">
                   {[
-                    ['TERNERA', '/productos-frescos/ternera'],
-                    ['CERDO', '/productos-frescos/cerdo'],
-                    ['CORDERO', '/productos-frescos/cordero'],
-                    ['AVES Y CONEJOS', '/productos-frescos/avesyconejos'],
-                  ].map(([label, href], i, arr) => (
+                    ['Ternera', '/productos-frescos/ternera'],
+                    ['Cerdo', '/productos-frescos/cerdo'],
+                    ['Cordero', '/productos-frescos/cordero'],
+                    ['Aves y Conejos', '/productos-frescos/avesyconejos'],
+                  ].map(([label, href]) => (
                     <li key={href}>
                       <Link
                         href={href}
-                        className={`
-                          block w-full text-base px-4 py-2 text-center transition hover:text-[#990000]
-                          ${i === 0 ? 'rounded-tl-lg rounded-tr-lg' : ''}
-                          ${i === arr.length - 1 ? 'rounded-bl-lg rounded-br-lg' : ''}
-                        `}
+                        className="block w-full text-sm px-4 py-2.5 text-left text-gray-700 border-l-2 border-transparent transition-all hover:border-[#990000] hover:text-[#990000] hover:bg-white"
                       >
                         {label}
                       </Link>
@@ -285,19 +281,15 @@ export default function Navbar() {
                 PRODUCTOS<br className="lg:hidden" /> ELABORADOS ▼
               </span>
               {menuElaboradosOpen && (
-                <ul className="absolute left-1/2 -translate-x-1/2 mt-1 bg-white text-black rounded-lg shadow-lg min-w-[230px]">
+                <ul className="absolute left-1/2 -translate-x-1/2 mt-2 bg-gray-50 rounded-lg shadow-lg min-w-[230px] overflow-hidden">
                   {[
-                    ['EMBUTIDOS CASEROS', '/productos-elaborados/embutidoscaseros'],
-                    ['ELABORADOS', '/productos-elaborados/elaborados'],
-                  ].map(([label, href], i, arr) => (
+                    ['Embutidos Caseros', '/productos-elaborados/embutidoscaseros'],
+                    ['Elaborados', '/productos-elaborados/elaborados'],
+                  ].map(([label, href]) => (
                     <li key={href}>
                       <Link
                         href={href}
-                        className={`
-                          block w-full text-base px-4 py-2 text-center transition hover:text-[#990000]
-                          ${i === 0 ? 'rounded-tl-lg rounded-tr-lg' : ''}
-                          ${i === arr.length - 1 ? 'rounded-bl-lg rounded-br-lg' : ''}
-                        `}
+                        className="block w-full text-sm px-4 py-2.5 text-left text-gray-700 border-l-2 border-transparent transition-all hover:border-[#990000] hover:text-[#990000] hover:bg-white"
                       >
                         {label}
                       </Link>
@@ -366,52 +358,62 @@ export default function Navbar() {
         {/* Menú móvil (overlay lateral) */}
         <div
           className={`
-            fixed top-0 left-0 w-72 sm:w-80 h-full bg-black text-white z-50 transform transition-transform duration-300 ease-in-out py-8
+            fixed top-0 left-0 w-72 sm:w-80 h-full bg-[#111] text-white z-50 transform transition-transform duration-300 ease-in-out overflow-y-auto
             ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
             md:hidden
           `}
         >
-          {/* Botón cerrar menú móvil */}
-          <div className="flex justify-end pr-4 mb-4">
+          {/* Header con logo y botón cerrar */}
+          <div className="flex items-center justify-between px-5 py-4 border-b border-gray-800">
+            <Image
+              src="/imagenes/logos/logoblancocolor.png"
+              alt="Logo"
+              width={120}
+              height={60}
+              style={{ width: 'auto' }}
+              className="h-8 w-auto object-contain"
+            />
             <button
               onClick={() => setMobileMenuOpen(false)}
-              className="text-2xl font-bold leading-none text-white"
+              className="text-white text-2xl font-light leading-none hover:text-gray-400 transition"
               aria-label="Cerrar menú"
             >
-              ×
+              ✕
             </button>
           </div>
 
-          {/* Lista menú móvil */}
-          <ul className="flex flex-col space-y-4 px-4">
-            <li>
-              <Link href="/" className="block text-lg hover:text-[#990000]" onClick={() => setMobileMenuOpen(false)}>INICIO</Link>
-            </li>
+          {/* Links directos */}
+          <div className="px-5 pt-4 pb-2 space-y-0.5">
+            <Link href="/" className="block py-2.5 text-sm font-semibold tracking-widest hover:text-[#990000] transition" onClick={() => setMobileMenuOpen(false)}>INICIO</Link>
+            <Link href="/charcuteria" className="block py-2.5 text-sm font-semibold tracking-widest hover:text-[#990000] transition" onClick={() => setMobileMenuOpen(false)}>CHARCUTERÍA</Link>
+            <Link href="/contacto" className="block py-2.5 text-sm font-semibold tracking-widest hover:text-[#990000] transition" onClick={() => setMobileMenuOpen(false)}>CONTACTO</Link>
+          </div>
 
-            {/* Submenú Productos Frescos móvil */}
-            <li>
-              <span className="block text-lg font-semibold mb-2">PRODUCTOS FRESCOS</span>
-              <ul className="pl-4 space-y-2">
-                <li><Link href="/productos-frescos/ternera" className="block text-base hover:text-[#990000]" onClick={() => setMobileMenuOpen(false)}>TERNERA</Link></li>
-                <li><Link href="/productos-frescos/cerdo" className="block text-base hover:text-[#990000]" onClick={() => setMobileMenuOpen(false)}>CERDO</Link></li>
-                <li><Link href="/productos-frescos/cordero" className="block text-base hover:text-[#990000]" onClick={() => setMobileMenuOpen(false)}>CORDERO</Link></li>
-                <li><Link href="/productos-frescos/avesyconejos" className="block text-base hover:text-[#990000]" onClick={() => setMobileMenuOpen(false)}>AVES Y CONEJOS</Link></li>
-              </ul>
-            </li>
+          {/* Sección Productos Frescos */}
+          <div className="mt-4">
+            <div className="flex items-center gap-3 px-5 py-2">
+              <span className="text-[#990000] text-xs font-bold tracking-widest whitespace-nowrap">PRODUCTOS FRESCOS</span>
+              <div className="flex-1 h-px bg-[#990000]/40" />
+            </div>
+            <div className="ml-5 pl-4 py-1 border-l-2 border-[#990000] space-y-0.5">
+              <Link href="/productos-frescos/ternera" className="block py-2 text-sm text-gray-300 hover:text-white transition" onClick={() => setMobileMenuOpen(false)}>Ternera</Link>
+              <Link href="/productos-frescos/cerdo" className="block py-2 text-sm text-gray-300 hover:text-white transition" onClick={() => setMobileMenuOpen(false)}>Cerdo</Link>
+              <Link href="/productos-frescos/cordero" className="block py-2 text-sm text-gray-300 hover:text-white transition" onClick={() => setMobileMenuOpen(false)}>Cordero</Link>
+              <Link href="/productos-frescos/avesyconejos" className="block py-2 text-sm text-gray-300 hover:text-white transition" onClick={() => setMobileMenuOpen(false)}>Aves y Conejos</Link>
+            </div>
+          </div>
 
-            {/* Submenú Productos Elaborados móvil */}
-            <li>
-              <span className="block text-lg font-semibold mt-4 mb-2">PRODUCTOS ELABORADOS</span>
-              <ul className="pl-4 space-y-2">
-                <li><Link href="/productos-elaborados/embutidoscaseros" className="block text-base hover:text-[#990000]" onClick={() => setMobileMenuOpen(false)}>EMBUTIDOS CASEROS</Link></li>
-                <li><Link href="/productos-elaborados/elaborados" className="block text-base hover:text-[#990000]" onClick={() => setMobileMenuOpen(false)}>ELABORADOS</Link></li>
-              </ul>
-            </li>
-
-            {/* Enlaces Charcutería y Contacto móvil */}
-            <li><Link href="/charcuteria" className="block text-lg hover:text-[#990000]" onClick={() => setMobileMenuOpen(false)}>CHARCUTERÍA</Link></li>
-            <li><Link href="/contacto" className="block text-lg hover:text-[#990000]" onClick={() => setMobileMenuOpen(false)}>CONTACTO</Link></li>
-          </ul>
+          {/* Sección Productos Elaborados */}
+          <div className="mt-5">
+            <div className="flex items-center gap-3 px-5 py-2">
+              <span className="text-[#990000] text-xs font-bold tracking-widest whitespace-nowrap">PRODUCTOS ELABORADOS</span>
+              <div className="flex-1 h-px bg-[#990000]/40" />
+            </div>
+            <div className="ml-5 pl-4 py-1 border-l-2 border-[#990000] space-y-0.5">
+              <Link href="/productos-elaborados/embutidoscaseros" className="block py-2 text-sm text-gray-300 hover:text-white transition" onClick={() => setMobileMenuOpen(false)}>Embutidos Caseros</Link>
+              <Link href="/productos-elaborados/elaborados" className="block py-2 text-sm text-gray-300 hover:text-white transition" onClick={() => setMobileMenuOpen(false)}>Elaborados</Link>
+            </div>
+          </div>
         </div>
       </nav>
     </>

@@ -112,10 +112,14 @@ export default function CheckoutPage() {
     const email = usuario?.email || datosInvitado.correo
     const body = JSON.stringify({ productos: carrito, email, metodoPago })
 
+    const token = localStorage.getItem('token')
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+    if (token) headers['Authorization'] = `Bearer ${token}`
+
     try {
       const res = await fetch('/api/pedidos', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body,
       })
 
@@ -365,11 +369,12 @@ export default function CheckoutPage() {
                   <div className="flex items-start text-xs text-gray-600" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
                     <input type="checkbox" required className="mt-1 mr-2 flex-shrink-0" /> {/* Añadimos mt-1 para alinear con el texto */}
                     <span>
-                      Estoy de acuerdo con los
+                      {/* Estoy de acuerdo con los
                       <Link href="/informacionlegal/terminos-y-condiciones" className="text-gray-600 hover:underline mx-1" target="_blank" rel="noopener noreferrer">
                         términos del servicio
                       </Link>
-                      los acepto sin reservas.
+                      los acepto sin reservas. */}
+                      Estoy de acuerdo con las condiciones del servicio y las acepto sin reservas.
                     </span>
                   </div>
 

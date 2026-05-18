@@ -1,8 +1,21 @@
-import { NextResponse } from 'next/server'
+import { NextResponse, NextRequest } from 'next/server'
 import { put } from '@vercel/blob'
 import { randomUUID } from 'crypto'
+import jwt from 'jsonwebtoken'
 
-export async function POST(request: Request) {
+const JWT_SECRET = process.env.JWT_SECRET as string
+
+export async function POST(request: NextRequest) {
+  const auth = request.headers.get('Authorization')
+  const token = auth?.startsWith('Bearer ') ? auth.slice(7) : null
+  if (!token) return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+  try {
+    const payload = jwt.verify(token, JWT_SECRET) as { role: string }
+    if (payload.role !== 'admin') return NextResponse.json({ error: 'Acceso denegado' }, { status: 403 })
+  } catch {
+    return NextResponse.json({ error: 'Token inválido' }, { status: 401 })
+  }
+
   try {
     const formData = await request.formData()
     const file = formData.get('file') as File
@@ -36,7 +49,7 @@ export async function POST(request: Request) {
   } catch (error: any) {
     console.error('❌ Error interno al subir imagen:', error)
     return NextResponse.json(
-      { error: 'Error interno al subir imagen', detalle: error.message },
+      { error: 'Error interno al subir imagen' },
       { status: 500 }
     )
   }

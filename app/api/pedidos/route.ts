@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic';
 
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
 import Stripe from 'stripe';
 import { neon } from '@neondatabase/serverless';
 import jwt from 'jsonwebtoken';
@@ -23,22 +23,18 @@ interface JwtPayload {
   tratamiento?: string;
 }
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   const sql = getSQL();
   const stripe = getStripe();
 
   try {
     console.log('API Route: POST request received for /api/pedidos (Creación de pedido)');
 
-    const { productos, email, metodoPago, nombre, apellidos, tratamiento } = await req.json(); // Añade nombre, apellidos, tratamiento
+    const { productos, email: emailBody, metodoPago, nombre, apellidos, tratamiento } = await req.json();
 
     if (!Array.isArray(productos) || productos.length === 0) {
       console.error('Validation Error: Productos inválidos o vacíos en la solicitud POST.');
       return NextResponse.json({ error: 'Productos inválidos o vacíos en la solicitud' }, { status: 400 });
-    }
-    if (!email) {
-      console.error('Validation Error: Email no proporcionado en solicitud POST.');
-      return NextResponse.json({ error: 'Email no proporcionado' }, { status: 400 });
     }
     if (!metodoPago) {
       console.error('Validation Error: Método de pago no proporcionado en solicitud POST.');
@@ -57,12 +53,31 @@ export async function POST(req: Request) {
 
     const total = productosLimpios.reduce((sum: number, item: any) => sum + item.precio * item.cantidad, 0);
 
-    // Si metodoPago es 'tienda', guarda el pedido directamente en la BD y envía correo
+    // Pago en tienda: requiere usuario autenticado
     if (metodoPago === 'tienda') {
+      const auth = req.headers.get('Authorization');
+      const token = auth?.startsWith('Bearer ') ? auth.slice(7) : null;
+      if (!token) {
+        return NextResponse.json({ error: 'Debes iniciar sesión para elegir pago en tienda' }, { status: 401 });
+      }
+      let emailVerificado: string;
+      let nombreVerificado = nombre;
+      let apellidosVerificado = apellidos;
+      let tratamientoVerificado = tratamiento;
+      try {
+        const payload = jwt.verify(token, JWT_SECRET) as JwtPayload;
+        emailVerificado = payload.email;
+        nombreVerificado = payload.nombre || nombre;
+        apellidosVerificado = payload.apellidos || apellidos;
+        tratamientoVerificado = payload.tratamiento || tratamiento;
+      } catch {
+        return NextResponse.json({ error: 'Token inválido' }, { status: 401 });
+      }
+
       await sql`
         INSERT INTO pedidos (email, metodo_pago, total, estado, creado_en, productos)
         VALUES (
-          ${email},
+          ${emailVerificado},
           ${metodoPago},
           ${total},
           'pagado_en_tienda',
@@ -72,17 +87,22 @@ export async function POST(req: Request) {
       `;
       console.log('Pedido manual (tienda) guardado exitosamente.');
 
-      // Enviar correo de confirmación para pedidos en tienda usando la función de lib/email.ts
       await enviarCorreoConfirmacionPedido({
-          email: email,
-          nombre: nombre, // Pasa el nombre del usuario
-          apellidos: apellidos, // Pasa los apellidos del usuario
-          tratamiento: tratamiento, // Pasa el tratamiento del usuario
+          email: emailVerificado,
+          nombre: nombreVerificado,
+          apellidos: apellidosVerificado,
+          tratamiento: tratamientoVerificado,
           total: total,
           productos: productosLimpios,
       });
 
-      return NextResponse.json({ message: 'Pedido procesado para pago en tienda', redirect: '/pedido-confirmado-tienda' }); // Puedes redirigir a una página de confirmación específica
+      return NextResponse.json({ message: 'Pedido procesado para pago en tienda', redirect: '/pedido-confirmado-tienda' });
+    }
+
+    const email = emailBody;
+    if (!email) {
+      console.error('Validation Error: Email no proporcionado en solicitud POST.');
+      return NextResponse.json({ error: 'Email no proporcionado' }, { status: 400 });
     }
 
     // Para Stripe
@@ -127,15 +147,14 @@ export async function POST(req: Request) {
 
   } catch (error: any) {
     console.error('❌ Error en API Route /api/pedidos (POST):', error);
-    const errorMessage = error instanceof Error ? error.message : 'Error desconocido al procesar el pedido.';
-    return NextResponse.json({ error: `Error al procesar el pedido: ${errorMessage}` }, { status: 500 });
+    return NextResponse.json({ error: 'Error al procesar el pedido' }, { status: 500 });
   }
 }
 
 // ******************************************************
 // FUNCIÓN GET: Para obtener los pedidos de un usuario autenticado
 // ******************************************************
-export async function GET(req: Request) {
+export async function GET(req: NextRequest) {
   const sql = getSQL();
 
   try {
@@ -192,6 +211,6 @@ export async function GET(req: Request) {
 
   } catch (error: any) {
     console.error('❌ Error en API Route /api/pedidos (GET):', error);
-    return NextResponse.json({ error: `Error al cargar pedidos del usuario: ${error.message || 'Error desconocido'}` }, { status: 500 });
+    return NextResponse.json({ error: 'Error al cargar pedidos del usuario' }, { status: 500 });
   }
 }

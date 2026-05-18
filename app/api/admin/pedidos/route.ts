@@ -76,6 +76,6 @@ export async function GET(req: NextRequest) {
 
   } catch (error: any) {
     console.error('❌ Error en /api/admin/pedidos (GET):', error);
-    return NextResponse.json({ error: `Error al cargar pedidos: ${error.message || 'Error desconocido'}` }, { status: 500 });
+    return NextResponse.json({ error: 'Error al cargar pedidos' }, { status: 500 });
   }
 }

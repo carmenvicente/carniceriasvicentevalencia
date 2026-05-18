@@ -23,7 +23,22 @@ Aplicación web de comercio electrónico para la Carnicería Vicente Valencia (C
 - Buscador de productos
 - Carrito de compra persistente (Context API)
 
-### Pedidos
+### Pedidos ⚠️ actualmente deshabilitados
+
+La funcionalidad de carrito y pedidos está implementada pero **comentada temporalmente**. Para activarla, descomentar los bloques marcados con `{/* COMENTADO - ... */}` en los siguientes archivos:
+
+| Qué | Archivos |
+|-----|----------|
+| Botón "Añadir a la cesta" (grid y lista) | `productos-frescos/*/page.tsx`, `productos-elaborados/*/page.tsx`, `charcuteria/page.tsx`, `busqueda/BusquedaClient.tsx` |
+| Contador + botón añadir en detalle de producto | `detalle-productos/[id]/page.tsx` |
+| Indicador de stock | Mismas páginas de productos |
+| Icono del carrito en la navbar | `componentes/navbar.tsx` |
+| Botones del popup del carrito | `componentes/PopupCarrito.tsx` |
+| Botón "Realizar el pedido" en el carrito | `carrito/page.tsx` |
+| Enlace "Haz tu pedido" en el footer | `componentes/footer.tsx` |
+| Sección "Mis pedidos" en Mi Cuenta | `micuenta/page.tsx` |
+
+Una vez descomentado, los pedidos soportan:
 - Dos métodos de pago: tarjeta (Stripe Checkout) o pago al recoger en tienda
 - Confirmación de pedido por email automática
 - Notificación por email cuando el pedido está listo para recoger
@@ -65,7 +80,8 @@ app/
 ├── registrologin/              # Login y registro
 └── ...                         # Resto de páginas
 lib/
-└── email.ts                    # Funciones de envío de correo
+├── email.ts                    # Funciones de envío de correo
+└── rateLimit.ts                # Rate limiting in-memory para endpoints de auth
 middleware.ts                   # Protección de rutas (Edge Runtime)
 ```
 

@@ -11,7 +11,7 @@ export default function Inicio() {
       <Navbar />
 
       {/* Imagen de fondo a pantalla completa con posicionamiento relativo */}
-      <div className="relative w-full h-[70vh] sm:h-[80vh] md:h-screen">
+      <div className="relative w-full h-screen">
         <Image
           src="/imagenes/otros/fondo33.JPG"
           alt="Imagen de fondo Carnicería J Vicente Valencia"
@@ -48,6 +48,13 @@ export default function Inicio() {
               Ver productos
             </Link>
           </div>
+        </div>
+
+        {/* Indicador de scroll */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center text-white animate-bounce">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 drop-shadow-lg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
         </div>
       </div>
 
@@ -117,19 +124,21 @@ export default function Inicio() {
           >
             Nuestros Productos Frescos
           </h5>
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 justify-items-center items-center">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 justify-items-center items-start">
             {/* Producto Ternera */}
             <Link
               href="/productos-frescos/ternera"
               className="flex flex-col items-center text-gray-700 hover:text-red-700"
             >
-              <Image
-                src="/imagenes/dibujos/terneradibujo.png"
-                alt="Imagen dibujo de Ternera"
-                width={220}
-                height={220}
-                className="mb-3 transition-transform duration-300 hover:scale-105"
-              />
+              <div className="w-[120px] h-[120px] sm:w-[150px] sm:h-[150px] md:w-[180px] md:h-[180px] flex items-center justify-center mb-3 transition-transform duration-300 hover:scale-105">
+                <Image
+                  src="/imagenes/dibujos/terneradibujo.png"
+                  alt="Imagen dibujo de Ternera"
+                  width={180}
+                  height={180}
+                  className="object-contain w-full h-full"
+                />
+              </div>
               <span className="text-center font-semibold">TERNERA</span>
             </Link>
             {/* Producto Cerdo */}
@@ -137,13 +146,15 @@ export default function Inicio() {
               href="/productos-frescos/cerdo"
               className="flex flex-col items-center text-gray-700 hover:text-red-700"
             >
-              <Image
-                src="/imagenes/dibujos/cerdodibujo.png"
-                alt="Imagen dibujo de Cerdo"
-                width={220}
-                height={220}
-                className="mb-3 transition-transform duration-300 hover:scale-105"
-              />
+              <div className="w-[120px] h-[120px] sm:w-[150px] sm:h-[150px] md:w-[180px] md:h-[180px] flex items-center justify-center mb-3 transition-transform duration-300 hover:scale-105">
+                <Image
+                  src="/imagenes/dibujos/cerdodibujo.png"
+                  alt="Imagen dibujo de Cerdo"
+                  width={180}
+                  height={180}
+                  className="object-contain w-full h-full"
+                />
+              </div>
               <span className="text-center font-semibold">CERDO</span>
             </Link>
             {/* Producto Cordero */}
@@ -151,13 +162,15 @@ export default function Inicio() {
               href="/productos-frescos/cordero"
               className="flex flex-col items-center text-gray-700 hover:text-red-700"
             >
-              <Image
-                src="/imagenes/dibujos/corderodibujo.png"
-                alt="Imagen dibujo de Cordero"
-                width={220}
-                height={220}
-                className="mb-3 transition-transform duration-300 hover:scale-105"
-              />
+              <div className="w-[120px] h-[120px] sm:w-[150px] sm:h-[150px] md:w-[180px] md:h-[180px] flex items-center justify-center mb-3 transition-transform duration-300 hover:scale-105">
+                <Image
+                  src="/imagenes/dibujos/corderodibujo.png"
+                  alt="Imagen dibujo de Cordero"
+                  width={180}
+                  height={180}
+                  className="object-contain w-full h-full"
+                />
+              </div>
               <span className="text-center font-semibold">CORDERO</span>
             </Link>
             {/* Producto Aves y Conejo */}
@@ -165,13 +178,15 @@ export default function Inicio() {
               href="/productos-frescos/avesyconejos"
               className="flex flex-col items-center text-gray-700 hover:text-red-700"
             >
-              <Image
-                src="/imagenes/dibujos/avesyconejosdibujo.png"
-                alt="Imagen dibujo de Aves y Conejos"
-                width={220}
-                height={220}
-                className="mb-3 transition-transform duration-300 hover:scale-105"
-              />
+              <div className="w-[120px] h-[120px] sm:w-[150px] sm:h-[150px] md:w-[180px] md:h-[180px] flex items-center justify-center mb-3 transition-transform duration-300 hover:scale-105">
+                <Image
+                  src="/imagenes/dibujos/avesyconejosdibujo.png"
+                  alt="Imagen dibujo de Aves y Conejos"
+                  width={180}
+                  height={180}
+                  className="object-contain w-full h-full"
+                />
+              </div>
               <span className="text-center font-semibold">AVES Y CONEJO</span>
             </Link>
           </div>
@@ -182,34 +197,38 @@ export default function Inicio() {
           <h5 className="text-xl font-semibold" style={{ color: "#990000" }}>
             Nuestros Productos Elaborados
           </h5>
-          <div className="grid grid-cols-2 md:grid-cols-2 gap-2 md:gap-4 mt-4 justify-items-center justify-center max-w-[600px] mx-auto">
+          <div className="grid grid-cols-2 gap-4 mt-4 justify-items-center max-w-[500px] mx-auto">
             {/* Producto Embutidos Caseros */}
             <Link
               href="/productos-elaborados/embutidoscaseros"
               className="flex flex-col items-center text-gray-700 hover:text-red-700"
             >
-              <Image
-                src="/imagenes/dibujos/embutidoscaserosdibujo.png"
-                alt="Imagen dibujo de Embutidos caseros"
-                width={220}
-                height={220}
-                className="mb-2 transition-transform duration-300 hover:scale-105"
-              />
-              <span>Embutidos caseros</span>
+              <div className="w-[120px] h-[120px] sm:w-[150px] sm:h-[150px] md:w-[180px] md:h-[180px] flex items-center justify-center mb-2 transition-transform duration-300 hover:scale-105">
+                <Image
+                  src="/imagenes/dibujos/embutidoscaserosdibujo.png"
+                  alt="Imagen dibujo de Embutidos caseros"
+                  width={180}
+                  height={180}
+                  className="object-contain w-full h-full"
+                />
+              </div>
+              <span className="text-center font-semibold">Embutidos caseros</span>
             </Link>
             {/* Producto Elaborados */}
             <Link
               href="/productos-elaborados/elaborados"
               className="flex flex-col items-center text-gray-700 hover:text-red-700"
             >
-              <Image
-                src="/imagenes/dibujos/elaboradosdibujo.png"
-                alt="Imagen dibujo de Elaborados"
-                width={220}
-                height={220}
-                className="mb-2 transition-transform duration-300 hover:scale-105"
-              />
-              <span>elaborados</span>
+              <div className="w-[120px] h-[120px] sm:w-[150px] sm:h-[150px] md:w-[180px] md:h-[180px] flex items-center justify-center mb-2 transition-transform duration-300 hover:scale-105">
+                <Image
+                  src="/imagenes/dibujos/elaboradosdibujo.png"
+                  alt="Imagen dibujo de Elaborados"
+                  width={180}
+                  height={180}
+                  className="object-contain w-full h-full"
+                />
+              </div>
+              <span className="text-center font-semibold">Elaborados</span>
             </Link>
           </div>
         </div>
@@ -409,7 +428,7 @@ export default function Inicio() {
                 className="mb-4"
               />
               <p
-                className="text-gray-700 mb-4"
+                className="text-gray-700 text-sm md:text-base mb-4"
                 style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
               >
                 Es el lugar que nos recomendaron —con todo acierto— para
@@ -452,7 +471,7 @@ export default function Inicio() {
                 className="mb-4"
               />
               <p
-                className="text-gray-700 mb-4"
+                className="text-gray-700 text-sm md:text-base mb-4"
                 style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
               >
                 Para mí, la mejor carnicería de Cuenca. Conservan todo el sabor
@@ -499,7 +518,7 @@ export default function Inicio() {
                 className="mb-4"
               />
               <p
-                className="text-gray-700 mb-4"
+                className="text-gray-700 text-sm md:text-base mb-4"
                 style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
               >
                 Siempre que necesito buen género acudo a esta carnicería. No

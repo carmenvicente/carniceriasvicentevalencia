@@ -2,10 +2,26 @@
 
 export const dynamic = 'force-dynamic';
 
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
 import { neon } from '@neondatabase/serverless';
 import { writeFile } from 'fs/promises';
 import path from 'path';
+import jwt from 'jsonwebtoken';
+
+const JWT_SECRET = process.env.JWT_SECRET as string;
+
+function checkAdminAuth(request: NextRequest): NextResponse | null {
+  const auth = request.headers.get('Authorization');
+  const token = auth?.startsWith('Bearer ') ? auth.slice(7) : null;
+  if (!token) return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+  try {
+    const payload = jwt.verify(token, JWT_SECRET) as { role: string };
+    if (payload.role !== 'admin') return NextResponse.json({ error: 'Acceso denegado' }, { status: 403 });
+    return null;
+  } catch {
+    return NextResponse.json({ error: 'Token inválido' }, { status: 401 });
+  }
+}
 
 const getSQL = () => neon(process.env.DATABASE_URL as string);
 
@@ -29,7 +45,7 @@ interface PutRequestBody {
 }
 
 // Obtener productos o realizar búsqueda
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   const sql = getSQL();
 
   const url = new URL(request.url);
@@ -67,7 +83,7 @@ export async function GET(request: Request) {
 }
 
 // Crear producto o filtrar por subcategoría
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   const sql = getSQL();
 
   const contentType = request.headers.get('content-type') || '';
@@ -76,6 +92,7 @@ export async function POST(request: Request) {
   if (contentType.includes('application/json')) {
     const body: PostRequestBody = await request.json();
 
+    // Filtro público por subcategoría
     if (body.subcategoria_id && !body.nombre) {
       const productos = await sql`
         SELECT * FROM productos
@@ -83,6 +100,10 @@ export async function POST(request: Request) {
       `;
       return NextResponse.json(productos);
     }
+
+    // Creación de producto: solo admin
+    const authError = checkAdminAuth(request);
+    if (authError) return authError;
 
     const { nombre, descripcion, precio, stock, imagen, subcategoria_id } = body;
 
@@ -106,8 +127,11 @@ export async function POST(request: Request) {
     }
   }
 
-  // 🔹 Si es FormData (creación con imagen subida)
+  // 🔹 Si es FormData (creación con imagen subida): solo admin
   if (contentType.includes('multipart/form-data')) {
+    const authError = checkAdminAuth(request);
+    if (authError) return authError;
+
     const formData = await request.formData();
 
     const nombre = formData.get('nombre')?.toString();
@@ -149,7 +173,10 @@ if (buffer.length > 4 * 1024 * 1024) {
 }
 
 // Actualizar producto existente
-export async function PUT(request: Request) {
+export async function PUT(request: NextRequest) {
+  const authError = checkAdminAuth(request);
+  if (authError) return authError;
+
   const sql = getSQL();
 
   const body: PutRequestBody = await request.json();
@@ -173,8 +200,8 @@ export async function PUT(request: Request) {
     `;
     return NextResponse.json({ message: 'Producto actualizado correctamente' });
   } catch (error: any) {
-  console.error('Error al crear producto:', error);
-  return NextResponse.json({ message: 'Error al crear el producto', error: error.message }, { status: 500 });
+  console.error('Error al actualizar producto:', error);
+  return NextResponse.json({ message: 'Error al actualizar el producto' }, { status: 500 });
 }
 
 }

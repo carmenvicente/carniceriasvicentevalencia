@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Navbar from '@/app/componentes/navbar';
 import Footer from '@/app/componentes/footer';
-import { FaUser, FaMapMarkerAlt, FaCalendarAlt, FaReceipt, FaTags, FaFileAlt, FaInfoCircle, FaSmile } from 'react-icons/fa';
+import { FaUser, FaMapMarkerAlt, FaCalendarAlt, FaReceipt, FaTags, FaFileAlt, FaInfoCircle, FaSmile, FaHeart } from 'react-icons/fa';
 
 type Usuario = {
   nombre: string;
@@ -15,6 +15,7 @@ type Usuario = {
 
 export default function MiCuenta() {
   const [usuario, setUsuario] = useState<Usuario | null>(null);
+  const [confirmandoLogout, setConfirmandoLogout] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -43,7 +44,8 @@ export default function MiCuenta() {
   if (!usuario) return null;
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="bg-white">
+      <div className="min-h-screen flex flex-col">
       {/* Navbar y cabecera */}
       <Navbar />
 
@@ -52,7 +54,7 @@ export default function MiCuenta() {
 
       {/* Cabecera blanca */}
       <div className="w-full py-3 bg-white">
-        <div className="max-w-screen-xl mx-auto text-center px-4 mt-10">
+        <div className="max-w-screen-xl mx-auto text-center px-4 mt-4 md:mt-10">
           <h1 className="text-xl md:text-2xl font-bold text-black">MI CUENTA</h1>
           <div className="mt-1 text-black text-sm">
             <Link
@@ -71,7 +73,7 @@ export default function MiCuenta() {
       </div>
 
       <p
-        className="text-center mt-20 text-lg text-black mb-8"
+        className="text-center mt-4 md:mt-10 text-base md:text-lg text-black mb-3 md:mb-6"
         style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
       >
         Te damos la bienvenida, {usuario?.tratamiento ? `${usuario.tratamiento} ${usuario.nombre}` : usuario?.nombre || 'usuario'}
@@ -81,8 +83,9 @@ export default function MiCuenta() {
 
 
       {/* Tarjetas de opciones */}
-      <div className="max-w-screen-xl mx-auto px-4 py-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-20 md:mb-32" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
+      <div className="max-w-screen-xl mx-auto px-4 py-3 md:py-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-4 md:mb-16" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>
         <Tarjeta icono={<FaUser size={24} color="black" />} texto="Información" href="/micuenta/informacion" className="text-black" />
+        <Tarjeta icono={<FaHeart size={24} color="black" />} texto="Favoritos" href="/micuenta/favoritos" className="text-black" />
         {usuario.role === 'admin' ? (
           <>
             <Link
@@ -108,26 +111,44 @@ export default function MiCuenta() {
         */}
 
         <Tarjeta icono={<FaInfoCircle size={24}  color="black" />} texto="Tus ajustes de cookies" href="/micuenta/ajustes-cookies" className="text-black"/>
-        <div
-          onClick={() => {
-            const confirmado = window.confirm('¿Seguro que deseas cerrar sesión?');
-            if (confirmado) {
-              localStorage.removeItem('token');
-              localStorage.removeItem('usuario');
-              document.cookie = 'token=; path=/; max-age=0';
-              setUsuario(null);
-              router.push('/');
-            }
-          }}
-          className="cursor-pointer border border-black rounded-md p-6 flex flex-col items-center justify-center hover:bg-gray-100 transition"
-        >
-          <FaSmile size={24}  color="black" />
-          <span className="mt-2 font-semibold text-center text-black">Desconectar</span>
+        <div className="border border-black rounded-md p-6 flex flex-col items-center justify-center transition min-h-[100px]">
+          {!confirmandoLogout ? (
+            <button
+              onClick={() => setConfirmandoLogout(true)}
+              className="flex flex-col items-center w-full hover:opacity-70 transition"
+            >
+              <FaSmile size={24} color="black" />
+              <span className="mt-2 font-semibold text-center text-black">Desconectar</span>
+            </button>
+          ) : (
+            <div className="flex flex-col items-center gap-3 w-full">
+              <p className="text-sm text-gray-600 text-center">¿Seguro que quieres salir?</p>
+              <div className="flex gap-2 w-full">
+                <button
+                  onClick={() => {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('usuario');
+                    document.cookie = 'token=; path=/; max-age=0';
+                    setUsuario(null);
+                    router.push('/');
+                  }}
+                  className="flex-1 bg-[#990000] text-white rounded py-1.5 text-xs font-semibold hover:bg-[#b30000] transition"
+                >
+                  Sí, salir
+                </button>
+                <button
+                  onClick={() => setConfirmandoLogout(false)}
+                  className="flex-1 bg-gray-100 text-gray-700 rounded py-1.5 text-xs font-semibold hover:bg-gray-200 transition"
+                >
+                  Cancelar
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
-      <div className="mt-30">
-        <Footer />
       </div>
+      <Footer />
     </main>
   );
 }

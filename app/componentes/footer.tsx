@@ -32,7 +32,7 @@ export default function Footer() {
         </div>
 
         {/* Secciones del footer con distribución en grid para móviles y flex para desktop */}
-        <div className="flex-1 grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-8 lg:gap-x-10">
+        <div className="flex-1 grid grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-8">
 
           {/* Sección Navegación con enlaces principales */}
           <div className="w-full sm:w-auto">
@@ -63,7 +63,7 @@ export default function Footer() {
               </li>
               <li className="mt-2">📞 <a href="tel:969221018" className="hover:underline">969 221 018</a></li>
               <li>📞 <a href="tel:+34646982666" className="hover:underline">+34 646 982 666</a></li>
-              <li className="mt-2">✉️ <a>carniceriavicentevalencia@gmail.com</a></li>
+              <li className="mt-2 break-all">✉️ <a href="mailto:carniceriavicentevalencia@gmail.com" className="hover:underline">carniceriavicentevalencia@gmail.com</a></li>
             </ul>
           </div>
 
@@ -84,7 +84,7 @@ export default function Footer() {
             <ul className="text-sm font-semibold" style={font}>
               <li><Link href="/informacionlegal/aviso-legal" className="hover:underline">Aviso Legal</Link></li>
               <li><Link href="/informacionlegal/politica-de-privacidad" className="hover:underline">Política de Privacidad</Link></li>
-              <li><Link href="/informacionlegal/terminos-y-condiciones" className="hover:underline">Términos y Condiciones</Link></li>
+              {/* <li><Link href="/informacionlegal/terminos-y-condiciones" className="hover:underline">Términos y Condiciones</Link></li> */}
             </ul>
           </div>
 

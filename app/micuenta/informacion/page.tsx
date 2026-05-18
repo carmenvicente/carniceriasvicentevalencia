@@ -23,6 +23,7 @@ export default function InformacionUsuario() {
   const [verActual, setVerActual] = useState(false);
   const [verNueva, setVerNueva] = useState(false);
   const [verRepetida, setVerRepetida] = useState(false);
+  const [cambiarPassword, setCambiarPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
@@ -69,11 +70,14 @@ export default function InformacionUsuario() {
     }
 
     try {
+      const token = localStorage.getItem('token');
       const res = await fetch('/api/auth/actualizarinfousuario', {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
         body: JSON.stringify({
-          id: usuarioOriginal.id,
           tratamiento: formData.tratamiento,
           nombre: formData.nombre,
           apellidos: formData.apellidos,
@@ -100,12 +104,12 @@ export default function InformacionUsuario() {
 
   return (
     <>
+      <div className="min-h-screen bg-white">
       {/* Navbar y cabecera */}
       <Navbar />
 
       {/* 40px de altura en negro arriba */}
       <div className="h-22 w-full bg-black" />
-<div className="bg-white" >
       {/* Cabecera blanca */}
 <div className="w-full py-3 bg-white">
   <div className="max-w-screen-xl mx-auto text-center px-4 mt-10">
@@ -123,6 +127,15 @@ export default function InformacionUsuario() {
     </div>
   </div>
 </div>
+      <div className="max-w-screen-xl mx-auto px-4 pt-3 pb-0">
+        <Link href="/micuenta" className="inline-flex items-center gap-1.5 text-sm font-semibold text-gray-500 hover:text-black transition">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+          Mi Cuenta
+        </Link>
+      </div>
+
 
 
       <main className="max-w-screen-md mx-auto px-4 py-10">
@@ -192,76 +205,92 @@ export default function InformacionUsuario() {
             />
           </div>
 
-          {/* Info sobre cambio de contraseña */}
-          <div className="text-sm mt-20 text-gray-600 italic">
-            Si deseas cambiar tu contraseña, primero debes introducir la actual.
-          </div>
-
-          {/* Contraseña actual */}
-          <div>
-            <label className="block mb-1 text-black">Contraseña actual</label>
-            <div className="relative">
-              <input
-                type={verActual ? 'text' : 'password'}
-                value={formData.contraseñaActual}
-                onChange={(e) => handleChange('contraseñaActual', e.target.value)}
-                className="text-black w-full border border-gray-300 rounded px-3 py-2 bg-gray-100 pr-10"
-                placeholder="Introduce tu contraseña actual"
-                style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
-              />
-              <button
-                type="button"
-                onClick={() => setVerActual(!verActual)}
-                className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-600"
+          {/* Sección desplegable para cambiar contraseña */}
+          <div className="border border-gray-200 rounded-lg overflow-hidden mt-4">
+            <button
+              type="button"
+              onClick={() => {
+                if (cambiarPassword) {
+                  handleChange('contraseñaActual', '');
+                  handleChange('password1', '');
+                  handleChange('password2', '');
+                }
+                setCambiarPassword(v => !v);
+              }}
+              className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 transition text-black font-semibold text-sm"
+            >
+              <span>Cambiar contraseña</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className={`h-4 w-4 transition-transform duration-200 ${cambiarPassword ? 'rotate-180' : ''}`}
+                fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}
               >
-                {verActual ? <FaEye /> : <FaEyeSlash />}
-              </button>
-            </div>
-          </div>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
 
-          {/* Nueva contraseña */}
-          <div>
-            <label className="block mb-1 text-black">Nueva contraseña</label>
-            <div className="relative">
-              <input
-                type={verNueva ? 'text' : 'password'}
-                value={formData.password1}
-                onChange={(e) => handleChange('password1', e.target.value)}
-                className="text-black w-full border border-gray-300 rounded px-3 py-2 bg-gray-100 pr-10"
-                placeholder="Escribe nueva contraseña"
-                style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
-              />
-              <button
-                type="button"
-                onClick={() => setVerNueva(!verNueva)}
-                className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-600"
-              >
-                {verNueva ? <FaEye /> : <FaEyeSlash />}
-              </button>
-            </div>
-          </div>
+            {cambiarPassword && (
+              <div className="px-4 py-4 space-y-4 bg-white">
+                <p className="text-xs text-gray-500 italic">Para cambiar la contraseña, primero debes introducir la actual.</p>
 
+                {/* Contraseña actual */}
+                <div>
+                  <label className="block mb-1 text-black text-sm">Contraseña actual</label>
+                  <div className="relative">
+                    <input
+                      type={verActual ? 'text' : 'password'}
+                      value={formData.contraseñaActual}
+                      onChange={(e) => handleChange('contraseñaActual', e.target.value)}
+                      className="text-black w-full border border-gray-300 rounded px-3 py-2 bg-gray-100 pr-10"
+                      placeholder="Introduce tu contraseña actual"
+                      style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
+                    />
+                    <button type="button" onClick={() => setVerActual(!verActual)}
+                      className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-600">
+                      {verActual ? <FaEye /> : <FaEyeSlash />}
+                    </button>
+                  </div>
+                </div>
 
-          {/* Confirmar nueva contraseña */}
-          <div>
-            <label className="block mb-1 text-black">Repite la nueva contraseña</label>
-            <div className="relative">
-              <input
-                type={verRepetida ? 'text' : 'password'}
-                value={formData.password2}
-                onChange={(e) => handleChange('password2', e.target.value)}
-                className="text-black w-full border border-gray-300 rounded px-3 py-2 bg-gray-100 pr-10"
-                placeholder="Repite la contraseña"
-                style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
-              />
-              <button
-                type="button"
-                onClick={() => setVerRepetida(!verRepetida)}
-                className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-600"
-              >
-                {verRepetida ? <FaEye /> : <FaEyeSlash />}
-              </button>
-            </div>
+                {/* Nueva contraseña */}
+                <div>
+                  <label className="block mb-1 text-black text-sm">Nueva contraseña</label>
+                  <div className="relative">
+                    <input
+                      type={verNueva ? 'text' : 'password'}
+                      value={formData.password1}
+                      onChange={(e) => handleChange('password1', e.target.value)}
+                      className="text-black w-full border border-gray-300 rounded px-3 py-2 bg-gray-100 pr-10"
+                      placeholder="Escribe nueva contraseña"
+                      style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
+                    />
+                    <button type="button" onClick={() => setVerNueva(!verNueva)}
+                      className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-600">
+                      {verNueva ? <FaEye /> : <FaEyeSlash />}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Repetir contraseña */}
+                <div>
+                  <label className="block mb-1 text-black text-sm">Repite la nueva contraseña</label>
+                  <div className="relative">
+                    <input
+                      type={verRepetida ? 'text' : 'password'}
+                      value={formData.password2}
+                      onChange={(e) => handleChange('password2', e.target.value)}
+                      className="text-black w-full border border-gray-300 rounded px-3 py-2 bg-gray-100 pr-10"
+                      placeholder="Repite la contraseña"
+                      style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600 }}
+                    />
+                    <button type="button" onClick={() => setVerRepetida(!verRepetida)}
+                      className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-600">
+                      {verRepetida ? <FaEye /> : <FaEyeSlash />}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
 
@@ -284,9 +313,9 @@ export default function InformacionUsuario() {
           </button>
         </form>
       </main>
+      </div>
 
       <Footer />
-      </div>
     </>
   );
 }

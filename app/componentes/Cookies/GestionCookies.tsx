@@ -136,8 +136,8 @@ export default function GestionCookies() {
 
         {/* Enlaces legales */}
         <div className="mt-8 text-sm text-gray-600 flex justify-center gap-x-6">
-          <a href="/politica-de-privacidad" className="hover:underline" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400 }}>Política de Privacidad</a>
-          <a href="/aviso-legal" className="hover:underline" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400 }}>Aviso Legal</a>
+          <a href="/informacionlegal/politica-de-privacidad" className="hover:underline" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400 }}>Política de Privacidad</a>
+          <a href="/informacionlegal/aviso-legal" className="hover:underline" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400 }}>Aviso Legal</a>
         </div>
       </div>
     </div>

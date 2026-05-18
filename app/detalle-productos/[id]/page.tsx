@@ -8,6 +8,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useCarrito } from '@/app/contextos/CarritoContexto'
 import PopupCarrito from '@/app/componentes/PopupCarrito'
+import BotonFavorito from '@/app/componentes/BotonFavorito'
 import { createPortal } from 'react-dom'
 
 interface Subcategoria {
@@ -128,7 +129,10 @@ export default function DetalleProducto() {
 
           {/* Detalles */}
           <div className="w-full md:w-[40%] text-white space-y-4">
-            <h2 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6">{producto.nombre}</h2>
+            <div className="flex items-start justify-between gap-3 mb-4 md:mb-6">
+              <h2 className="text-2xl md:text-3xl font-bold">{producto.nombre}</h2>
+              <BotonFavorito productoId={producto.id} sinFondo />
+            </div>
             <p className="text-[#990000] text-xl md:text-2xl font-semibold mb-2">
               {precio.toFixed(2)} €{producto.nombre === "Codorniz" || producto.nombre === "Zarajos" ? "/unidad" : "/kg"}
             </p>

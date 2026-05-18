@@ -1,5 +1,6 @@
 'use client'
 
+import { usePathname } from 'next/navigation'
 import { useEffect, useState, useMemo } from 'react'
 import Navbar from '@/app/componentes/navbar'
 import Link from 'next/link'
@@ -8,6 +9,7 @@ import Footer from '@/app/componentes/footer'
 import styles from '@/app/styles/productos.module.css'
 import { useCarrito } from '@/app/contextos/CarritoContexto'
 import PopupCarrito from '@/app/componentes/PopupCarrito'
+import BotonFavorito from '@/app/componentes/BotonFavorito'
 import { createPortal } from 'react-dom'
 
 // Interfaz que define la estructura de un producto
@@ -22,6 +24,7 @@ interface Producto {
 
 export default function Elaborados() {
   // Estado para almacenar los productos obtenidos desde la API
+  const pathname = usePathname()
   const [productos, setProductos] = useState<Producto[]>([])
 
   // Estado para controlar la vista: 'grid' o 'list'
@@ -34,13 +37,13 @@ export default function Elaborados() {
   const [popupVisible, setPopupVisible] = useState(false)
 
   // Producto seleccionado para mostrar en el popup (aunque no se usa directamente en render)
-  const [productoPopup, setProductoPopup] = useState<Producto | null>(null)
 
   // Función para añadir un producto al carrito global
   const { añadirAlCarrito } = useCarrito()
 
   // Estado para detectar si la ventana es móvil (<768px)
   const [isMobile, setIsMobile] = useState(false)
+  const [mobileColumns, setMobileColumns] = useState<1 | 2>(2)
 
   useEffect(() => {
     // Función para obtener productos desde la API, filtrados por categoría y subcategoría
@@ -66,7 +69,7 @@ export default function Elaborados() {
     fetchProductos()
 
     // Detectar ancho de ventana para responsive
-    const handleResize = () => setIsMobile(window.innerWidth < 768)
+    const handleResize = () => setIsMobile(window.innerWidth < 1024)
     handleResize()
     window.addEventListener('resize', handleResize)
 
@@ -89,7 +92,6 @@ export default function Elaborados() {
       precio: producto.precio,
       imagen: producto.imagen
     })
-    setProductoPopup(producto)
     setPopupVisible(true)
   }
 
@@ -118,39 +120,71 @@ export default function Elaborados() {
       <div className={styles.pageContainer}>
 
         {/* Sidebar categorías (oculto en móvil) */}
-        <aside className={`${styles.sidebar} hidden md:flex flex-col`}>
-          <h2 className="text-white text-lg mb-3 pl-4">PRODUCTOS FRESCOS</h2>
-          <ul className="space-y-2 pl-4 text-left">
-            {['TERNERA', 'CERDO', 'CORDERO', 'AVES Y CONEJOS'].map(cat => (
-              <li key={cat}>
-                <Link href={`/productos-frescos/${cat.toLowerCase().replace(/ /g, '')}`} className="text-sm text-white hover:text-[#990000] transition-colors">
-                  {cat}
+        <aside className={`${styles.sidebar} hidden md:flex flex-col gap-5 pt-2`}>
+          {/* Productos Frescos */}
+          <div>
+            <p className="text-[10px] text-gray-500 font-bold tracking-widest uppercase px-2 mb-2">Productos Frescos</p>
+            <div className="space-y-1">
+              {[
+                { label: 'Ternera', href: '/productos-frescos/ternera' },
+                { label: 'Cerdo', href: '/productos-frescos/cerdo' },
+                { label: 'Cordero', href: '/productos-frescos/cordero' },
+                { label: 'Aves y Conejos', href: '/productos-frescos/avesyconejos' },
+              ].map(({ label, href }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  className={`block px-3 py-2 rounded-md text-sm font-medium transition-all ${
+                    pathname === href
+                      ? 'bg-[#990000] text-white'
+                      : 'text-gray-300 hover:bg-white/10 hover:text-white'
+                  }`}
+                >
+                  {label}
                 </Link>
-              </li>
-            ))}
-          </ul>
+              ))}
+            </div>
+          </div>
 
-          <h2 className="text-white text-lg mb-3 pl-4 mt-15">PRODUCTOS ELABORADOS</h2>
-          <ul className="space-y-2 pl-4 text-left">
-            {['EMBUTIDOS CASEROS', 'ELABORADOS'].map(cat => (
-              <li key={cat}>
-                <Link href={`/productos-elaborados/${cat.toLowerCase().replace(/ /g, '')}`} className="text-sm text-white hover:text-[#990000] transition-colors">
-                  {cat}
+          {/* Productos Elaborados */}
+          <div>
+            <p className="text-[10px] text-gray-500 font-bold tracking-widest uppercase px-2 mb-2">Productos Elaborados</p>
+            <div className="space-y-1">
+              {[
+                { label: 'Embutidos Caseros', href: '/productos-elaborados/embutidoscaseros' },
+                { label: 'Elaborados', href: '/productos-elaborados/elaborados' },
+              ].map(({ label, href }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  className={`block px-3 py-2 rounded-md text-sm font-medium transition-all ${
+                    pathname === href
+                      ? 'bg-[#990000] text-white'
+                      : 'text-gray-300 hover:bg-white/10 hover:text-white'
+                  }`}
+                >
+                  {label}
                 </Link>
-              </li>
-            ))}
-          </ul>
+              ))}
+            </div>
+          </div>
 
-          <h2 className="text-white text-lg mb-3 pl-4 mt-15">Charcutería</h2>
-          <ul className="space-y-2 pl-4 text-left">
-            {['CHARCUTERIA'].map(cat => (
-              <li key={cat}>
-                <Link href={`/${cat.toLowerCase().replace(/ /g, '')}`} className="text-sm text-white hover:text-[#990000] transition-colors">
-                  {cat}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          {/* Charcutería */}
+          <div>
+            <p className="text-[10px] text-gray-500 font-bold tracking-widest uppercase px-2 mb-2">Charcutería</p>
+            <div className="space-y-1">
+              <Link
+                href="/charcuteria"
+                className={`block px-3 py-2 rounded-md text-sm font-medium transition-all ${
+                  pathname === '/charcuteria'
+                    ? 'bg-[#990000] text-white'
+                    : 'text-gray-300 hover:bg-white/10 hover:text-white'
+                }`}
+              >
+                Charcutería
+              </Link>
+            </div>
+          </div>
         </aside>
 
         {/* Separador */}
@@ -160,9 +194,35 @@ export default function Elaborados() {
         <main className={`${styles.productContainer} w-full md:w-auto`}>
           {/* Toolbar para cambiar vista y orden */}
           <div className="w-full bg-[rgb(22,22,22)] py-3 mb-4 rounded-md">
-            <div className="max-w-screen-xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between space-y-2 md:space-y-0">
+            <div className="max-w-screen-xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
               {/* Selector vista (rejilla/lista) */}
-              <div className="hidden sm:flex items-center space-x-3">
+              {/* Selector columnas para móvil */}
+              <div className="flex lg:hidden items-center space-x-2">
+                <button
+                  onClick={() => setMobileColumns(2)}
+                  className={`p-1 transition ${mobileColumns === 2 ? 'opacity-100' : 'opacity-40'}`}
+                  aria-label="2 columnas"
+                >
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="white" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="0" y="0" width="8" height="8" rx="1.5"/>
+                    <rect x="12" y="0" width="8" height="8" rx="1.5"/>
+                    <rect x="0" y="12" width="8" height="8" rx="1.5"/>
+                    <rect x="12" y="12" width="8" height="8" rx="1.5"/>
+                  </svg>
+                </button>
+                <button
+                  onClick={() => setMobileColumns(1)}
+                  className={`p-1 transition ${mobileColumns === 1 ? 'opacity-100' : 'opacity-40'}`}
+                  aria-label="1 columna"
+                >
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="white" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="0" y="0" width="20" height="8" rx="1.5"/>
+                    <rect x="0" y="12" width="20" height="8" rx="1.5"/>
+                  </svg>
+                </button>
+              </div>
+
+              <div className="hidden lg:flex items-center space-x-3">
                 <Image
                   src="/imagenes/iconos/aplicaciones.png"
                   alt="Ver en rejilla"
@@ -179,9 +239,6 @@ export default function Elaborados() {
                   className={`cursor-pointer ${viewMode === 'list' ? 'opacity-100' : 'opacity-50'}`}
                   onClick={() => setViewMode('list')}
                 />
-                <span className="ml-3 text-white border-l border-gray-500 pl-3 text-xs md:text-sm">
-                  Mostrando 1–{sortedProductos.length} de {sortedProductos.length}
-                </span>
               </div>
 
               {/* Selector de orden */}
@@ -204,12 +261,12 @@ export default function Elaborados() {
 
           {/* Vista rejilla o móvil */}
           {(viewMode === 'grid' || isMobile) ? (
-            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className={`grid gap-4 ${isMobile ? (mobileColumns === 1 ? 'grid-cols-1' : 'grid-cols-2') : 'grid-cols-2 lg:grid-cols-3'}`}>
               {sortedProductos.map(p => (
+                <div key={p.id} className="relative transition-transform hover:-translate-y-1">
                 <Link
-                  key={p.id}
                   href={`/detalle-productos/${p.id}`}
-                  className={`${styles.productCard} flex flex-col justify-start h-full space-y-2 sm:space-y-4 transition-transform hover:-translate-y-1`}
+                  className={`${styles.productCard} flex flex-col justify-start h-full space-y-2 sm:space-y-4`}
                 >
                   {/* Imagen con enlace a detalle */}
                     <Image
@@ -241,17 +298,21 @@ export default function Elaborados() {
                   </button>
                   */}
                 </Link>
+                <div className="absolute bottom-2 right-2 z-10">
+                  <BotonFavorito productoId={p.id} />
+                </div>
+                </div>
               ))}
             </div>
           ) : (
             // Vista lista escritorio
             <div className="flex flex-col space-y-4">
               {sortedProductos.map(p => (
-                <Link
-                  key={p.id}
-                  href={`/detalle-productos/${p.id}`}
-                  className={`${styles.productCardList} flex items-center justify-between p-4 bg-[rgba(0,0,0,0.8)] rounded-lg shadow-md transition-transform hover:-translate-y-1`}
-                >
+                <div key={p.id} className="relative">
+                  <Link
+                    href={`/detalle-productos/${p.id}`}
+                    className={`${styles.productCardList} flex items-center justify-between p-4 bg-[rgba(0,0,0,0.8)] rounded-lg shadow-md transition-transform hover:-translate-y-1`}
+                  >
                   {/* Imagen con enlace a detalle */}
                     <Image
                       src={p.imagen.startsWith('http') ? p.imagen : `/imagenes/productos/${p.imagen}`}
@@ -294,6 +355,10 @@ export default function Elaborados() {
                     */}
                   </div>
                 </Link>
+                  <div className="absolute top-3 right-3 z-10">
+                    <BotonFavorito productoId={p.id} />
+                  </div>
+                </div>
               ))}
             </div>
           )}
