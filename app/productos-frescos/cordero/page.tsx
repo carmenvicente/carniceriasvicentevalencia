@@ -1,5 +1,6 @@
 'use client'
 
+import { usePathname } from 'next/navigation'
 import { useEffect, useState, useMemo } from 'react'
 import Navbar from '@/app/componentes/navbar'
 import Link from 'next/link'
@@ -23,6 +24,7 @@ interface Producto {
 
 export default function Cordero() {
   // Estado para almacenar los productos
+  const pathname = usePathname()
   const [productos, setProductos] = useState<Producto[]>([])
   
   // Estado para controlar modo de visualización (rejilla o lista)
@@ -128,46 +130,71 @@ export default function Cordero() {
       <div className={styles.pageContainer}>
 
         {/* Sidebar con categorías, oculto en móvil y visible en md+ */}
-        <aside className={`${styles.sidebar} hidden md:flex flex-col`}>
-          <h2 className="text-white text-lg mb-3 pl-4">PRODUCTOS FRESCOS</h2>
-          <ul className="space-y-2 pl-4 text-left">
-            {['TERNERA', 'CERDO', 'CORDERO', 'AVES Y CONEJOS'].map(cat => (
-              <li key={cat}>
+        <aside className={`${styles.sidebar} hidden md:flex flex-col gap-5 pt-2`}>
+          {/* Productos Frescos */}
+          <div>
+            <p className="text-[10px] text-gray-500 font-bold tracking-widest uppercase px-2 mb-2">Productos Frescos</p>
+            <div className="space-y-1">
+              {[
+                { label: 'Ternera', href: '/productos-frescos/ternera' },
+                { label: 'Cerdo', href: '/productos-frescos/cerdo' },
+                { label: 'Cordero', href: '/productos-frescos/cordero' },
+                { label: 'Aves y Conejos', href: '/productos-frescos/avesyconejos' },
+              ].map(({ label, href }) => (
                 <Link
-                  href={`/productos-frescos/${cat.toLowerCase().replace(/ /g, '')}`}
-                  className="text-sm text-white hover:text-[#990000] transition-colors"
+                  key={href}
+                  href={href}
+                  className={`block px-3 py-2 rounded-md text-sm font-medium transition-all ${
+                    pathname === href
+                      ? 'bg-[#990000] text-white'
+                      : 'text-gray-300 hover:bg-white/10 hover:text-white'
+                  }`}
                 >
-                  {cat}
+                  {label}
                 </Link>
-              </li>
-            ))}
-          </ul>
+              ))}
+            </div>
+          </div>
 
-          <h2 className="text-white text-lg mb-3 pl-4 mt-15">PRODUCTOS ELABORADOS</h2>
-          <ul className="space-y-2 pl-4 text-left">
-            {['EMBUTIDOS CASEROS', 'ELABORADOS'].map(cat => (
-              <li key={cat}>
+          {/* Productos Elaborados */}
+          <div>
+            <p className="text-[10px] text-gray-500 font-bold tracking-widest uppercase px-2 mb-2">Productos Elaborados</p>
+            <div className="space-y-1">
+              {[
+                { label: 'Embutidos Caseros', href: '/productos-elaborados/embutidoscaseros' },
+                { label: 'Elaborados', href: '/productos-elaborados/elaborados' },
+              ].map(({ label, href }) => (
                 <Link
-                  href={`/productos-elaborados/${cat.toLowerCase().replace(/ /g, '')}`}
-                  className="text-sm text-white hover:text-[#990000] transition-colors"
+                  key={href}
+                  href={href}
+                  className={`block px-3 py-2 rounded-md text-sm font-medium transition-all ${
+                    pathname === href
+                      ? 'bg-[#990000] text-white'
+                      : 'text-gray-300 hover:bg-white/10 hover:text-white'
+                  }`}
                 >
-                  {cat}
+                  {label}
                 </Link>
-              </li>
-            ))}
-          </ul>
+              ))}
+            </div>
+          </div>
 
-          <h2 className="text-white text-lg mb-3 pl-4 mt-15">Charcutería</h2>
-          <ul className="space-y-2 pl-4 text-left">
-            <li>
+          {/* Charcutería */}
+          <div>
+            <p className="text-[10px] text-gray-500 font-bold tracking-widest uppercase px-2 mb-2">Charcutería</p>
+            <div className="space-y-1">
               <Link
                 href="/charcuteria"
-                className="text-sm text-white hover:text-[#990000] transition-colors"
+                className={`block px-3 py-2 rounded-md text-sm font-medium transition-all ${
+                  pathname === '/charcuteria'
+                    ? 'bg-[#990000] text-white'
+                    : 'text-gray-300 hover:bg-white/10 hover:text-white'
+                }`}
               >
-                CHARCUTERIA
+                Charcutería
               </Link>
-            </li>
-          </ul>
+            </div>
+          </div>
         </aside>
 
         {/* Separador entre sidebar y contenido */}
