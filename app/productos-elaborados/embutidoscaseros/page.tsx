@@ -251,11 +251,11 @@ export default function Embutidoscaseros() {
             // Vista lista escritorio
             <div className="flex flex-col space-y-4">
               {sortedProductos.map(p => (
-                <Link
-                  key={p.id}
-                  href={`/detalle-productos/${p.id}`}
-                  className={`${styles.productCardList} flex items-center justify-between p-4 bg-[rgba(0,0,0,0.8)] rounded-lg shadow-md transition-transform hover:-translate-y-1`}
-                >
+                <div key={p.id} className="relative">
+                  <Link
+                    href={`/detalle-productos/${p.id}`}
+                    className={`${styles.productCardList} flex items-center justify-between p-4 bg-[rgba(0,0,0,0.8)] rounded-lg shadow-md transition-transform hover:-translate-y-1`}
+                  >
                   {/* Imagen con enlace a detalle */}
                     <Image
                       src={p.imagen.startsWith('http') ? p.imagen : `/imagenes/productos/${p.imagen}`}
@@ -296,6 +296,10 @@ export default function Embutidoscaseros() {
                     */}
                   </div>
                 </Link>
+                  <div className="absolute top-3 right-3 z-10">
+                    <BotonFavorito productoId={p.id} />
+                  </div>
+                </div>
               ))}
             </div>
           )}
