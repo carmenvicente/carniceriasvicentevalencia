@@ -74,8 +74,8 @@ export default function Inicio() {
               className="text-gray-700 mb-4 mt-9"
               style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}
             >
-              Carnicería Vicente Valencia es tu carnicería de confianza, ahora
-              también disponible online.
+              Carnicería Vicente Valencia es tu carnicería de confianza en
+              Cuenca.
             </p>
             <p
               className="text-gray-700 mb-4"
@@ -83,9 +83,7 @@ export default function Inicio() {
             >
               Seleccionamos cuidadosamente productos frescos y de primera
               calidad para que disfrutes del auténtico sabor de la carne
-              tradicional. Haz tu pedido de forma rápida y sencilla, y ven a
-              recogerlo cómodamente cuando esté listo. Calidad, cercanía y buen
-              servicio, como siempre.
+              tradicional. Calidad, cercanía y buen servicio, como siempre.
             </p>
             <p
               className="text-gray-700 mb-4"

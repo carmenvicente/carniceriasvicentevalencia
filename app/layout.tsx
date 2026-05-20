@@ -16,9 +16,58 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const BASE_URL = "https://carniceriasvicentevalencia.vercel.app";
+
 export const metadata: Metadata = {
-  title: "Carnicería Vicente Valencia",
-  description: "Compra productos cárnicos frescos y elaborados online",
+  metadataBase: new URL(BASE_URL),
+  title: {
+    default: "Carnicería Vicente Valencia | Carnicería en Cuenca",
+    template: "%s | Carnicería Vicente Valencia – Cuenca",
+  },
+  description:
+    "Carnicería en Cuenca con más de 70 años de tradición. Carne fresca de ternera, cerdo, cordero y aves, embutidos caseros, morteruelo y elaborados. Visítanos en Av. de Castilla-La Mancha, 27.",
+  keywords: [
+    "carnicería Cuenca",
+    "carnicería en Cuenca",
+    "carne fresca Cuenca",
+    "carnicería Vicente Valencia",
+    "morteruelo Cuenca",
+    "embutidos caseros Cuenca",
+    "ternera Cuenca",
+    "cordero Cuenca",
+
+    "carnicerías de Cuenca",
+  ],
+  authors: [{ name: "Carnicería Vicente Valencia" }],
+  creator: "Carnicería Vicente Valencia",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true },
+  },
+  openGraph: {
+    type: "website",
+    locale: "es_ES",
+    url: BASE_URL,
+    siteName: "Carnicería Vicente Valencia",
+    title: "Carnicería Vicente Valencia | Carnicería en Cuenca",
+    description:
+      "Carnicería en Cuenca con más de 70 años de tradición. Carne fresca, embutidos caseros y morteruelo. Visítanos en Av. de Castilla-La Mancha, 27.",
+    images: [
+      {
+        url: "/imagenes/otros/fondo33.JPG",
+        width: 1200,
+        height: 630,
+        alt: "Carnicería Vicente Valencia – Cuenca",
+      },
+    ],
+  },
+  verification: {
+    google: "googled49623e67267b041",
+  },
+  alternates: {
+    canonical: BASE_URL,
+  },
 };
 
 export default function RootLayout({
