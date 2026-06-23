@@ -59,13 +59,8 @@ const jsonLd = {
   ],
   servesCuisine: "Carne fresca y elaborados",
   priceRange: "€€",
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "4.6",
-    reviewCount: "11",
-    bestRating: "5",
-  },
-  image: "https://carniceriasvicentevalencia.vercel.app/imagenes/otros/fondo33.JPG",
+  image:
+    "https://carniceriasvicentevalencia.vercel.app/imagenes/otros/fondo33.JPG",
 };
 
 export default function Home() {
