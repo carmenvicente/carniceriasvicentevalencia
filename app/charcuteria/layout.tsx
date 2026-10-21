@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     "embutidos charcutería Cuenca",
   ],
   alternates: {
-    canonical: "https://carniceriasvicentevalencia.vercel.app/charcuteria",
+    canonical: "https://carniceriavicentevalencia.es",
   },
 };
 

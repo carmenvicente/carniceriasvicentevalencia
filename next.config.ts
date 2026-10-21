@@ -11,6 +11,21 @@ const nextConfig: NextConfig = {
       'eixv30h8jqr5avph.public.blob.vercel-storage.com',
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: "/:path*",
+        has: [
+          {
+            type: "host",
+            value: "carniceriasvicentevalencia.vercel.app",
+          },
+        ],
+        destination: "https://carniceriavicentevalencia.es/:path*",
+        permanent: true,
+      },
+    ];
+  },
 };
 
-module.exports = nextConfig
+module.exports = nextConfig;

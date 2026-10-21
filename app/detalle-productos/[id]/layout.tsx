@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { neon } from "@neondatabase/serverless";
 
-const BASE_URL = "https://carniceriasvicentevalencia.vercel.app";
+const BASE_URL = "https://carniceriavicentevalencia.es";
 
 export async function generateMetadata({
   params,
