@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     "morcilla Cuenca",
   ],
   alternates: {
-    canonical: "https://carniceriasvicentevalencia.vercel.app/productos-elaborados/embutidoscaseros",
+    canonical: "https://carniceriavicentevalencia.es/productos-elaborados/embutidoscaseros",
   },
 };
 

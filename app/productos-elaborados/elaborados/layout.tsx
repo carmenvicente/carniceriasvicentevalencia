@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     "platos preparados Cuenca",
   ],
   alternates: {
-    canonical: "https://carniceriasvicentevalencia.vercel.app/productos-elaborados/elaborados",
+    canonical: "https://carniceriavicentevalencia.es/productos-elaborados/elaborados",
   },
 };
 

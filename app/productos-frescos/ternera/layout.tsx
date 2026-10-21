@@ -6,7 +6,7 @@ export const metadata: Metadata = {
     "Ternera fresca de primera calidad en Cuenca. Filetes, chuletas, chuletón y más cortes de ternera en Carnicería Vicente Valencia. Visítanos en Av. de Castilla-La Mancha, 27.",
   keywords: ["ternera fresca Cuenca", "carne de ternera Cuenca", "filetes ternera Cuenca", "carnicería ternera Cuenca"],
   alternates: {
-    canonical: "https://carniceriasvicentevalencia.vercel.app/productos-frescos/ternera",
+    canonical: "https://carniceriavicentevalencia.es/productos-frescos/ternera",
   },
 };
 

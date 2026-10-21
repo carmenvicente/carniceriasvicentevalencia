@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     "Carnicería en Cuenca con más de 70 años de tradición familiar. Carne fresca de ternera, cerdo, cordero y aves. Embutidos caseros, morteruelo y elaborados. Visítanos en Av. de Castilla-La Mancha, 27.",
   alternates: {
-    canonical: "https://carniceriasvicentevalencia.vercel.app",
+    canonical: "https://carniceriavicentevalencia.es",
   },
 };
 
@@ -16,7 +16,7 @@ const jsonLd = {
   name: "Carnicería Vicente Valencia",
   description:
     "Carnicería en Cuenca con más de 70 años de tradición familiar. Carne fresca, embutidos caseros, morteruelo y elaborados. Av. de Castilla-La Mancha, 27.",
-  url: "https://carniceriasvicentevalencia.vercel.app",
+  url: "https://carniceriavicentevalencia.es",
   telephone: "+34969221018",
   email: "carniceriavicentevalencia@gmail.com",
   address: {
@@ -60,7 +60,7 @@ const jsonLd = {
   servesCuisine: "Carne fresca y elaborados",
   priceRange: "€€",
   image:
-    "https://carniceriasvicentevalencia.vercel.app/imagenes/otros/fondo33.JPG",
+    "https://carniceriavicentevalencia.es/imagenes/otros/fondo33.JPG",
 };
 
 const jsonLdSitio = {
@@ -68,7 +68,7 @@ const jsonLdSitio = {
   "@type": "WebSite",
   name: "Carnicería Vicente Valencia",
   alternateName: ["Carnicerías Vicente Valencia"],
-  url: "https://carniceriasvicentevalencia.vercel.app/",
+  url: "https://carniceriavicentevalencia.es/",
 };
 
 export default function Home() {

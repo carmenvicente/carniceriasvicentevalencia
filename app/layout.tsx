@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const BASE_URL = "https://carniceriasvicentevalencia.vercel.app";
+const BASE_URL = "hhttps://carniceriavicentevalencia.es";
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
