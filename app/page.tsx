@@ -63,12 +63,24 @@ const jsonLd = {
     "https://carniceriasvicentevalencia.vercel.app/imagenes/otros/fondo33.JPG",
 };
 
+const jsonLdSitio = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Carnicería Vicente Valencia",
+  alternateName: ["Carnicerías Vicente Valencia"],
+  url: "https://carniceriasvicentevalencia.vercel.app/",
+};
+
 export default function Home() {
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdSitio) }}
       />
       <Inicio />
     </>

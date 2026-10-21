@@ -20,6 +20,7 @@ const BASE_URL = "https://carniceriasvicentevalencia.vercel.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
+  applicationName: "Carnicería Vicente Valencia",
   title: {
     default: "Carnicería Vicente Valencia | Carnicería en Cuenca",
     template: "%s | Carnicería Vicente Valencia – Cuenca",
